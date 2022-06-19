@@ -75,7 +75,7 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, He
     } else if (helpMode == cmdline) {
         setWindowTitle(tr("Command-line options"));
         QString header = "Usage:\n"
-            "  dash-qt [command-line options]                     \n";
+            "  vkax-qt [command-line options]                     \n";
         QTextCursor cursor(ui->helpMessage->document());
         cursor.insertText(version);
         cursor.insertBlock();
@@ -127,13 +127,13 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, He
         ui->aboutMessage->setText(tr("\
 <h3>%1 Basics</h3> \
 %1 gives you true financial privacy by obscuring the origins of your funds. \
-All the Dash in your wallet is comprised of different \"inputs\" which you can think of as separate, discrete coins.<br> \
+All the Vkax in your wallet is comprised of different \"inputs\" which you can think of as separate, discrete coins.<br> \
 %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. \
 You retain control of your money at all times.<hr> \
 <b>The %1 process works like this:</b>\
 <ol type=\"1\"> \
 <li>%1 begins by breaking your transaction inputs down into standard denominations. \
-These denominations are 0.001 DASH, 0.01 DASH, 0.1 DASH, 1 DASH and 10 DASH -- sort of like the paper money you use every day.</li> \
+These denominations are 0.001 VKAX, 0.01 VKAX, 0.1 VKAX, 1 VKAX and 10 VKAX -- sort of like the paper money you use every day.</li> \
 <li>Your wallet then sends requests to specially configured software nodes on the network, called \"masternodes.\" \
 These masternodes are informed then that you are interested in mixing a certain denomination. \
 No identifiable information is sent to the masternodes, so they never know \"who\" you are.</li> \
@@ -153,7 +153,7 @@ For more information, see the <a style=\"%2\" href=\"%3\">%1 documentation</a>."
         )
         .arg("CoinJoin")
         .arg(GUIUtil::getThemedStyleQString(GUIUtil::ThemedStyle::TS_COMMAND))
-        .arg("https://docs.dash.org/en/stable/wallets/dashcore/coinjoin-instantsend.html")
+        .arg("https://docs.vkax/en/stable/wallets/vkaxcore/coinjoin-instantsend.html")
         );
         ui->aboutMessage->setWordWrap(true);
         ui->helpMessage->setVisible(false);

@@ -1,15 +1,16 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Dash Core
-Upstream-Contact: Dash Core Group, Inc https://www.dash.org/team/
-Source: https://github.com/dashpay/dash
+Upstream-Name: Vkax Core
+Upstream-Contact: Vkax Core Group, Inc https://www.vkax.tech/team/
+Source: https://github.com/vkaxproject/vkax
 
 Files: *
 Copyright: 2009-2017, Bitcoin Core Developers,
-           2019-2020, Dash Core Developers
+           2019-2020, Dash Core Developers,
+           2021-2022, Vkax Core Developers
 License: Expat
 Comment: The Bitcoin Core Developers encompasses the current developers listed on bitcoin.org,
-         as well as the numerous contributors to the project. The Dash Core Developers
-         encompasses the current developers listed on https://www.dash.org/team/, as well as
+         as well as the numerous contributors to the project(particular Dash). The Vkax Core Developers
+         encompasses the current developers listed on https://www.vkax.tech/team/, as well as
          the numerous contributors to the project.
 
 Files: debian/*

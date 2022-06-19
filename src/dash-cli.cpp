@@ -94,10 +94,10 @@ static int AppInitRPC(int argc, char* argv[])
         std::string strUsage = strprintf("%s RPC client version", PACKAGE_NAME) + " " + FormatFullVersion() + "\n";
         if (!gArgs.IsArgSet("-version")) {
             strUsage += "\nUsage:\n"
-                  "  dash-cli [options] <command> [params]  " + strprintf("Send command to %s", PACKAGE_NAME) + "\n" +
-                  "  dash-cli [options] -named <command> [name=value] ... " + strprintf("Send command to %s (with named arguments)", PACKAGE_NAME) + "\n" +
-                  "  dash-cli [options] help                List commands\n" +
-                  "  dash-cli [options] help <command>      Get help for a command\n";
+                  "  vkax-cli [options] <command> [params]  " + strprintf("Send command to %s", PACKAGE_NAME) + "\n" +
+                  "  vkax-cli [options] -named <command> [name=value] ... " + strprintf("Send command to %s (with named arguments)", PACKAGE_NAME) + "\n" +
+                  "  vkax-cli [options] help                List commands\n" +
+                  "  vkax-cli [options] help <command>      Get help for a command\n";
 
             strUsage += "\n" + gArgs.GetHelpMessage();
         }
@@ -375,7 +375,7 @@ static UniValue CallRPC(BaseRequestHandler *rh, const std::string& strMethod, co
         if (response.error != -1) {
             responseErrorMessage = strprintf(" (error code %d - \"%s\")", response.error, http_errorstring(response.error));
         }
-        throw CConnectionFailed(strprintf("Could not connect to the server %s:%d%s\n\nMake sure the dashd server is running and that you are connecting to the correct RPC port.", host, port, responseErrorMessage));
+        throw CConnectionFailed(strprintf("Could not connect to the server %s:%d%s\n\nMake sure the vkaxd server is running and that you are connecting to the correct RPC port.", host, port, responseErrorMessage));
     } else if (response.status == HTTP_UNAUTHORIZED) {
         if (failedToGetAuthCookie) {
             throw std::runtime_error(strprintf(
@@ -466,7 +466,7 @@ int CommandLineRPC(int argc, char *argv[])
                             strPrint += "error message:\n"+errMsg.get_str();
 
                         if (errCode.isNum() && errCode.get_int() == RPC_WALLET_NOT_SPECIFIED) {
-                            strPrint += "\nTry adding \"-rpcwallet=<filename>\" option to dash-cli command line.";
+                            strPrint += "\nTry adding \"-rpcwallet=<filename>\" option to vkax-cli command line.";
                         }
                     }
                 } else {

@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=Vkax Core
+Comment=Vkax P2P Cryptocurrency
+Comment[de]=Verbinde mit dem Vkax peer-to-peer Netzwerk
+Comment[fr]=Vkax, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Vkax, eşten eşe kriptografik sanal para birimi
+Exec=vkax-qt %u
+Terminal=false
+Type=Application
+Icon=dash128
+MimeType=x-scheme-handler/vkax;
+Categories=Office;Finance;
+StartupWMClass=Vkax-qt

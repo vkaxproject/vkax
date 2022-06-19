@@ -1,39 +1,38 @@
-Dash Core
+Vkax Core
 ==========
 
-This is the official reference wallet for Dash digital currency and comprises the backbone of the Dash peer-to-peer network. You can [download Dash Core](https://www.dash.org/downloads/) or [build it yourself](#building) using the guides below.
+This is the official reference wallet for Vkax digital currency and comprises the backbone of the Vkax peer-to-peer network. You can [download Vkax Core](https://www.vkax.tech/downloads/) or [build it yourself](#building) using the guides below.
 
 Running
 ---------------------
-The following are some helpful notes on how to run Dash on your native platform.
+The following are some helpful notes on how to run Vkax on your native platform.
 
 ### Unix
 
 Unpack the files into a directory and run:
 
-- `bin/dash-qt` (GUI) or
-- `bin/dashd` (headless)
+- `bin/vkax-qt` (GUI) or
+- `bin/vkaxd` (headless)
 
 ### Windows
 
-Unpack the files into a directory, and then run dash-qt.exe.
+Unpack the files into a directory, and then run vkax-qt.exe.
 
 ### OS X
 
-Drag Dash-Qt to your applications folder, and then run Dash-Qt.
+Drag Vkax-Qt to your applications folder, and then run Vkax-Qt.
 
 ### Need Help?
 
-* See the [Dash documentation](https://docs.dash.org)
+* See the [Vkax documentation](https://docs.vkax.tech)
 for help and more information.
-* See the [Dash Developer Documentation](https://dash-docs.github.io/) 
+* See the [Vkax Developer Documentation](https://vkax-docs.github.io/) 
 for technical specifications and implementation details.
-* Ask for help on [Dash Nation Discord](http://dashchat.org)
-* Ask for help on the [Dash Forum](https://dash.org/forum)
+* Ask for help on the [Vkax Forum](https://vkax.tech/forum)
 
 Building
 ---------------------
-The following are developer notes on how to build Dash Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+The following are developer notes on how to build Vkax Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
 - [OS X Build Notes](build-osx.md)
 - [Unix Build Notes](build-unix.md)
@@ -43,7 +42,7 @@ The following are developer notes on how to build Dash Core on your native platf
 
 Development
 ---------------------
-The Dash Core repo's [root README](/README.md) contains relevant information on the development process and automated testing.
+The Vkax Core repo's [root README](/README.md) contains relevant information on the development process and automated testing.
 
 - [Developer Notes](developer-notes.md)
 - [Release Notes](release-notes.md)
@@ -59,8 +58,7 @@ The Dash Core repo's [root README](/README.md) contains relevant information on 
 - [Benchmarking](benchmarking.md)
 
 ### Resources
-* Discuss on the [Dash Forum](https://dash.org/forum), in the Development & Technical Discussion board.
-* Discuss on [Dash Nation Discord](http://dashchat.org)
+* Discuss on the [Vkax Forum](https://vkax.tech/forum), in the Development & Technical Discussion board.
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)

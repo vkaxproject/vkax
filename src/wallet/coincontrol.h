@@ -102,7 +102,7 @@ public:
         vOutpoints.assign(setSelected.begin(), setSelected.end());
     }
 
-    // Dash-specific helpers
+    // Vkax-specific helpers
 
     void UseCoinJoin(bool fUseCoinJoin)
     {

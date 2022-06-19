@@ -6,15 +6,15 @@ reset-files.bash
 *.tar.gz
 
 *.exe
-src/dash
-src/dashd
-src/dash-cli
-src/dash-tx
-src/test/test_dash
-src/test/test_dash_fuzzy
-src/qt/test/test_dash-qt
+src/vkax
+src/vkaxd
+src/vkax-cli
+src/vkax-tx
+src/test/test_vkax
+src/test/test_vkax_fuzzy
+src/qt/test/test_vkax-qt
 src/qt/res/css/colors/*
-src/bench/bench_dash
+src/bench/bench_vkax
 
 # autoreconf
 Makefile.in
@@ -85,14 +85,14 @@ libconftest.dylib*
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-dash-qt
-Dash-Qt.app
+vkax-qt
+Vkax-Qt.app
 background.tiff*
 !/depends/Makefile
 
 # Unit-tests
 Makefile.test
-dash-qt_test
+vkax-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -106,7 +106,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_dash.coverage/
+test_vkax.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -126,13 +126,13 @@ test/cache/*
 
 libdashconsensus.pc
 contrib/devtools/split-debug.sh
-src/qt/dash-qt.bash
+src/qt/vkax-qt.bash
 qa/pull-tester/tests-config.sh
 
 #development symlinks
-dash-cli
-dashd
-dash-qt
+vkax-cli
+vkaxd
+vkax-qt
 make
 
 /docker/bin

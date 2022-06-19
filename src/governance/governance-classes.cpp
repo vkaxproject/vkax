@@ -348,7 +348,7 @@ bool CSuperblockManager::GetSuperblockPayments(int nBlockHeight, std::vector<CTx
             CTxDestination dest;
             ExtractDestination(payment.script, dest);
 
-            // TODO: PRINT NICE N.N DASH OUTPUT
+            // TODO: PRINT NICE N.N VKAS OUTPUT
 
             LogPrint(BCLog::GOBJECT, "CSuperblockManager::GetSuperblockPayments -- NEW Superblock: output %d (addr %s, amount %lld)\n",
                         i, EncodeDestination(dest), payment.nAmount);
@@ -517,7 +517,7 @@ void CSuperblock::ParsePaymentSchedule(const std::string& strPaymentAddresses, c
         CTxDestination dest = DecodeDestination(vecParsed1[i]);
         if (!IsValidDestination(dest)) {
             std::ostringstream ostr;
-            ostr << "CSuperblock::ParsePaymentSchedule -- Invalid Dash Address : " << vecParsed1[i];
+            ostr << "CSuperblock::ParsePaymentSchedule -- Invalid Vkax Address : " << vecParsed1[i];
             LogPrintf("%s\n", ostr.str());
             throw std::runtime_error(ostr.str());
         }

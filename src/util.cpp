@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin Core developers
 // Copyright (c) 2014-2021 The Dash Core developers
+// Copyright (c) 2021-2022 The Vkax Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -87,7 +88,7 @@
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-//Dash only features
+//Vkax only features
 bool fMasternodeMode = false;
 bool fDisableGovernance = false;
 /**
@@ -99,8 +100,8 @@ bool fDisableGovernance = false;
 */
 int nWalletBackups = 10;
 
-const char * const BITCOIN_CONF_FILENAME = "dash.conf";
-const char * const BITCOIN_PID_FILENAME = "dashd.pid";
+const char * const BITCOIN_CONF_FILENAME = "vkax.conf";
+const char * const BITCOIN_PID_FILENAME = "vkaxd.pid";
 
 ArgsManager gArgs;
 
@@ -291,7 +292,7 @@ public:
         std::pair<bool,std::string> found_result(false, std::string());
 
         // We pass "true" to GetArgHelper in order to return the last
-        // argument value seen from the command line (so "dashd -foo=bar
+        // argument value seen from the command line (so "vkaxd -foo=bar
         // -foo=baz" gives GetArg(am,"foo")=={true,"baz"}
         found_result = GetArgHelper(am.m_override_args, arg, true);
         if (found_result.first) {
@@ -662,13 +663,13 @@ void PrintExceptionContinue(const std::exception_ptr pex, const char* pszExcepti
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\DashCore
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\DashCore
-    // Mac: ~/Library/Application Support/DashCore
-    // Unix: ~/.dashcore
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\VkaxCore
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\VkaxCore
+    // Mac: ~/Library/Application Support/VkaxCore
+    // Unix: ~/.vkaxcore
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "DashCore";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "VkaxCore";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -678,10 +679,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/DashCore";
+    return pathRet / "Library/Application Support/VkaxCore";
 #else
     // Unix
-    return pathRet / ".dashcore";
+    return pathRet / ".vkaxcore";
 #endif
 #endif
 }
@@ -807,7 +808,7 @@ void ArgsManager::ReadConfigFile(const std::string& confPath)
     if (stream.good()) {
         ReadConfigStream(stream);
     } else {
-        // Create an empty dash.conf if it does not excist
+        // Create an empty vkax.conf if it does not excist
         FILE* configFile = fopen(GetConfigFile(confPath).string().c_str(), "a");
         if (configFile != nullptr)
             fclose(configFile);
@@ -1146,6 +1147,11 @@ int GetNumCores()
 std::string CopyrightHolders(const std::string& strPrefix, unsigned int nStartYear, unsigned int nEndYear)
 {
     std::string strCopyrightHolders = strPrefix + strprintf(" %u-%u ", nStartYear, nEndYear) + strprintf(_(COPYRIGHT_HOLDERS), _(COPYRIGHT_HOLDERS_SUBSTITUTION));
+
+    // Check for untranslated substitution to make sure Vkax Core copyright is not removed by accident
+    if (strprintf(COPYRIGHT_HOLDERS, COPYRIGHT_HOLDERS_SUBSTITUTION).find("Vkax Core") == std::string::npos) {
+        strCopyrightHolders += "\n" + strPrefix + strprintf(" %u-%u ", 2021, nEndYear) + "The Vkax Core developers";
+    }
 
     // Check for untranslated substitution to make sure Dash Core copyright is not removed by accident
     if (strprintf(COPYRIGHT_HOLDERS, COPYRIGHT_HOLDERS_SUBSTITUTION).find("Dash Core") == std::string::npos) {

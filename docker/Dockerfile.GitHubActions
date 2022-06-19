@@ -1,20 +1,20 @@
 FROM ubuntu:bionic
-LABEL maintainer="Dash Developers <dev@dash.org>"
-LABEL description="Dockerised DashCore"
+LABEL maintainer="Vkax Developers <dev@vkax.tech>"
+LABEL description="Dockerised VkaxCore"
 
 ARG USER_ID
 ARG GROUP_ID
 ARG TAG
 
-ENV HOME /dash
+ENV HOME /vkax
 
 # add user with specified (or default) user/group ids
 ENV USER_ID ${USER_ID:-1000}
 ENV GROUP_ID ${GROUP_ID:-1000}
-RUN groupadd -g ${GROUP_ID} dash && \
-    useradd -u ${USER_ID} -g dash -s /bin/bash -m -d /dash dash  && \
-    mkdir /dash/.dashcore && \
-    chown dash:dash -R /dash
+RUN groupadd -g ${GROUP_ID} vkax && \
+    useradd -u ${USER_ID} -g vkax -s /bin/bash -m -d /vkax vkax  && \
+    mkdir /vkax/.vkaxcore && \
+    chown vkax:vkax -R /vkax
 
 RUN apt-get update && \
     apt-get -y install --no-install-recommends \
@@ -24,19 +24,19 @@ RUN apt-get update && \
 
 RUN mach=$(uname -m) \
       && case $mach in armv7l) arch="arm-linux-gnueabihf"; ;; aarch64) arch="aarch64-linux-gnu"; ;; x86_64) arch="x86_64-linux-gnu"; ;;  *) echo "ERROR: Machine type $mach not supported."; ;; esac \
-      && wget https://github.com/dashpay/dash/releases/download/v${TAG}/dashcore-${TAG}-$arch.tar.gz -P /tmp \
-      && tar -xvf /tmp/dashcore-*.tar.gz -C /tmp/ \
-      && cp /tmp/dashcore*/bin/*  /usr/local/bin \
-      && rm -rf /tmp/dashcore* \
+      && wget https://github.com/vkaxproject/vkax/releases/download/v${TAG}/vkaxcore-${TAG}-$arch.tar.gz -P /tmp \
+      && tar -xvf /tmp/vkaxcore-*.tar.gz -C /tmp/ \
+      && cp /tmp/vkaxcore*/bin/*  /usr/local/bin \
+      && rm -rf /tmp/vkaxcore* \
       && chmod a+x /usr/local/bin/*
 
-USER dash
+USER vkax
 
-VOLUME ["/dash"]
+VOLUME ["/vkax"]
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 11111 11110 22222 22220
 
-WORKDIR /dash
+WORKDIR /vkax
