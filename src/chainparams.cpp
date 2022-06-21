@@ -67,10 +67,10 @@ static CBlock CreateDevNetGenesisBlock(const uint256 &prevBlockHash, const std::
  * transaction cannot be spent since it did not originally exist in the
  * database.
  *
- * CBlock(hash=dfde523badb3455dcccb4f978581d3d2373e3427b639fddcc728ce8f24a5c862, ver=0x00000001, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=c59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c, nTime=1655239440, nBits=20001fff, nNonce=1245, vtx=1)
+ * CBlock(hash=00000980758efaa2d34b4bc5e9025306499a4e61acb65034e56db4034679ab7d, ver=0x00000001, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=c59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c, nTime=1655239440, nBits=1e0ffff0, nNonce=44356, vtx=1)
  * CTransaction(hash=c59206be13, ver=1, type=0, vin.size=1, vout.size=1, nLockTime=0, vExtraPayload.size=0)
- *   CTxIn(COutPoint(0000000000000000000000000000000000000000000000000000000000000000, 4294967295), coinbase 04ffff001d01044c4e4a756e652031342c203230323220456c6f6e204d75736b2049732053657420746f2041646472657373205477697474657220456d706c6f7965657320666f72207468652046697273742054696d65)
- *   CTxOut(nValue=10000.00000000, scriptPubKey=41040184710fa689ad5023690c80f3)
+ * CTxIn(COutPoint(0000000000000000000000000000000000000000000000000000000000000000, 4294967295), coinbase 04ffff001d01044c4e4a756e652031342c203230323220456c6f6e204d75736b2049732053657420746f2041646472657373205477697474657220456d706c6f7965657320666f72207468652046697273742054696d65)
+ * CTxOut(nValue=10000.00000000, scriptPubKey=41040184710fa689ad5023690c80f3)
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
@@ -358,8 +358,8 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 210240; // Note: actual number of blocks per calendar year with DGW v3 is ~200700 (for example 449750 - 249050)
-        consensus.nMasternodePaymentsStartBlock = 30000; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 48000; // actual historical value
+        consensus.nMasternodePaymentsStartBlock = 3000; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
+        consensus.nMasternodePaymentsIncreaseBlock = 4800; // actual historical value
         consensus.nMasternodePaymentsIncreasePeriod = 576*30; // 17280 - actual historical value
         consensus.nInstantSendConfirmationsRequired = 6;
         consensus.nInstantSendKeepLock = 24;
@@ -441,10 +441,10 @@ public:
         pchMessageStart[3] = 0x45;
         nDefaultPort = 11110;
         nPruneAfterHeight = 100000;
-        FindMainNetGenesisBlock(1655239440, 0x20001fff, "main");
-        genesis = CreateGenesisBlock(1655239440, 1245, 0x20001fff, 1, 10000 * COIN);
+//        FindMainNetGenesisBlock(1655239440, 0x20001fff, "main");
+        genesis = CreateGenesisBlock(1655239440, 1566, 0x20001fff, 1, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0xdfde523badb3455dcccb4f978581d3d2373e3427b639fddcc728ce8f24a5c862"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
@@ -487,7 +487,6 @@ public:
         fAllowMultipleAddressesFromGroup = false;
         fAllowMultiplePorts = false;
         nLLMQConnectionRetryTimeout = 60;
-        miningRequiresPeers = true;
 
         nPoolMinParticipants = 3;
         nPoolMaxParticipants = 20;
@@ -499,7 +498,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0xdfde523badb3455dcccb4f978581d3d2373e3427b639fddcc728ce8f24a5c862")},
+                {0, uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211")},
 
             }
         };
@@ -600,9 +599,9 @@ public:
         nDefaultPort = 22220;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1655239440, 1245, 0x20001fff, 1, 10000 * COIN);
+        genesis = CreateGenesisBlock(1655239440, 1566, 0x20001fff, 1, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0xdfde523badb3455dcccb4f978581d3d2373e3427b639fddcc728ce8f24a5c862"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         vFixedSeeds.clear();
@@ -759,9 +758,9 @@ public:
         nDefaultPort = 33330;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1655239440, 1245, 0x20001fff, 1, 10000 * COIN);
+        genesis = CreateGenesisBlock(1655239440, 1566, 0x20001fff, 1, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0xdfde523badb3455dcccb4f978581d3d2373e3427b639fddcc728ce8f24a5c862"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         if (!fHelpOnly) {
@@ -905,9 +904,9 @@ public:
         pchMessageStart[3] = 0xdc;
         nDefaultPort = 44440;
         nPruneAfterHeight = 1000;
-        genesis = CreateGenesisBlock(1655239440, 1245, 0x20001fff, 1, 10000 * COIN);
+        genesis = CreateGenesisBlock(1655239440, 1566, 0x20001fff, 1, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0xdfde523badb3455dcccb4f978581d3d2373e3427b639fddcc728ce8f24a5c862"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
