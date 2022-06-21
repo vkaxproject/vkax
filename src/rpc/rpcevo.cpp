@@ -1,7 +1,9 @@
 // Copyright (c) 2018-2021 The Dash Core developers
+// Copyright (c) 2021-2022 The Vkax Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include <amount.h>
 #include <base58.h>
 #include <consensus/validation.h>
 #include <core_io.h>
@@ -426,8 +428,6 @@ UniValue protx_register(const JSONRPCRequest& request)
 
     size_t paramIdx = 1;
 
-    CAmount collateralAmount = 1000 * COIN;
-
     CMutableTransaction tx;
     tx.nVersion = 3;
     tx.nType = TRANSACTION_PROVIDER_REGISTER;
@@ -442,7 +442,7 @@ UniValue protx_register(const JSONRPCRequest& request)
         }
         CScript collateralScript = GetScriptForDestination(collateralDest);
 
-        CTxOut collateralTxOut(collateralAmount, collateralScript);
+        CTxOut collateralTxOut(MASTERNODE_CAMOUNT, collateralScript);
         tx.vout.emplace_back(collateralTxOut);
 
         paramIdx++;
@@ -516,7 +516,7 @@ UniValue protx_register(const JSONRPCRequest& request)
     if (isFundRegister) {
         uint32_t collateralIndex = (uint32_t) -1;
         for (uint32_t i = 0; i < tx.vout.size(); i++) {
-            if (tx.vout[i].nValue == collateralAmount) {
+            if (tx.vout[i].nValue == MASTERNODE_CAMOUNT) {
                 collateralIndex = i;
                 break;
             }

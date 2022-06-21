@@ -19,7 +19,7 @@
 // amounts 1 .. 10000
 #define NUM_MULTIPLES_1BTC 10000
 
-// amounts 50 .. 21000000
+// amounts 50 .. 21000000000
 #define NUM_MULTIPLES_50BTC 420000
 
 BOOST_FIXTURE_TEST_SUITE(compress_tests, BasicTestingSetup)
@@ -39,12 +39,12 @@ bool static TestPair(uint64_t dec, uint64_t enc) {
 
 BOOST_AUTO_TEST_CASE(compress_amounts)
 {
-    BOOST_CHECK(TestPair(            0,       0x0));
-    BOOST_CHECK(TestPair(            1,       0x1));
-    BOOST_CHECK(TestPair(         CENT,       0x7));
-    BOOST_CHECK(TestPair(         COIN,       0x9));
-    BOOST_CHECK(TestPair(      50*COIN,      0x32));
-    BOOST_CHECK(TestPair(21000000*COIN, 0x1406f40));
+    BOOST_CHECK(TestPair(               0,       0x0));
+    BOOST_CHECK(TestPair(               1,       0x1));
+    BOOST_CHECK(TestPair(            CENT,       0x7));
+    BOOST_CHECK(TestPair(            COIN,       0x9));
+    BOOST_CHECK(TestPair(      10000*COIN,       0x2710));
+    BOOST_CHECK(TestPair(21000000000*COIN,       0x4e3b29200));
 
     for (uint64_t i = 1; i <= NUM_MULTIPLES_UNIT; i++)
         BOOST_CHECK(TestEncode(i));

@@ -1,7 +1,7 @@
 # /etc/conf.d/vkaxd: config file for /etc/init.d/vkaxd
 
 # Config file location
-#BITCOIND_CONFIGFILE="/etc/dashcore/dash.conf"
+#BITCOIND_CONFIGFILE="/etc/vkaxcore/dash.conf"
 
 # What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
 #BITCOIND_PIDDIR="/var/run/vkaxd"
@@ -13,8 +13,8 @@
 #BITCOIND_DATADIR="/var/lib/vkaxd"
 
 # User and group to own vkaxd process
-#BITCOIND_USER="dashcore"
-#BITCOIND_GROUP="dashcore"
+#BITCOIND_USER="vkaxcore"
+#BITCOIND_GROUP="vkaxcore"
 
 # Path to vkaxd executable
 #BITCOIND_BIN="/usr/bin/vkaxd"

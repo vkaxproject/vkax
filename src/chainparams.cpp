@@ -171,6 +171,37 @@ static CBlock FindDevNetGenesisBlock(const CBlock &prevBlock, const CAmount& rew
     assert(false);
 }
 
+static void FindMainNetGenesisBlock(uint32_t nTime, uint32_t nBits, const char* network)
+{
+
+    CBlock block = CreateGenesisBlock(nTime, 0, nBits, 1, 10000 * COIN);
+
+    arith_uint256 bnTarget;
+    bnTarget.SetCompact(block.nBits);
+
+    for (uint32_t nNonce = 0; nNonce < UINT32_MAX; nNonce++) {
+        block.nNonce = nNonce;
+
+        uint256 hash = block.GetHash();
+        if (nNonce % 48 == 0) {
+        	printf("\nrnonce=%d, pow is %s\n", nNonce, hash.GetHex().c_str());
+        }
+        if (UintToArith256(hash) <= bnTarget) {
+        	printf("\n%s net\n", network);
+        	printf("\ngenesis is %s\n", block.ToString().c_str());
+			printf("\npow is %s\n", hash.GetHex().c_str());
+			printf("\ngenesisNonce is %d\n", nNonce);
+			std::cout << "Genesis Merkle " << block.hashMerkleRoot.GetHex() << std::endl;
+        	return;
+        }
+
+    }
+
+    // This is very unlikely to happen as we start the devnet with a very low difficulty. In many cases even the first
+    // iteration of the above loop will give a result already
+    error("%sNetGenesisBlock: could not find %s genesis block",network, network);
+    assert(false);
+}
 // this one is for testing only
 static Consensus::LLMQParams llmq_test = {
         .type = Consensus::LLMQ_TEST,
@@ -342,7 +373,7 @@ public:
         consensus.nGovernanceFilterElements = 20000;
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.BIP34Height = 1;
-        consensus.BIP34Hash = uint256S("0a56f4d4346242eb30b5ef0cb0edc797945ac4cd1df1872a70552e02e12d5f6b");
+        consensus.BIP34Hash = uint256S("");
         consensus.BIP65Height = 1; // 0a56f4d4346242eb30b5ef0cb0edc797945ac4cd1df1872a70552e02e12d5f6b
         consensus.BIP66Height = 1; // 0a56f4d4346242eb30b5ef0cb0edc797945ac4cd1df1872a70552e02e12d5f6b
         consensus.DIP0001Height = 200;
@@ -410,6 +441,7 @@ public:
         pchMessageStart[3] = 0x45;
         nDefaultPort = 11110;
         nPruneAfterHeight = 100000;
+        FindMainNetGenesisBlock(1655239440, 0x20001fff, "main");
         genesis = CreateGenesisBlock(1655239440, 1245, 0x20001fff, 1, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0xdfde523badb3455dcccb4f978581d3d2373e3427b639fddcc728ce8f24a5c862"));
