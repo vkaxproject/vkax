@@ -10,10 +10,20 @@
 #include <tinyformat.h>
 #include <utilstrencodings.h>
 #include <crypto/common.h>
+#include <crypto/mike.h>
+
 
 uint256 CBlockHeader::GetHash() const
 {
-    return SerializeHash(*this);
+	return SerializeHash(*this);
+}
+
+uint256 CBlockHeader::GetPOWHash() const
+{
+    std::vector<unsigned char> vch(80);
+    CVectorWriter ss(SER_GETHASH, PROTOCOL_VERSION, vch, 0);
+    ss << *this;
+    return Mike((const char *)vch.data(), (const char *)vch.data() + vch.size());
 }
 
 std::string CBlock::ToString() const

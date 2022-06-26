@@ -97,16 +97,16 @@ void CChainParams::UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64
     }
 }
 
-void CChainParams::UpdateDIP3Parameters(int nActivationHeight, int nEnforcementHeight)
+/*void CChainParams::UpdateDIP3Parameters(int nActivationHeight, int nEnforcementHeight)
 {
     consensus.DIP0003Height = nActivationHeight;
     consensus.DIP0003EnforcementHeight = nEnforcementHeight;
-}
+}*/
 
-void CChainParams::UpdateDIP8Parameters(int nActivationHeight)
+/*void CChainParams::UpdateDIP8Parameters(int nActivationHeight)
 {
     consensus.DIP0008Height = nActivationHeight;
-}
+}*/
 
 void CChainParams::UpdateBudgetParameters(int nMasternodePaymentsStartBlock, int nBudgetPaymentsStartBlock, int nSuperblockStartBlock)
 {
@@ -174,7 +174,7 @@ static CBlock FindDevNetGenesisBlock(const CBlock &prevBlock, const CAmount& rew
 static void FindMainNetGenesisBlock(uint32_t nTime, uint32_t nBits, const char* network)
 {
 
-    CBlock block = CreateGenesisBlock(nTime, 0, nBits, 1, 10000 * COIN);
+    CBlock block = CreateGenesisBlock(nTime, 0, nBits, 4, 10000 * COIN);
 
     arith_uint256 bnTarget;
     bnTarget.SetCompact(block.nBits);
@@ -182,7 +182,7 @@ static void FindMainNetGenesisBlock(uint32_t nTime, uint32_t nBits, const char* 
     for (uint32_t nNonce = 0; nNonce < UINT32_MAX; nNonce++) {
         block.nNonce = nNonce;
 
-        uint256 hash = block.GetHash();
+        uint256 hash = block.GetPOWHash();
         if (nNonce % 48 == 0) {
         	printf("\nrnonce=%d, pow is %s\n", nNonce, hash.GetHex().c_str());
         }
@@ -376,12 +376,12 @@ public:
         consensus.BIP34Hash = uint256S("");
         consensus.BIP65Height = 1; // 0a56f4d4346242eb30b5ef0cb0edc797945ac4cd1df1872a70552e02e12d5f6b
         consensus.BIP66Height = 1; // 0a56f4d4346242eb30b5ef0cb0edc797945ac4cd1df1872a70552e02e12d5f6b
-        consensus.DIP0001Height = 200;
-        consensus.DIP0003Height = 1100;
-        consensus.DIP0003EnforcementHeight = 1155;
-        consensus.DIP0003EnforcementHash = uint256S("");
-        consensus.DIP0008Height = 1500;
-        consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
+        consensus.DIP0001Height = true;
+        consensus.DIP0003Height = true;
+      //  consensus.DIP0003EnforcementHeight = 1155;
+     //   consensus.DIP0003EnforcementHash = uint256S("");
+        consensus.DIP0008Height = true;
+        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
         consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -441,10 +441,10 @@ public:
         pchMessageStart[3] = 0x45;
         nDefaultPort = 11110;
         nPruneAfterHeight = 100000;
-//        FindMainNetGenesisBlock(1655239440, 0x20001fff, "main");
-        genesis = CreateGenesisBlock(1655239440, 1566, 0x20001fff, 1, 10000 * COIN);
+//        FindMainNetGenesisBlock(1655239440, 0x1e0ffff0, "main");
+        genesis = CreateGenesisBlock(1655239440, 2465380, 0x1e0ffff0, 4, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211"));
+        assert(consensus.hashGenesisBlock == uint256S("0x3c08ea3de9393b65272ef7ec0c271dc82e39a5d51a91b1996061429d28051b84"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
@@ -498,7 +498,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211")},
+                {0, uint256S("0x3c08ea3de9393b65272ef7ec0c271dc82e39a5d51a91b1996061429d28051b84")},
 
             }
         };
@@ -538,11 +538,11 @@ public:
         consensus.BIP34Hash = uint256S("0x000008ebb1db2598e897d17275285767717c6acfeac4c73def49fbea1ddcbcb6");
         consensus.BIP65Height = 2431; // 0000039cf01242c7f921dcb4806a5994bc003b48c1973ae0c89b67809c2bb2ab
         consensus.BIP66Height = 2075; // 0000002acdd29a14583540cb72e1c5cc83783560e38fa7081495d474fe1671f7
-        consensus.DIP0001Height = 5500;
-        consensus.DIP0003Height = 7000;
-        consensus.DIP0003EnforcementHeight = 7300;
-        consensus.DIP0003EnforcementHash = uint256S("00000055ebc0e974ba3a3fb785c5ad4365a39637d4df168169ee80d313612f8f");
-        consensus.DIP0008Height = 78800; // 000000000e9329d964d80e7dab2e704b43b6bd2b91fea1e9315d38932e55fb55
+        consensus.DIP0001Height = true;
+        consensus.DIP0003Height = true;
+  //      consensus.DIP0003EnforcementHeight = 7300;
+    //    consensus.DIP0003EnforcementHash = uint256S("00000055ebc0e974ba3a3fb785c5ad4365a39637d4df168169ee80d313612f8f");
+        consensus.DIP0008Height = true; // 000000000e9329d964d80e7dab2e704b43b6bd2b91fea1e9315d38932e55fb55
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
         consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
@@ -599,9 +599,9 @@ public:
         nDefaultPort = 22220;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1655239440, 1566, 0x20001fff, 1, 10000 * COIN);
+        genesis = CreateGenesisBlock(1655239440, 2465380, 0x1e0ffff0, 4, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211"));
+        assert(consensus.hashGenesisBlock == uint256S("0x3c08ea3de9393b65272ef7ec0c271dc82e39a5d51a91b1996061429d28051b84"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         vFixedSeeds.clear();
@@ -697,11 +697,11 @@ public:
         consensus.BIP34Height = 1; // BIP34 activated immediately on devnet
         consensus.BIP65Height = 1; // BIP65 activated immediately on devnet
         consensus.BIP66Height = 1; // BIP66 activated immediately on devnet
-        consensus.DIP0001Height = 2; // DIP0001 activated immediately on devnet
-        consensus.DIP0003Height = 2; // DIP0003 activated immediately on devnet
-        consensus.DIP0003EnforcementHeight = 2; // DIP0003 activated immediately on devnet
-        consensus.DIP0003EnforcementHash = uint256();
-        consensus.DIP0008Height = 2; // DIP0008 activated immediately on devnet
+        consensus.DIP0001Height = true; // DIP0001 activated immediately on devnet
+        consensus.DIP0003Height = true; // DIP0003 activated immediately on devnet
+       // consensus.DIP0003EnforcementHeight = 2; // DIP0003 activated immediately on devnet
+        //consensus.DIP0003EnforcementHash = uint256();
+        consensus.DIP0008Height = true; // DIP0008 activated immediately on devnet
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 1
         consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
@@ -758,9 +758,9 @@ public:
         nDefaultPort = 33330;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1655239440, 1566, 0x20001fff, 1, 10000 * COIN);
+        genesis = CreateGenesisBlock(1655239440, 2465380, 0x1e0ffff0, 4, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211"));
+        assert(consensus.hashGenesisBlock == uint256S("0x3c08ea3de9393b65272ef7ec0c271dc82e39a5d51a91b1996061429d28051b84"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         if (!fHelpOnly) {
@@ -854,11 +854,11 @@ public:
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 1351; // BIP65 activated on regtest (Used in rpc activation tests)
         consensus.BIP66Height = 1251; // BIP66 activated on regtest (Used in rpc activation tests)
-        consensus.DIP0001Height = 2000;
-        consensus.DIP0003Height = 432;
-        consensus.DIP0003EnforcementHeight = 500;
-        consensus.DIP0003EnforcementHash = uint256();
-        consensus.DIP0008Height = 432;
+        consensus.DIP0001Height = true;
+        consensus.DIP0003Height = true;
+//        consensus.DIP0003EnforcementHeight = 500;
+  //      consensus.DIP0003EnforcementHash = uint256();
+        consensus.DIP0008Height = true;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 1
         consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
@@ -904,9 +904,11 @@ public:
         pchMessageStart[3] = 0xdc;
         nDefaultPort = 44440;
         nPruneAfterHeight = 1000;
-        genesis = CreateGenesisBlock(1655239440, 1566, 0x20001fff, 1, 10000 * COIN);
+
+//         FindMainNetGenesisBlock(1655239440, 0x20001fff, "main")
+        genesis = CreateGenesisBlock(1655239440, 2465380, 0x1e0ffff0, 4, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00086cd74bdfc0fef210296bf241b5fcbbd992896936867b19fceaec314dc211"));
+        assert(consensus.hashGenesisBlock == uint256S("0x3c08ea3de9393b65272ef7ec0c271dc82e39a5d51a91b1996061429d28051b84"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
@@ -932,7 +934,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x000008ca1832a4baf228eb1553c03d3a2c8e02399550dd6ea8d65cec3ef23d2e")},
+                {0, uint256S("0x00164ce7271bae36f615badc8d1d05107222bb8123abf04f1c3d22d351c3fa52")},
             }
         };
 
@@ -996,15 +998,15 @@ void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime,
     globalChainParams->UpdateVersionBitsParameters(d, nStartTime, nTimeout, nWindowSize, nThresholdStart, nThresholdMin, nFalloffCoeff);
 }
 
-void UpdateDIP3Parameters(int nActivationHeight, int nEnforcementHeight)
+/*void UpdateDIP3Parameters(int nActivationHeight, int nEnforcementHeight)
 {
     globalChainParams->UpdateDIP3Parameters(nActivationHeight, nEnforcementHeight);
-}
+}*/
 
-void UpdateDIP8Parameters(int nActivationHeight)
+/*void UpdateDIP8Parameters(int nActivationHeight)
 {
     globalChainParams->UpdateDIP8Parameters(nActivationHeight);
-}
+}*/
 
 void UpdateBudgetParameters(int nMasternodePaymentsStartBlock, int nBudgetPaymentsStartBlock, int nSuperblockStartBlock)
 {

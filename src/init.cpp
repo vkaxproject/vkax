@@ -1459,8 +1459,8 @@ bool AppInitParameterInteraction()
         }
     }
 
-    if (gArgs.IsArgSet("-dip3params")) {
-        // Allow overriding dip3 parameters for testing
+    /*if (gArgs.IsArgSet("-dip3params")) {
+        // Allow overriding budget parameters for testing
         if (!chainparams.MineBlocksOnDemand()) {
             return InitError("DIP3 parameters may only be overridden on regtest.");
         }
@@ -1478,15 +1478,7 @@ bool AppInitParameterInteraction()
             return InitError(strprintf("Invalid nDIP3EnforcementHeight (%s)", vDIP3Params[1]));
         }
         UpdateDIP3Parameters(nDIP3ActivationHeight, nDIP3EnforcementHeight);
-    }
-
-    if (gArgs.IsArgSet("-dip8params")) {
-        // Allow overriding dip8 activation height for testing
-        if (!chainparams.MineBlocksOnDemand()) {
-            return InitError("DIP8 activation height may only be overridden on regtest.");
-        }
-        UpdateDIP8Parameters(gArgs.GetArg("-dip8params", Params().GetConsensus().DIP0008Height));
-    }
+    }*/
 
     if (gArgs.IsArgSet("-budgetparams")) {
         // Allow overriding budget parameters for testing
