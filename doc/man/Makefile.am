@@ -9,5 +9,5 @@ if ENABLE_QT
 endif
 
 if BUILD_BITCOIN_UTILS
-  dist_man1_MANS+=dash-cli.1 dash-tx.1
+  dist_man1_MANS+=vkax-cli.1 vkax-tx.1
 endif
