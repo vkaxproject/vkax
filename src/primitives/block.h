@@ -9,6 +9,8 @@
 #include <primitives/transaction.h>
 #include <serialize.h>
 #include <uint256.h>
+#include <unordered_lru_cache.h>
+#include <util.h>
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
@@ -62,7 +64,12 @@ public:
 
     uint256 GetHash() const;
 
-    uint256 GetPOWHash() const;
+
+      /// Compute the POW hash using mike algorithm
+    uint256 ComputeHash() const;
+
+    /// Caching lookup/computation of POW hash using mike algorithm
+    uint256 GetPOWHash(bool readCache = true) const;
 
     int64_t GetBlockTime() const
     {

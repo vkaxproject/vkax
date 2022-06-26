@@ -1063,6 +1063,16 @@ static bool WriteBlockToDisk(const CBlock& block, CDiskBlockPos& pos, const CMes
     return true;
 }
 
+bool CheckPOW(const CBlock& block, const Consensus::Params& consensusParams)
+{
+    if (!CheckProofOfWork(block.GetPOWHash(), block.nBits, consensusParams)) {
+        LogPrintf("CheckPOW: CheckProofOfWork failed for %s, retesting without POW cache\n", block.GetHash().ToString());
+        // Retest without POW cache in case cache was corrupted:
+        return CheckProofOfWork(block.GetPOWHash(false), block.nBits, consensusParams);
+    }
+    return true;
+}
+
 bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus::Params& consensusParams)
 {
     block.SetNull();
@@ -1081,8 +1091,9 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus:
     }
 
     // Check the header
-    if (!CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
+    if (!CheckPOW(block, consensusParams)) {
         return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
+    }
 
     return true;
 }
@@ -2055,7 +2066,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     if (pindex->pprev) {
         bool fDIP0003Active = chainparams.GetConsensus().DIP0003Height;
-        if (fDIP0003Active && !evoDb->VerifyBestBlock(pindex->pprev->GetBlockHash())) {
+        if (fDIP0003Active && pindex->nHeight != 1 && !evoDb->VerifyBestBlock(pindex->pprev->GetBlockHash())) {
             // Nodes that upgraded after DIP3 activation will have to reindex to ensure evodb consistency
             return AbortNode(state, "Found EvoDB inconsistency, you must reindex to continue");
         }
@@ -3581,8 +3592,9 @@ static bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, 
 static bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true)
 {
     // Check proof of work matches claimed amount
-    if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
+    if (fCheckPOW && !CheckPOW(block, consensusParams)) {
         return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "proof of work failed");
+    }
 
     // Check DevNet
     if (!consensusParams.hashDevnetGenesisBlock.IsNull() &&
@@ -4836,7 +4848,7 @@ bool LoadExternalBlockFile(const CChainParams& chainparams, FILE* fileIn, CDiskB
                 blkdat >> block;
                 nRewind = blkdat.GetPos();
 
-                uint256 hash = block.GetPOWHash();
+                uint256 hash = block.GetHash();
                 {
                     LOCK(cs_main);
                     // detect out of order blocks, and store them for later

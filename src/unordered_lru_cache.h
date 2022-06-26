@@ -10,7 +10,7 @@
 template<typename Key, typename Value, typename Hasher, size_t MaxSize = 0, size_t TruncateThreshold = 0>
 class unordered_lru_cache
 {
-private:
+protected:
     typedef std::unordered_map<Key, std::pair<Value, int64_t>, Hasher> MapType;
 
     MapType cacheMap;

@@ -3,29 +3,49 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <primitives/block.h>
-
 #include <hash.h>
-#include <streams.h>
-#include <tinyformat.h>
+#include <primitives/block.h>
+#include <primitives/powcache.h>
+#include <sync.h>
+#include <uint256.h>
+#include <util.h>
 #include <utilstrencodings.h>
-#include <crypto/common.h>
-#include <crypto/mike.h>
 
 
 uint256 CBlockHeader::GetHash() const
 {
-	return SerializeHash(*this);
+    return SerializeHash(*this);
 }
 
-uint256 CBlockHeader::GetPOWHash() const
+uint256 CBlockHeader::ComputeHash() const
 {
-    std::vector<unsigned char> vch(80);
-    CVectorWriter ss(SER_GETHASH, PROTOCOL_VERSION, vch, 0);
-    ss << *this;
-    return Mike((const char *)vch.data(), (const char *)vch.data() + vch.size());
+    return Mike(BEGIN(nVersion), END(nNonce), hashPrevBlock);
 }
 
+uint256 CBlockHeader::GetPOWHash(bool readCache) const
+{
+    LOCK(cs_pow);
+    CPowCache& cache(CPowCache::Instance());
+
+    uint256 headerHash = GetHash();
+    uint256 powHash;
+    bool found = false;
+
+    if (readCache) {
+        found = cache.get(headerHash, powHash);
+    }
+
+    if (!found || cache.IsValidate()) {
+        uint256 powHash2 = ComputeHash();
+        if (found && powHash2 != powHash) {
+           LogPrintf("PowCache failure: headerHash: %s, from cache: %s, computed: %s, correcting\n", headerHash.ToString(), powHash.ToString(), powHash2.ToString());
+        }
+        powHash = powHash2;
+        cache.erase(headerHash); // If it exists, replace it
+        cache.insert(headerHash, powHash2);
+    }
+    return powHash;
+}
 std::string CBlock::ToString() const
 {
     std::stringstream s;

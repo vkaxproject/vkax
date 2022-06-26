@@ -425,7 +425,6 @@ crypto_libdash_crypto_base_a_SOURCES = \
   crypto/hmac_sha256.h \
   crypto/hmac_sha512.cpp \
   crypto/hmac_sha512.h \
-  mike.h \
   crypto/poly1305.h \
   crypto/poly1305.cpp \
   crypto/ripemd160.cpp \
@@ -478,6 +477,32 @@ crypto_libdash_crypto_base_a_SOURCES += \
   crypto/sph_shavite.h \
   crypto/sph_simd.h \
   crypto/sph_skein.h \
+  cryptonote/aesb.c \
+  cryptonote/c_blake256.c \
+  cryptonote/c_groestl.c \
+  cryptonote/c_jh.c \
+  cryptonote/c_keccak.c \
+  cryptonote/c_skein.c \
+  cryptonote/slow-hash.c \
+  cryptonote/hash-ops.c \
+  cryptonote/oaes_lib.c \
+  cryptonote/wild_keccak.cpp \
+  cryptonote/c_blake256.h \
+  cryptonote/c_groestl.h \
+  cryptonote/c_jh.h \
+  cryptonote/c_keccak.h \
+  cryptonote/crypto.h \
+  cryptonote/c_skein.h \
+  cryptonote/groestl_tables.h \
+  cryptonote/slow-hash.h \
+  cryptonote/int-util.h \
+  cryptonote/oaes_config.h \
+  cryptonote/hash-ops.h \
+  cryptonote/oaes_lib.h \
+  cryptonote/skein_port.h \
+  cryptonote/variant2_int_sqrt.h \
+  cryptonote/wild_keccak.h \
+  cryptonote/warnings.h \
   crypto/sph_types.h
 
 crypto_libdash_crypto_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -499,11 +524,15 @@ libdash_consensus_a_SOURCES = \
   consensus/merkle.h \
   consensus/params.h \
   consensus/validation.h \
+  hash_selection.h \
+  hash_selection.cpp \
   hash.cpp \
   hash.h \
   prevector.h \
   primitives/block.cpp \
   primitives/block.h \
+  primitives/powcache.cpp \
+  primitives/powcache.h \
   primitives/transaction.cpp \
   primitives/transaction.h \
   pubkey.cpp \

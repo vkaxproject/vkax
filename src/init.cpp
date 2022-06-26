@@ -32,6 +32,7 @@
 #include <policy/feerate.h>
 #include <policy/fees.h>
 #include <policy/policy.h>
+#include <primitives/powcache.h>
 #include <rpc/server.h>
 #include <rpc/register.h>
 #include <rpc/blockchain.h>
@@ -281,6 +282,8 @@ void PrepareShutdown()
             CFlatDB<CGovernanceManager> flatdb3("governance.dat", "magicGovernanceCache");
             flatdb3.Dump(governance);
         }
+        CFlatDB<CPowCache> flatdb7("powcache.dat", "powCache");
+        flatdb7.Dump(CPowCache::Instance());
     }
 
     // After the threads that potentially access these pointers have been stopped,
@@ -2153,7 +2156,21 @@ bool AppInitMain()
         ::feeEstimator.Read(est_filein);
     fFeeEstimatesInitialized = true;
 
-    // ********************************************************* Step 8: load wallet
+    // ********************************************************* Step 8a: load powcache.dat
+
+    {
+        fs::path pathDB = GetDataDir();
+        std::string strDBName = "powcache.dat";
+
+        // Always load the powcache if available:
+        uiInterface.InitMessage(_("Loading POW cache..."));
+        CFlatDB<CPowCache> flatdb7(strDBName, "powCache");
+        if(!flatdb7.Load(CPowCache::Instance())) {
+            return InitError(_("Failed to load POW cache from") + "\n" + (pathDB / strDBName).string());
+        }
+    }
+
+    // ********************************************************* Step 8b: load wallet
     if (!g_wallet_init_interface.Open()) return false;
 
     // As InitLoadWallet can take several minutes, it's possible the user
@@ -2290,6 +2307,9 @@ bool AppInitMain()
     if (fMasternodeMode) {
         scheduler.scheduleEvery(std::bind(&CCoinJoinServer::DoMaintenance, std::ref(coinJoinServer), std::ref(*g_connman)), 1 * 1000);
     }
+
+    // Periodic flush of POW Cache if cache has grown enough
+    scheduler.scheduleEvery(std::bind(&CPowCache::DoMaintenance, &CPowCache::Instance()), 60 * 1000);
 
     if (gArgs.GetBoolArg("-statsenabled", DEFAULT_STATSD_ENABLE)) {
         int nStatsPeriod = std::min(std::max((int)gArgs.GetArg("-statsperiod", DEFAULT_STATSD_PERIOD), MIN_STATSD_PERIOD), MAX_STATSD_PERIOD);
