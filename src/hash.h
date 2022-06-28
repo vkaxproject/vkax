@@ -236,11 +236,11 @@ inline uint256 Mike(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash)
 {
     static unsigned char pblank[1];
 
-    uint512 hash[13];
-    HashSelection hashSelection(PrevBlockHash, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, {0, 1, 2, 3, 4, 5});
+    uint512 hash[14];
+    HashSelection hashSelection(PrevBlockHash, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, {0, 1, 2, 3, 4, 5});
     std::vector<int> randomCNs(hashSelection.getCnIndexes());
     std::vector<int> coreHashIndexes(hashSelection.getAlgoIndexes());
-    for (int i = 0; i < 13; ++i) {
+    for (int i = 0; i < 14; ++i) {
         const void* toHash;
         int lenToHash;
         if (i == 0) {
@@ -260,15 +260,15 @@ inline uint256 Mike(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash)
             coreSelection = coreHashIndexes[i - 1];
         } else if (i == 11) {
             cnSelection = randomCNs[1];
-        } else if (i < 12) {
+        } else if (i < 13) {
             coreSelection = coreHashIndexes[i - 2];
-        } else if (i == 12) {
+        } else if (i == 13) {
             cnSelection = randomCNs[2];
         }
 
         coreHash(toHash, &hash[i], lenToHash, coreSelection);
         cnHash(&hash[i - 1], &hash[i], lenToHash, cnSelection);
     }
-    return hash[12].trim256();
+    return hash[13].trim256();
 }
 #endif // BITCOIN_HASH_H

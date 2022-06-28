@@ -168,3 +168,4 @@ const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* 
     assert(pa == pb);
     return pa;
 }
+

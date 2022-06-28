@@ -11,7 +11,7 @@ static const unsigned int MAX_LEGACY_BLOCK_SIZE = 1000000;
 static const unsigned int MAX_DIP0001_BLOCK_SIZE = 2000000;
 inline unsigned int MaxBlockSize(bool fDIP0001Active = true)
 {
-    return fDIP0001Active ? MAX_DIP0001_BLOCK_SIZE : MAX_LEGACY_BLOCK_SIZE;
+    return MAX_DIP0001_BLOCK_SIZE;
 }
 /** The maximum allowed number of signature check operations in a block (network rule) */
 inline unsigned int MaxBlockSigOps(bool fDIP0001Active = true)
@@ -21,7 +21,7 @@ inline unsigned int MaxBlockSigOps(bool fDIP0001Active = true)
 /** The maximum allowed size of version 3 extra payload */
 static const unsigned int MAX_TX_EXTRA_PAYLOAD = 10000;
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
-static const int COINBASE_MATURITY = 100;
+static const int COINBASE_MATURITY = 200;
 
 /** Flags for nSequence and nLockTime locks */
 /** Interpret sequence numbers as relative lock-time constraints. */

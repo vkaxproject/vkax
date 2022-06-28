@@ -97,7 +97,7 @@ void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
     AssertLockHeld(cs_main); // for mapBlockIndex
     int confirms = wtx.GetDepthInMainChain();
     bool fLocked = llmq::quorumInstantSendManager->IsLocked(wtx.GetHash());
-    bool chainlock = false;
+    bool chainlock = true;
     if (confirms > 0) {
         chainlock = llmq::chainLocksHandler->HasChainLock(mapBlockIndex[wtx.hashBlock]->nHeight, wtx.hashBlock);
     }

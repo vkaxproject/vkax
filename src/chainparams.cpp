@@ -382,7 +382,10 @@ public:
      //   consensus.DIP0003EnforcementHash = uint256S("");
         consensus.DIP0008Height = true;
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
-        consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
+        consensus.nVkaxTargetSpacing = 10 * 60; // 10-minute block spacing
+        consensus.nTargetSpacingWorkMax = 12 * consensus.nVkaxTargetSpacing; // 2-hour
+        consensus.nPowTargetSpacing = consensus.nVkaxTargetSpacing;
+        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Dash: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
@@ -443,9 +446,9 @@ public:
         nPruneAfterHeight = 100000;
 //        FindMainNetGenesisBlock(1655239440, 0x20001fff, "main");
 
-        genesis = CreateGenesisBlock(1655239440, 2768, 0x20001fff, 4, 10000 * COIN);
+        genesis = CreateGenesisBlock(1655239440, 140, 0x20001fff, 4, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x1dabfb624254ab2853ddb5d966b6364114019b15189aad52707479774976a85b"));
+        assert(consensus.hashGenesisBlock == uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
@@ -499,7 +502,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x1dabfb624254ab2853ddb5d966b6364114019b15189aad52707479774976a85b")},
+                {0, uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987")},
 
             }
         };
@@ -600,9 +603,9 @@ public:
         nDefaultPort = 22220;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1655239440, 2768, 0x20001fff, 4, 10000 * COIN);
+        genesis = CreateGenesisBlock(1655239440, 140, 0x20001fff, 4, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x1dabfb624254ab2853ddb5d966b6364114019b15189aad52707479774976a85b"));
+        assert(consensus.hashGenesisBlock == uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         vFixedSeeds.clear();
@@ -759,9 +762,9 @@ public:
         nDefaultPort = 33330;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1655239440, 2768, 0x20001fff, 4, 10000 * COIN);
+        genesis = CreateGenesisBlock(1655239440, 140, 0x20001fff, 4, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x1dabfb624254ab2853ddb5d966b6364114019b15189aad52707479774976a85b"));
+        assert(consensus.hashGenesisBlock == uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         if (!fHelpOnly) {
@@ -907,9 +910,9 @@ public:
         nPruneAfterHeight = 1000;
 
 //         FindMainNetGenesisBlock(1655239440, 0x1e0ffff0, "main");
-        genesis = CreateGenesisBlock(1655239440, 2768, 0x20001fff, 4, 10000 * COIN);
+        genesis = CreateGenesisBlock(1655239440, 140, 0x20001fff, 4, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x1dabfb624254ab2853ddb5d966b6364114019b15189aad52707479774976a85b"));
+        assert(consensus.hashGenesisBlock == uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987"));
         assert(genesis.hashMerkleRoot == uint256S("0xc59206be1307154ab6090c3419137d292f11c2be5585d86447ad0e1ad42de43c"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.

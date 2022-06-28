@@ -11,7 +11,8 @@
 
 std::vector<std::vector<int>> GR_GROUP = {
 		{0,1,2,3,4},
-		{5,6,7,8,9}
+		{5,6,7,8,9},
+                {10}
 };
 
 //int HashSelection::getHashSelection(int index) {
@@ -103,6 +104,8 @@ void coreHash(const void *toHash, uint512* hash, int lenToHash, int hashSelectio
 	sph_shavite512_context   ctx_shavite;    //8
 	sph_simd512_context      ctx_simd;       //9
 	sph_echo512_context      ctx_echo;       //A
+	sph_sha512_context       ctx_sha512;     //B
+
 	switch(hashSelection) {
 		case 0:
 			sph_blake512_init(&ctx_blake);
@@ -158,6 +161,11 @@ void coreHash(const void *toHash, uint512* hash, int lenToHash, int hashSelectio
 			sph_echo512_init(&ctx_echo);
 			sph_echo512 (&ctx_echo, toHash, lenToHash);
 			sph_echo512_close(&ctx_echo, static_cast<void*>(hash));
+			break;
+	        case 11:
+			sph_sha512_init(&ctx_sha512);
+			sph_sha512 (&ctx_sha512, toHash, lenToHash);
+			sph_sha512_close(&ctx_sha512, static_cast<void*>(hash));
 			break;
 	}
 }

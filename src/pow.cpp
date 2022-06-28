@@ -176,9 +176,9 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
         return bnPowLimit.GetCompact();
     }
 
-    if (pindexLast->nHeight + 1 < params.nPowKGWHeight) {
-        return GetNextWorkRequiredBTC(pindexLast, pblock, params);
-    }
+  //  if (pindexLast->nHeight + 1 < params.nPowKGWHeight) {
+  //      return GetNextWorkRequiredBTC(pindexLast, pblock, params);
+  //  }
 
     // Note: GetNextWorkRequiredBTC has it's own special difficulty rule,
     // so we only apply this to post-BTC algos.
@@ -197,11 +197,12 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
         }
     }
 
-    if (pindexLast->nHeight + 1 < params.nPowDGWHeight) {
-        return KimotoGravityWell(pindexLast, params);
-    }
+//    if (pindexLast->nHeight + 1 < params.nPowDGWHeight) {
+//        return KimotoGravityWell(pindexLast, params);
+//    }
 
-    return DarkGravityWave(pindexLast, params);
+        return GetNextWorkRequiredBTC(pindexLast, pblock, params);
+    //return DarkGravityWave(pindexLast, params);
 }
 
 // for DIFF_BTC only!

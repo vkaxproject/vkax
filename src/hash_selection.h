@@ -26,6 +26,9 @@
 #include <crypto/sph_shavite.h>
 #include <crypto/sph_simd.h>
 #include <crypto/sph_echo.h>
+extern "C" {
+#include "crypto/sph_sha2.h"
+}
 
 extern std::vector<std::vector<int>> GR_GROUP;
 
@@ -48,6 +51,7 @@ public:
 				"Shavite-",    //8
 				"Simd-",       //9
 				"Echo-",
+                                "Sha512-"
 		};
 		this->cnVariantMap = {
 				"CNDark-",        //0
