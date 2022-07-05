@@ -373,9 +373,9 @@ public:
         consensus.nGovernanceFilterElements = 20000;
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.BIP34Height = 1;
-        consensus.BIP34Hash = uint256S("");
-        consensus.BIP65Height = 1; // 0a56f4d4346242eb30b5ef0cb0edc797945ac4cd1df1872a70552e02e12d5f6b
-        consensus.BIP66Height = 1; // 0a56f4d4346242eb30b5ef0cb0edc797945ac4cd1df1872a70552e02e12d5f6b
+        consensus.BIP34Hash = uint256S("0x776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8");
+        consensus.BIP65Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
+        consensus.BIP66Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
         consensus.DIP0001Height = true;
         consensus.DIP0003Height = true;
       //  consensus.DIP0003EnforcementHeight = 1155;
@@ -383,10 +383,10 @@ public:
         consensus.DIP0008Height = true;
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
         consensus.nVkaxTargetSpacing = 10 * 60; // 10-minute block spacing
-        consensus.nTargetSpacingWorkMax = 12 * consensus.nVkaxTargetSpacing; // 2-hour
+        consensus.nTargetSpacingWorkMax = 12 * consensus.nVkaxTargetSpacing; // 2-hour (TODO)
         consensus.nPowTargetSpacing = consensus.nVkaxTargetSpacing;
-        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Dash: 1 day
-        consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
+        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Vkax: 1 week
+        consensus.nPowTargetSpacing = 2.5 * 60; // Vkax: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 40;
@@ -411,8 +411,8 @@ public:
 
         // Deployment of Block Reward Reallocation
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].bit = 5;
-        consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nStartTime = 1657830384; // July 14th, 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nTimeout = 1689366384; // July 14th, 2023
+        consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nStartTime = 1659225070; // July 30th, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nTimeout = 1690761070; // July 30th, 2023
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nThresholdMin = 2420; // 60% of 4032
@@ -420,18 +420,18 @@ public:
 
         // Deployment of DIP0020, DIP0021 and LLMQ_100_67 quorums
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].bit = 6;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nStartTime = 1657830384; // July 14th, 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nTimeout = 1689366384; // July 14th, 2023
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nStartTime = 1659225070; // July 30th, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nTimeout = 1690761070; // July 30th, 2023
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nThresholdMin = 2420; // 60% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nFalloffCoeff = 5; // this corresponds to 10 periods
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("");
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000000000003ab000");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("");
+        consensus.defaultAssumeValid = uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b");
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -444,7 +444,7 @@ public:
         pchMessageStart[3] = 0x45;
         nDefaultPort = 11110;
         nPruneAfterHeight = 100000;
-//        FindMainNetGenesisBlock(1655239440, 0x20001fff, "main");
+
 
         genesis = CreateGenesisBlock(1655239440, 140, 0x20001fff, 4, 10000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -459,15 +459,15 @@ public:
         vSeeds.emplace_back("147.182.144.51");
         vSeeds.emplace_back("174.138.27.60");
 
-        // Dash addresses start with 'X'
+        // Vkax addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
-        // Dash script addresses start with '7'
+        // Vkax script addresses start with '7'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,16);
-        // Dash private keys start with '7' or 'X'
+        // Vkax private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,204);
-        // Dash BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
+        // Vkax BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
-        // Dash BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
+        // Vkax BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
         // Dash BIP44 coin type is '960'
@@ -502,16 +502,18 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987")},
-
+                {0,    uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987")},
+                {100,  uint256S("0xe4d19872655099a6c226cf144182dcf4cfc1986c65a9cf8156201480832b62de")},
+                {201,  uint256S("0xc4a3904f8d33c7d2c7f8c1b83de6def234951127189ceee59f3fa4a722437272")},
+                {1877, uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b")},
             }
         };
 
         chainTxData = ChainTxData{
-            1655239440, // * UNIX timestamp of last known number of transactions (Block 1450962)
-            0,   // * total number of transactions between genesis and that timestamp
+            1656979667, // * UNIX timestamp of last known number of transactions (Block 1884)
+            2785,   // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0         // * estimated number of transactions per second after that timestamp
+            0.005098         // * estimated number of transactions per second after that timestamp
         };
     }
 };
