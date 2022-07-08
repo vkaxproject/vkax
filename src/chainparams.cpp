@@ -391,6 +391,7 @@ public:
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 40;
         consensus.nPowDGWHeight = 80;
+        consensus.nPowFVK = 4555;
         consensus.nRuleChangeActivationThreshold = 1815; // 90% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -491,6 +492,7 @@ public:
         fAllowMultipleAddressesFromGroup = false;
         fAllowMultiplePorts = false;
         nLLMQConnectionRetryTimeout = 60;
+        miningRequiresPeers = true;
 
         nPoolMinParticipants = 3;
         nPoolMaxParticipants = 20;

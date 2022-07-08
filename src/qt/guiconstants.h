@@ -42,7 +42,7 @@ static const int MAX_URI_LENGTH = 255;
 #define SPINNER_FRAMES 90
 
 #define QAPP_ORG_NAME "Vkax"
-#define QAPP_ORG_DOMAIN "vkax.tech"
+#define QAPP_ORG_DOMAIN "vkax.xyz"
 #define QAPP_APP_NAME_DEFAULT "Vkax-Qt"
 #define QAPP_APP_NAME_TESTNET "Vkax-Qt-testnet"
 #define QAPP_APP_NAME_DEVNET "Vkax-Qt-%s"

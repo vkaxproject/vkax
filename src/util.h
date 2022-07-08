@@ -366,4 +366,6 @@ std::string CopyrightHolders(const std::string& strPrefix, unsigned int nStartYe
  */
 int ScheduleBatchPriority(void);
 
+void SetThreadPriority(int nPriority);
+
 #endif // BITCOIN_UTIL_H

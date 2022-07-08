@@ -90,10 +90,10 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consens
     }
 
     const CBlockIndex *pindex = pindexLast;
-    arith_uint256 bnPastTargetAvg;
+    arith_uint512 bnPastTargetAvg;
 
     for (unsigned int nCountBlocks = 1; nCountBlocks <= nPastBlocks; nCountBlocks++) {
-        arith_uint256 bnTarget = arith_uint256().SetCompact(pindex->nBits);
+        arith_uint512 bnTarget = arith_uint512(arith_uint256().SetCompact(pindex->nBits));
         if (nCountBlocks == 1) {
             bnPastTargetAvg = bnTarget;
         } else {
@@ -107,7 +107,7 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consens
         }
     }
 
-    arith_uint256 bnNew(bnPastTargetAvg);
+    arith_uint512 bnNew(bnPastTargetAvg);
 
     int64_t nActualTimespan = pindexLast->GetBlockTime() - pindex->GetBlockTime();
     // NOTE: is this accurate? nActualTimespan counts it for (nPastBlocks - 1) blocks only...
@@ -122,11 +122,12 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consens
     bnNew *= nActualTimespan;
     bnNew /= nTargetTimespan;
 
-    if (bnNew > bnPowLimit) {
-        bnNew = bnPowLimit;
-    }
+	arith_uint256 bnFinal = bnNew.trim256();
+	if (bnFinal <= 0 || bnFinal > bnPowLimit) {
+		bnFinal = bnPowLimit;
+	}
 
-    return bnNew.GetCompact();
+    return bnFinal.GetCompact();
 }
 
 unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
@@ -176,10 +177,6 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
         return bnPowLimit.GetCompact();
     }
 
-  //  if (pindexLast->nHeight + 1 < params.nPowKGWHeight) {
-  //      return GetNextWorkRequiredBTC(pindexLast, pblock, params);
-  //  }
-
     // Note: GetNextWorkRequiredBTC has it's own special difficulty rule,
     // so we only apply this to post-BTC algos.
     if (params.fPowAllowMinDifficultyBlocks) {
@@ -201,8 +198,11 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 //        return KimotoGravityWell(pindexLast, params);
 //    }
 
+
+    if (pindexLast->nHeight + 1 < params.nPowFVK) {
         return GetNextWorkRequiredBTC(pindexLast, pblock, params);
-    //return DarkGravityWave(pindexLast, params);
+    }
+    return DarkGravityWave(pindexLast, params);
 }
 
 // for DIFF_BTC only!

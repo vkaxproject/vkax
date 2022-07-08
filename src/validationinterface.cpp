@@ -35,6 +35,7 @@ struct MainSignalsInstance {
     boost::signals2::signal<void (int64_t nBestBlockTime, CConnman* connman)> Broadcast;
     boost::signals2::signal<void (const CBlock&, const CValidationState&)> BlockChecked;
     boost::signals2::signal<void (const CBlockIndex *, const std::shared_ptr<const CBlock>&)> NewPoWValidBlock;
+    boost::signals2::signal<void (const uint256 &)> BlockFound;
     boost::signals2::signal<void (const CBlockIndex *)>AcceptedBlockHeader;
     boost::signals2::signal<void (const CBlockIndex *, bool)>NotifyHeaderTip;
     boost::signals2::signal<void (const CTransactionRef& tx, const std::shared_ptr<const llmq::CInstantSendLock>& islock)>NotifyTransactionLock;
@@ -102,6 +103,7 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn) {
     g_signals.m_internals->Broadcast.connect(boost::bind(&CValidationInterface::ResendWalletTransactions, pwalletIn, _1, _2));
     g_signals.m_internals->BlockChecked.connect(boost::bind(&CValidationInterface::BlockChecked, pwalletIn, _1, _2));
     g_signals.m_internals->NewPoWValidBlock.connect(boost::bind(&CValidationInterface::NewPoWValidBlock, pwalletIn, _1, _2));
+    g_signals.m_internals->BlockFound.connect(boost::bind(&CValidationInterface::BlockFound, pwalletIn, _1));
     g_signals.m_internals->NotifyGovernanceObject.connect(boost::bind(&CValidationInterface::NotifyGovernanceObject, pwalletIn, _1));
     g_signals.m_internals->NotifyGovernanceVote.connect(boost::bind(&CValidationInterface::NotifyGovernanceVote, pwalletIn, _1));
     g_signals.m_internals->NotifyInstantSendDoubleSpendAttempt.connect(boost::bind(&CValidationInterface::NotifyInstantSendDoubleSpendAttempt, pwalletIn, _1, _2));
@@ -226,6 +228,10 @@ void CMainSignals::BlockChecked(const CBlock& block, const CValidationState& sta
 
 void CMainSignals::NewPoWValidBlock(const CBlockIndex *pindex, const std::shared_ptr<const CBlock> &block) {
     m_internals->NewPoWValidBlock(pindex, block);
+}
+
+void CMainSignals::BlockFound(const uint256 &hash) {
+    m_internals->BlockFound(hash);
 }
 
 void CMainSignals::AcceptedBlockHeader(const CBlockIndex *pindexNew) {

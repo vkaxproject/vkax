@@ -1170,6 +1170,19 @@ int64_t GetStartupTime()
     return nStartupTime;
 }
 
+void SetThreadPriority(int nPriority)
+{
+#ifdef WIN32
+    SetThreadPriority(GetCurrentThread(), nPriority);
+#else
+#ifdef PRIO_THREAD
+    setpriority(PRIO_THREAD, 0, nPriority);
+#else
+    setpriority(PRIO_PROCESS, 0, nPriority);
+#endif
+#endif
+}
+
 fs::path AbsPathForConfigVal(const fs::path& path, bool net_specific)
 {
     return fs::absolute(path, GetDataDir(net_specific));

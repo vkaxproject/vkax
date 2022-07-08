@@ -664,7 +664,7 @@ void SetupServerArgs()
 std::string LicenseInfo()
 {
     const std::string URL_SOURCE_CODE = "<https://github.com/vkaxproject/vkax>";
-    const std::string URL_WEBSITE = "<https://vkax.tech>";
+    const std::string URL_WEBSITE = "<https://vkax.xyz>";
 
     return CopyrightHolders(_("Copyright (C)"), 2021, COPYRIGHT_YEAR) + "\n" +
            "\n" +
