@@ -1,5 +1,5 @@
 FROM ubuntu:bionic
-LABEL maintainer="Vkax Developers <dev@vkax.tech>"
+LABEL maintainer="Vkax Developers <developer@vkax.xyz>"
 LABEL description="Dockerised VkaxCore"
 
 ARG USER_ID

@@ -1,5 +1,5 @@
 FROM phusion/baseimage:bionic-1.0.0
-LABEL maintainer="Vkax Developers <dev@vkax.tech>"
+LABEL maintainer="Vkax Developers <developer@vkax.xyz>"
 LABEL description="Dockerised VkaxCore, built from Travis"
 
 ARG USER_ID

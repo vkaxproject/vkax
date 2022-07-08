@@ -1,8 +1,8 @@
 Source: vkax
 Section: utils
 Priority: optional
-Maintainer: A. Michael <michael@vkax.tech>
-Uploaders: A. Michael <michael@vkax.tech>
+Maintainer: A. Michael <developer@vkax.xyz>
+Uploaders: A. Michael <developer@vkax.xyz>
 Build-Depends: debhelper,
  devscripts,
  automake,
@@ -26,7 +26,7 @@ Build-Depends: debhelper,
  python,
  libzmq3-dev
 Standards-Version: 3.9.2
-Homepage: https://www.vkax.tech/
+Homepage: https://www.vkax.xyz/
 Vcs-Git: git://github.com/vkaxproject/vkax.git
 Vcs-Browser: https://github.com/vkaxproject/vkax
 
