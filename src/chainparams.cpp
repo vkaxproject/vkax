@@ -527,38 +527,42 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
-        consensus.nSubsidyHalvingInterval = 210240;
-        consensus.nMasternodePaymentsStartBlock = 4010; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 4030;
-        consensus.nMasternodePaymentsIncreasePeriod = 10;
-        consensus.nInstantSendConfirmationsRequired = 2;
-        consensus.nInstantSendKeepLock = 6;
-        consensus.nBudgetPaymentsStartBlock = 4100;
-        consensus.nBudgetPaymentsCycleBlocks = 50;
-        consensus.nBudgetPaymentsWindowBlocks = 10;
-        consensus.nSuperblockStartBlock = 4200; // NOTE: Should satisfy nSuperblockStartBlock > nBudgetPeymentsStartBlock
-        consensus.nSuperblockStartHash = uint256(); // do not check this on testnet
-        consensus.nSuperblockCycle = 24; // Superblocks can be issued hourly on testnet
-        consensus.nGovernanceMinQuorum = 1;
-        consensus.nGovernanceFilterElements = 500;
-        consensus.nMasternodeMinimumConfirmations = 1;
-        consensus.BIP34Height = 76;
-        consensus.BIP34Hash = uint256S("0x000008ebb1db2598e897d17275285767717c6acfeac4c73def49fbea1ddcbcb6");
-        consensus.BIP65Height = 2431; // 0000039cf01242c7f921dcb4806a5994bc003b48c1973ae0c89b67809c2bb2ab
-        consensus.BIP66Height = 2075; // 0000002acdd29a14583540cb72e1c5cc83783560e38fa7081495d474fe1671f7
+        consensus.nSubsidyHalvingInterval = 210240; // Note: actual number of blocks per calendar year with DGW v3 is ~200700 (for example 449750 - 249050)
+        consensus.nMasternodePaymentsStartBlock = 3000; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
+        consensus.nMasternodePaymentsIncreaseBlock = 4800; // actual historical value
+        consensus.nMasternodePaymentsIncreasePeriod = 576*30; // 17280 - actual historical value
+        consensus.nInstantSendConfirmationsRequired = 6;
+        consensus.nInstantSendKeepLock = 24;
+        consensus.nBudgetPaymentsStartBlock = 3280; // actual historical value
+        consensus.nBudgetPaymentsCycleBlocks = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
+        consensus.nBudgetPaymentsWindowBlocks = 100;
+        consensus.nSuperblockStartBlock = 3000; // The block at which 12.1 goes live (end of final 12.0 budget cycle)
+        consensus.nSuperblockStartHash = uint256S("");
+        consensus.nSuperblockCycle = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
+        consensus.nGovernanceMinQuorum = 10;
+        consensus.nGovernanceFilterElements = 20000;
+        consensus.nMasternodeMinimumConfirmations = 15;
+        consensus.BIP34Height = 1;
+        consensus.BIP34Hash = uint256S("0x");
+        consensus.BIP65Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
+        consensus.BIP66Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
         consensus.DIP0001Height = true;
         consensus.DIP0003Height = true;
-  //      consensus.DIP0003EnforcementHeight = 7300;
-    //    consensus.DIP0003EnforcementHash = uint256S("00000055ebc0e974ba3a3fb785c5ad4365a39637d4df168169ee80d313612f8f");
-        consensus.DIP0008Height = true; // 000000000e9329d964d80e7dab2e704b43b6bd2b91fea1e9315d38932e55fb55
-        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
-        consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
-        consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
-        consensus.fPowAllowMinDifficultyBlocks = true;
+      //  consensus.DIP0003EnforcementHeight = 1155;
+     //   consensus.DIP0003EnforcementHash = uint256S("");
+        consensus.DIP0008Height = true;
+        consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
+        consensus.nVkaxTargetSpacing = 10 * 60; // 10-minute block spacing
+        consensus.nTargetSpacingWorkMax = 12 * consensus.nVkaxTargetSpacing; // 2-hour (TODO)
+        consensus.nPowTargetSpacing = consensus.nVkaxTargetSpacing;
+        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Vkax: 1 week
+        consensus.nPowTargetSpacing = 2.5 * 60; // Vkax: 2.5 minutes
+        consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
-        consensus.nPowKGWHeight = 4002; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
-        consensus.nPowDGWHeight = 4002; // TODO: make sure to drop all spork6 related code on next testnet reset
-        consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
+        consensus.nPowKGWHeight = 40;
+        consensus.nPowDGWHeight = 80;
+        consensus.nPowFVK = 400;
+        consensus.nRuleChangeActivationThreshold = 1815; // 90% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
@@ -578,7 +582,7 @@ public:
 
         // Deployment of Block Reward Reallocation
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].bit = 5;
-        consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nStartTime = 1598918400; // Sep 1st, 2020
+        consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nStartTime = 1658016190; // July 16st, 2022
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nTimeout = 999999999999ULL;
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nWindowSize = 100;
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nThresholdStart = 80; // 80% of 100
@@ -587,22 +591,22 @@ public:
 
         // Deployment of DIP0020, DIP0021 and LLMQ_100_67 quorums
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].bit = 6;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nStartTime = 1606780800; // December 1st, 2020
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nTimeout = 1638316800; // December 1st, 2021
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nStartTime = 1658016190; // July 16st, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nTimeout = 1689552190; // July 16st, 2023
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nWindowSize = 100;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nThresholdStart = 80; // 80% of 100
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nThresholdMin = 60; // 60% of 100
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nFalloffCoeff = 5; // this corresponds to 10 periods
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000022f14ac5d56b5ef"); // 470000
+        consensus.nMinimumChainWork = uint256S(""); 
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0000009303aeadf8cf3812f5c869691dbd4cb118ad20e9bf553be434bafe6a52"); // 470000
+        consensus.defaultAssumeValid = uint256S("");
 
-        pchMessageStart[0] = 0xce;
+        pchMessageStart[0] = 0x66;
         pchMessageStart[1] = 0xe2;
-        pchMessageStart[2] = 0xca;
+        pchMessageStart[2] = 0x44;
         pchMessageStart[3] = 0xff;
         nDefaultPort = 22220;
         nPruneAfterHeight = 1000;
@@ -617,7 +621,7 @@ public:
 
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testnet-seed.dashdot.io"); // Just a static list of stable node(s), only supports x9
+        vSeeds.emplace_back("testnet-seed.vkax.xyz"); // Just a static list of stable node(s), only supports x9
 
         // Testnet Dash addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
@@ -630,7 +634,7 @@ public:
         // Testnet Dash BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-        // Testnet Dash BIP44 coin type is '1' (All coin's testnet default)
+        // Testnet Vkax BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
 
         // long living quorum params
@@ -649,7 +653,7 @@ public:
         fAllowMultipleAddressesFromGroup = false;
         fAllowMultiplePorts = true;
         nLLMQConnectionRetryTimeout = 60;
-
+        miningRequiresPeers = true;
         nPoolMinParticipants = 2;
         nPoolMaxParticipants = 20;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
@@ -660,21 +664,15 @@ public:
 
         checkpointData = {
             {
-                {261, uint256S("0x00000c26026d0815a7e2ce4fa270775f61403c040647ff2c3091f99e894a4618")},
-                {1999, uint256S("0x00000052e538d27fa53693efe6fb6892a0c1d26c0235f599171c48a3cce553b1")},
-                {2999, uint256S("0x0000024bc3f4f4cb30d29827c13d921ad77d2c6072e586c7f60d83c2722cdcc5")},
-                {96090, uint256S("0x00000000033df4b94d17ab43e999caaf6c4735095cc77703685da81254d09bba")},
-                {200000, uint256S("0x000000001015eb5ef86a8fe2b3074d947bc972c5befe32b28dd5ce915dc0d029")},
-                {395750, uint256S("0x000008b78b6aef3fd05ab78db8b76c02163e885305545144420cb08704dce538")},
-                {470000, uint256S("0x0000009303aeadf8cf3812f5c869691dbd4cb118ad20e9bf553be434bafe6a52")},
+                {0, uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987")},
             }
         };
 
         chainTxData = ChainTxData{
-            1617874832, // * UNIX timestamp of last known number of transactions (Block 477483)
-            4926985,    // * total number of transactions between genesis and that timestamp
+            1656979667, // * UNIX timestamp of last known number of transactions (Block 477483)
+            0,    // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0.01        // * estimated number of transactions per second after that timestamp
+            0        // * estimated number of transactions per second after that timestamp
         };
 
     }
