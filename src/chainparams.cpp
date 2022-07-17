@@ -206,7 +206,7 @@ static void FindMainNetGenesisBlock(uint32_t nTime, uint32_t nBits, const char* 
 static Consensus::LLMQParams llmq_test = {
         .type = Consensus::LLMQ_TEST,
         .name = "llmq_test",
-        .size = 3,
+        .size = 2,
         .minSize = 2,
         .threshold = 2,
 
@@ -226,7 +226,7 @@ static Consensus::LLMQParams llmq_test = {
 static Consensus::LLMQParams llmq_test_v17 = {
         .type = Consensus::LLMQ_TEST_V17,
         .name = "llmq_test_v17",
-        .size = 3,
+        .size = 2,
         .minSize = 2,
         .threshold = 2,
 
@@ -658,7 +658,7 @@ public:
         nPoolMaxParticipants = 20;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
 
-        vSporkAddresses = {"yjPtiKh2uwk3bDutTEA2q9mCtXyiZRWn55"};
+        vSporkAddresses = {"ygi5foL23tpcqSR5DQGZ94ZSrAeRRa8Vsp"};
         nMinSporkKeys = 1;
         fBIP9CheckMasternodesUpgraded = true;
 
