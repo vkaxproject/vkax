@@ -460,6 +460,10 @@ public:
         vSeeds.emplace_back("147.182.144.51");
         vSeeds.emplace_back("174.138.27.60");
         vSeeds.emplace_back("dnsseed.vkax.xyz");
+        vSeeds.emplace_back("dnseed.vkax.xyz");
+        vSeeds.emplace_back("dnsseed-2.vkax.xyz");
+        vSeeds.emplace_back("dnsseed-3.vkax.xyz");
+        vSeeds.emplace_back("dnsseed-4.vkax.xyz");
 
         // Vkax addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
