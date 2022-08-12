@@ -367,7 +367,7 @@ public:
         consensus.nBudgetPaymentsCycleBlocks = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nBudgetPaymentsWindowBlocks = 100;
         consensus.nSuperblockStartBlock = 3000; // The block at which 12.1 goes live (end of final 12.0 budget cycle)
-        consensus.nSuperblockStartHash = uint256S("");
+        consensus.nSuperblockStartHash = uint256S("f956baa966854a8d5e8cb8e409d1818fe63a86aef35a4c1bbe111a0af410d302");
         consensus.nSuperblockCycle = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
@@ -460,10 +460,6 @@ public:
         vSeeds.emplace_back("147.182.144.51");
         vSeeds.emplace_back("174.138.27.60");
         vSeeds.emplace_back("dnsseed.vkax.xyz");
-        vSeeds.emplace_back("dnseed.vkax.xyz");
-        vSeeds.emplace_back("dnsseed-2.vkax.xyz");
-        vSeeds.emplace_back("dnsseed-3.vkax.xyz");
-        vSeeds.emplace_back("dnsseed-4.vkax.xyz");
 
         // Vkax addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
@@ -476,7 +472,7 @@ public:
         // Vkax BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
-        // Dash BIP44 coin type is '960'
+        // Vkax BIP44 coin type is '960'
         nExtCoinType = 960;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
@@ -512,6 +508,7 @@ public:
                 {0,    uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987")},
                 {100,  uint256S("0xe4d19872655099a6c226cf144182dcf4cfc1986c65a9cf8156201480832b62de")},
                 {201,  uint256S("0xc4a3904f8d33c7d2c7f8c1b83de6def234951127189ceee59f3fa4a722437272")},
+                {1500, uint256S("0x1c8d5b532167ee48ea9521325cb6ac300f59dddb552768fd5dce95e0b00277c3")},
                 {1877, uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b")},
             }
         };
