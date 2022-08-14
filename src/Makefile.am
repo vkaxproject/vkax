@@ -482,32 +482,15 @@ crypto_libdash_crypto_base_a_SOURCES += \
   crypto/sph_simd.h \
   crypto/sph_skein.h \
   crypto/sph_sha2.h \
-  cryptonote/aesb.c \
-  cryptonote/c_blake256.c \
-  cryptonote/c_groestl.c \
-  cryptonote/c_jh.c \
-  cryptonote/c_keccak.c \
-  cryptonote/c_skein.c \
-  cryptonote/slow-hash.c \
-  cryptonote/hash-ops.c \
-  cryptonote/oaes_lib.c \
-  cryptonote/wild_keccak.cpp \
-  cryptonote/c_blake256.h \
-  cryptonote/c_groestl.h \
-  cryptonote/c_jh.h \
-  cryptonote/c_keccak.h \
-  cryptonote/crypto.h \
-  cryptonote/c_skein.h \
-  cryptonote/groestl_tables.h \
-  cryptonote/slow-hash.h \
-  cryptonote/int-util.h \
-  cryptonote/oaes_config.h \
-  cryptonote/hash-ops.h \
-  cryptonote/oaes_lib.h \
-  cryptonote/skein_port.h \
-  cryptonote/variant2_int_sqrt.h \
-  cryptonote/wild_keccak.h \
-  cryptonote/warnings.h \
+  crypto/yescrypt/yescrypt.c \
+  crypto/yescrypt/sha256.h \
+  crypto/yescrypt/sha256_c.h \
+  crypto/yescrypt/sysendian.h \
+  crypto/yescrypt/yescrypt.h \
+  crypto/yescrypt/yescrypt-best_c.h \
+  crypto/yescrypt/yescrypt-opt_c.h \
+  crypto/yescrypt/yescrypt-platform_c.h \
+  crypto/yescrypt/yescrypt-simd_c.h
   crypto/sph_types.h
 
 crypto_libdash_crypto_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)

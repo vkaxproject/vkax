@@ -230,9 +230,9 @@ public:
 uint64_t SipHashUint256(uint64_t k0, uint64_t k1, const uint256& val);
 uint64_t SipHashUint256Extra(uint64_t k0, uint64_t k1, const uint256& val, uint32_t extra);
 
-/* ----------- Mike Hash ------------------------------------------------ */
+/* ----------- Yescrypt Hash ------------------------------------------------ */
 template <typename T1>
-inline uint256 Mike(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash)
+inline uint256 Yescrypt(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash)
 {
     static unsigned char pblank[1];
 
