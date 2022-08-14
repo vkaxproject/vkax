@@ -2,9 +2,6 @@
 Version=1.0
 Name=Jagoan Core
 Comment=Jagoan P2P Cryptocurrency
-Comment[de]=Verbinde mit dem Jagoan peer-to-peer Netzwerk
-Comment[fr]=Jagoan, monnaie virtuelle cryptographique pair à pair
-Comment[tr]=Jagoan, eşten eşe kriptografik sanal para birimi
 Exec=jgc-qt %u
 Terminal=false
 Type=Application
@@ -12,3 +9,4 @@ Icon=dash128
 MimeType=x-scheme-handler/jgc;
 Categories=Office;Finance;
 StartupWMClass=Jagoan-qt
+Name[en_US]=jgc-qt.desktop
