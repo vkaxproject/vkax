@@ -189,7 +189,7 @@ struct Params {
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
 
-    int64_t nVkaxTargetSpacing;
+    int64_t nJagoanTargetSpacing;
     int64_t nTargetSpacingWorkMax;
 
     /** these parameters are only used on devnet and can be configured from the outside */

@@ -1,8 +1,8 @@
-Source: vkax
+Source: jgc
 Section: utils
 Priority: optional
-Maintainer: A. Michael <developer@vkax.xyz>
-Uploaders: A. Michael <developer@vkax.xyz>
+Maintainer: A. Michael <developer@jgc.xyz>
+Uploaders: A. Michael <developer@jgc.xyz>
 Build-Depends: debhelper,
  devscripts,
  automake,
@@ -26,45 +26,45 @@ Build-Depends: debhelper,
  python,
  libzmq3-dev
 Standards-Version: 3.9.2
-Homepage: https://www.vkax.xyz/
-Vcs-Git: git://github.com/vkaxproject/vkax.git
-Vcs-Browser: https://github.com/vkaxproject/vkax
+Homepage: https://www.jgc.xyz/
+Vcs-Git: git://github.com/jgcproject/jgc.git
+Vcs-Browser: https://github.com/jgcproject/jgc
 
-Package: vkaxd
+Package: jgcd
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer network based digital currency - daemon
- Vkax is an experimental new digital currency that enables instant, private
- payments to anyone, anywhere in the world. Vkax uses peer-to-peer
+ Jagoan is an experimental new digital currency that enables instant, private
+ payments to anyone, anywhere in the world. Jagoan uses peer-to-peer
  technology to operate with no central authority: managing transactions
- and issuing money are carried out collectively by the network. Vkax Core
+ and issuing money are carried out collectively by the network. Jagoan Core
  is the name of the open source software which enables the use of this currency.
  .
- This package provides the daemon, vkaxd, and the CLI tool
- vkax-cli to interact with the daemon.
+ This package provides the daemon, jgcd, and the CLI tool
+ jgc-cli to interact with the daemon.
 
-Package: vkax-qt
+Package: jgc-qt
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer network based digital currency - Qt GUI
- Vkax is an experimental new digital currency that enables instant, private
- payments to anyone, anywhere in the world. Vkax uses peer-to-peer
+ Jagoan is an experimental new digital currency that enables instant, private
+ payments to anyone, anywhere in the world. Jagoan uses peer-to-peer
  technology to operate with no central authority: managing transactions
- and issuing money are carried out collectively by the network. Vkax Core
+ and issuing money are carried out collectively by the network. Jagoan Core
  is the name of the open source software which enables the use of this currency.
  .
- This package provides Vkax-Qt, a GUI for Vkax based on Qt.
+ This package provides Jagoan-Qt, a GUI for Jagoan based on Qt.
 
-Package: vkax-tx
+Package: jgc-tx
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer digital currency - standalone transaction tool
- Vkax is an experimental new digital currency that enables instant, private
- payments to anyone, anywhere in the world. Vkax uses peer-to-peer
+ Jagoan is an experimental new digital currency that enables instant, private
+ payments to anyone, anywhere in the world. Jagoan uses peer-to-peer
  technology to operate with no central authority: managing transactions
- and issuing money are carried out collectively by the network. Vkax Core
+ and issuing money are carried out collectively by the network. Jagoan Core
  is the name of the open source software which enables the use of this currency.
  .
- This package provides vkax-tx, a command-line transaction creation
- tool which can be used without a vkax daemon.  Some means of
+ This package provides jgc-tx, a command-line transaction creation
+ tool which can be used without a jgc daemon.  Some means of
  exchanging minimal transaction data with peers is still required.

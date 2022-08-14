@@ -104,15 +104,15 @@ TESTS =
 BENCHMARKS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += vkaxd
+  bin_PROGRAMS += jgcd
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += vkax-cli vkax-tx
+  bin_PROGRAMS += jgc-cli jgc-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
-# vkax core #
+# jgc core #
 BITCOIN_CORE_H = \
   addrdb.h \
   addressindex.h \
@@ -291,7 +291,7 @@ obj/build.h: FORCE
 	  "$(abs_top_srcdir)"
 libdash_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between vkaxd and vkax-qt
+# server: shared between jgcd and jgc-qt
 libdash_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libdash_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libdash_server_a_SOURCES = \
@@ -390,7 +390,7 @@ libdash_zmq_a_SOURCES = \
 endif
 
 
-# wallet: shared between vkaxd and vkax-qt, but only linked
+# wallet: shared between jgcd and jgc-qt, but only linked
 # when wallet enabled
 libdash_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libdash_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -559,7 +559,7 @@ libdash_consensus_a_SOURCES = \
   utilstrencodings.h \
   version.h
 
-# common: shared between vkaxd, and vkax-qt and non-server tools
+# common: shared between jgcd, and jgc-qt and non-server tools
 libdash_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libdash_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libdash_common_a_SOURCES = \
@@ -625,7 +625,7 @@ libdash_util_a_SOURCES += compat/glibc_compat.cpp
 AM_LDFLAGS += -Wl,--wrap=log2f -Wl,--wrap=__divmoddi4
 endif
 
-# cli: shared between vkax-cli and vkax-qt
+# cli: shared between jgc-cli and jgc-qt
 libdash_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libdash_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libdash_cli_a_SOURCES = \
@@ -635,17 +635,17 @@ libdash_cli_a_SOURCES = \
 nodist_libdash_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# vkaxd binary #
-vkaxd_SOURCES = dashd.cpp
-vkaxd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-vkaxd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-vkaxd_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
+# jgcd binary #
+jgcd_SOURCES = dashd.cpp
+jgcd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+jgcd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+jgcd_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-vkaxd_SOURCES += dashd-res.rc
+jgcd_SOURCES += dashd-res.rc
 endif
 
-vkaxd_LDADD = \
+jgcd_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_COMMON) \
@@ -659,37 +659,37 @@ vkaxd_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-vkaxd_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
+jgcd_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
 
-# vkax-cli binary #
-vkax_cli_SOURCES = dash-cli.cpp
-vkax_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-vkax_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-vkax_cli_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
+# jgc-cli binary #
+jgc_cli_SOURCES = dash-cli.cpp
+jgc_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+jgc_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+jgc_cli_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-vkax_cli_SOURCES += dash-cli-res.rc
+jgc_cli_SOURCES += dash-cli-res.rc
 endif
 
-vkax_cli_LDADD = \
+jgc_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
-vkax_cli_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
+jgc_cli_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
 #
 
-# vkax-tx binary #
-vkax_tx_SOURCES = dash-tx.cpp
-vkax_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-vkax_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-vkax_tx_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
+# jgc-tx binary #
+jgc_tx_SOURCES = dash-tx.cpp
+jgc_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+jgc_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+jgc_tx_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-vkax_tx_SOURCES += dash-tx-res.rc
+jgc_tx_SOURCES += dash-tx-res.rc
 endif
 
-vkax_tx_LDADD = \
+jgc_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -697,7 +697,7 @@ vkax_tx_LDADD = \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-vkax_tx_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS)
+jgc_tx_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS)
 #
 
 # dashconsensus library #

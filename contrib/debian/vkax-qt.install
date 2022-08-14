@@ -1,6 +1,6 @@
-usr/local/bin/vkax-qt usr/bin
+usr/local/bin/jgc-qt usr/bin
 share/pixmaps/dash32.xpm usr/share/pixmaps
 share/pixmaps/dash16.xpm usr/share/pixmaps
 share/pixmaps/dash128.png usr/share/pixmaps
-debian/vkax-qt.desktop usr/share/applications
-debian/vkax-qt.protocol usr/share/kde4/services/
+debian/jgc-qt.desktop usr/share/applications
+debian/jgc-qt.protocol usr/share/kde4/services/

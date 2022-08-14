@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>org.vkax.vkaxd</string>
+	<string>org.jgc.jgcd</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/local/bin/vkaxd</string>
+		<string>/usr/local/bin/jgcd</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>

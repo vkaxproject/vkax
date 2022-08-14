@@ -516,7 +516,7 @@ void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned
     pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
 }
 
-// VKAX Miner
+// JGC Miner
 
 static bool ProcessBlockFound(const CBlock* pblock, const CChainParams& chainparams, uint256& hash)
 {
@@ -545,9 +545,9 @@ static bool ProcessBlockFound(const CBlock* pblock, const CChainParams& chainpar
 
 void static BitcoinMiner(const CChainParams& chainparams)
 {
-    LogPrintf("VkaxMiner -- started\n");
+    LogPrintf("JagoanMiner -- started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("vkax-miner");
+    RenameThread("jgc-miner");
 
     unsigned int nExtraNonce = 0;
 
@@ -558,7 +558,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
         pWallet = GetFirstWallet();
     #endif
     if (!EnsureWalletIsAvailable(pWallet, false)) {
-        LogPrintf("VkaxMiner -- Wallet not available\n");
+        LogPrintf("JagoanMiner -- Wallet not available\n");
     }
 
     if (pWallet == NULL)
@@ -614,13 +614,13 @@ void static BitcoinMiner(const CChainParams& chainparams)
 
             if (!pblocktemplate.get())
             {
-                LogPrintf("VkaxMiner -- Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
+                LogPrintf("JagoanMiner -- Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
                 return;
             }
             CBlock *pblock = &pblocktemplate->block;
             IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-            LogPrintf("VkaxMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+            LogPrintf("JagoanMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                 ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
             //
@@ -638,7 +638,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
                     {
                         // Found a solution
                         SetThreadPriority(THREAD_PRIORITY_NORMAL);
-                        LogPrintf("VkaxMiner:\n  proof-of-work found\n  hash: %s\n  target: %s\n", hash.GetHex(), hashTarget.GetHex());
+                        LogPrintf("JagoanMiner:\n  proof-of-work found\n  hash: %s\n  target: %s\n", hash.GetHex(), hashTarget.GetHex());
                         ProcessBlockFound(pblock, chainparams, hash);
                         SetThreadPriority(THREAD_PRIORITY_LOWEST);
                         coinbaseScript->KeepScript();
@@ -685,12 +685,12 @@ void static BitcoinMiner(const CChainParams& chainparams)
     }
     catch (const boost::thread_interrupted&)
     {
-        LogPrintf("VkaxMiner -- terminated\n");
+        LogPrintf("JagoanMiner -- terminated\n");
         throw;
     }
     catch (const std::runtime_error &e)
     {
-        LogPrintf("VkaxMiner -- runtime error: %s\n", e.what());
+        LogPrintf("JagoanMiner -- runtime error: %s\n", e.what());
         return;
     }
 }

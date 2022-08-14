@@ -2,26 +2,26 @@
 
 # backward compatibility for existing gentoo layout 
 #
-if [ -d "/var/lib/vkaxcore/.vkaxcore" ]; then
-	BITCOIND_DEFAULT_DATADIR="/var/lib/vkaxcore/.vkaxcore"
+if [ -d "/var/lib/jagoancore/.jagoancore" ]; then
+	BITCOIND_DEFAULT_DATADIR="/var/lib/jagoancore/.jagoancore"
 else
-	BITCOIND_DEFAULT_DATADIR="/var/lib/vkaxd"
+	BITCOIND_DEFAULT_DATADIR="/var/lib/jgcd"
 fi
 
-BITCOIND_CONFIGFILE=${BITCOIND_CONFIGFILE:-/etc/vkaxcore/vkax.conf}
-BITCOIND_PIDDIR=${BITCOIND_PIDDIR:-/var/run/vkaxd}
-BITCOIND_PIDFILE=${BITCOIND_PIDFILE:-${BITCOIND_PIDDIR}/vkaxd.pid}
+BITCOIND_CONFIGFILE=${BITCOIND_CONFIGFILE:-/etc/jagoancore/jgc.conf}
+BITCOIND_PIDDIR=${BITCOIND_PIDDIR:-/var/run/jgcd}
+BITCOIND_PIDFILE=${BITCOIND_PIDFILE:-${BITCOIND_PIDDIR}/jgcd.pid}
 BITCOIND_DATADIR=${BITCOIND_DATADIR:-${BITCOIND_DEFAULT_DATADIR}}
-BITCOIND_USER=${BITCOIND_USER:-${BITCOIN_USER:-vkaxcore}}
-BITCOIND_GROUP=${BITCOIND_GROUP:-vkaxcore}
-BITCOIND_BIN=${BITCOIND_BIN:-/usr/bin/vkaxd}
+BITCOIND_USER=${BITCOIND_USER:-${BITCOIN_USER:-jagoancore}}
+BITCOIND_GROUP=${BITCOIND_GROUP:-jagoancore}
+BITCOIND_BIN=${BITCOIND_BIN:-/usr/bin/jgcd}
 BITCOIND_NICE=${BITCOIND_NICE:-${NICELEVEL:-0}}
 BITCOIND_OPTS="${BITCOIND_OPTS:-${BITCOIN_OPTS}}"
 
-name="Vkax Core Daemon"
-description="Vkax cryptocurrency P2P network daemon"
+name="Jagoan Core Daemon"
+description="Jagoan cryptocurrency P2P network daemon"
 
-command="/usr/bin/vkaxd"
+command="/usr/bin/jgcd"
 command_args="-pid=\"${BITCOIND_PIDFILE}\" \
 		-conf=\"${BITCOIND_CONFIGFILE}\" \
 		-datadir=\"${BITCOIND_DATADIR}\" \
@@ -71,7 +71,7 @@ checkconfig()
 {
 	if ! grep -qs '^rpcpassword=' "${BITCOIND_CONFIGFILE}" ; then
 		eerror ""
-		eerror "ERROR: You must set a secure rpcpassword to run vkaxd."
+		eerror "ERROR: You must set a secure rpcpassword to run jgcd."
 		eerror "The setting must appear in ${BITCOIND_CONFIGFILE}"
 		eerror ""
 		eerror "This password is security critical to securing wallets "
@@ -84,7 +84,7 @@ checkconfig()
 		eerror "It is recommended that you also set alertnotify so you are "
 		eerror "notified of problems:"
 		eerror ""
-		eerror "ie: alertnotify=echo %%s | mail -s \"Vkax Core Alert\"" \
+		eerror "ie: alertnotify=echo %%s | mail -s \"Jagoan Core Alert\"" \
 			"admin@foo.com"
 		eerror ""
 		return 1

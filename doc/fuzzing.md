@@ -1,4 +1,4 @@
-Fuzz-testing Vkax Core
+Fuzz-testing Jagoan Core
 ==========================
 
 A special test harness `test_dash_fuzzy` is provided to provide an easy
@@ -20,7 +20,7 @@ export AFLPATH=$PWD
 Instrumentation
 ----------------
 
-To build Vkax Core using AFL instrumentation (this assumes that the
+To build Jagoan Core using AFL instrumentation (this assumes that the
 `AFLPATH` was set as above):
 ```
 ./configure --disable-ccache --disable-shared --enable-tests CC=${AFLPATH}/afl-gcc CXX=${AFLPATH}/afl-g++

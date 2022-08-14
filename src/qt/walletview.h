@@ -124,7 +124,7 @@ public Q_SLOTS:
     void requestedSyncWarningInfo();
 
 
-    /** Update selected VKAX amount from transactionview */
+    /** Update selected JGC amount from transactionview */
     void trxAmount(QString amount);
 Q_SIGNALS:
     /** Signal that we want to show the main window */

@@ -1,23 +1,23 @@
 # It is not recommended to modify this file in-place, because it will
 # be overwritten during package upgrades. If you want to add further
 # options or overwrite existing ones then use
-# $ systemctl edit vkaxd.service
+# $ systemctl edit jgcd.service
 # See "man systemd.service" for details.
 
 # Note that almost all daemon options could be specified in
-# /etc/vkax/vkax.conf
+# /etc/jgc/jgc.conf
 
 [Unit]
-Description=Vkax daemon
+Description=Jagoan daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/vkaxd -daemon -conf=/etc/vkax/vkax.conf -pid=/run/vkaxd/vkaxd.pid
-# Creates /run/vkax owned by vkaxcore
-RuntimeDirectory=vkaxd
-User=vkaxcore
+ExecStart=/usr/bin/jgcd -daemon -conf=/etc/jgc/jgc.conf -pid=/run/jgcd/jgcd.pid
+# Creates /run/jgc owned by jagoancore
+RuntimeDirectory=jgcd
+User=jagoancore
 Type=forking
-PIDFile=/run/vkaxd/vkaxd.pid
+PIDFile=/run/jgcd/jgcd.pid
 Restart=on-failure
 
 # Hardening measures

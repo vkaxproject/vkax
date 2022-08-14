@@ -49,7 +49,7 @@
 #define DBG( x )
 #endif
 
-//vkax only features
+//jgc only features
 
 extern bool fMasternodeMode;
 extern bool fDisableGovernance;
@@ -336,7 +336,7 @@ void RenameThreadPool(ctpl::thread_pool& tp, const char* baseName);
  */
 template <typename Callable> void TraceThread(const std::string name,  Callable func)
 {
-    std::string s = "vkax-" + name;
+    std::string s = "jgc-" + name;
     RenameThread(s.c_str());
     try
     {

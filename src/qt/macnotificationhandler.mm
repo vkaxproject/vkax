@@ -13,7 +13,7 @@
 - (NSString *)__bundleIdentifier
 {
     if (self == [NSBundle mainBundle]) {
-        return @"org.vkax.Vkax-Qt";
+        return @"org.jgc.Jagoan-Qt";
     } else {
         return [self __bundleIdentifier];
     }

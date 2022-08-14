@@ -1,6 +1,6 @@
 all:
-	$(MAKE) -C ../../ test_vkax_qt
+	$(MAKE) -C ../../ test_jgc_qt
 clean:
-	$(MAKE) -C ../../ test_vkax_qt_clean
+	$(MAKE) -C ../../ test_jgc_qt_clean
 check:
-	$(MAKE) -C ../../ test_vkax_qt_check
+	$(MAKE) -C ../../ test_jgc_qt_check

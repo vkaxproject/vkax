@@ -127,7 +127,7 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::ALL, "1"},
     {BCLog::ALL, "all"},
 
-    //Start Vkax
+    //Start Jagoan
     {BCLog::CHAINLOCKS, "chainlocks"},
     {BCLog::GOBJECT, "gobject"},
     {BCLog::INSTANTSEND, "instantsend"},
@@ -140,7 +140,7 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::COINJOIN, "coinjoin"},
     {BCLog::SPORK, "spork"},
     {BCLog::NETCONN, "netconn"},
-    //End Vkax
+    //End Jagoan
 };
 
 bool GetLogCategory(uint64_t *f, const std::string *str)
@@ -150,7 +150,7 @@ bool GetLogCategory(uint64_t *f, const std::string *str)
             *f = BCLog::ALL;
             return true;
         }
-        if (*str == "vkax") {
+        if (*str == "jgc") {
             *f = BCLog::CHAINLOCKS
                  | BCLog::GOBJECT
                  | BCLog::INSTANTSEND

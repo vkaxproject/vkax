@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# use testnet settings,  if you need mainnet,  use ~/.vkaxcore/vkaxd.pid file instead
+# use testnet settings,  if you need mainnet,  use ~/.jagoancore/jgcd.pid file instead
 export LC_ALL=C
 
-dash_pid=$(<~/.vkaxcore/testnet3/vkaxd.pid)
-sudo gdb -batch -ex "source debug.gdb" vkaxd ${dash_pid}
+dash_pid=$(<~/.jagoancore/testnet3/jgcd.pid)
+sudo gdb -batch -ex "source debug.gdb" jgcd ${dash_pid}

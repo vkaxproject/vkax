@@ -1,9 +1,9 @@
-# bash programmable completion for vkax-cli(1)
+# bash programmable completion for jgc-cli(1)
 # Copyright (c) 2012-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# call $vkax-cli for RPC
+# call $jgc-cli for RPC
 _dash_rpc() {
     # determine already specified args necessary for RPC
     local rpcargs=()
@@ -28,8 +28,8 @@ _dash_cli() {
     local cur prev words=() cword
     local dash_cli
 
-    # save and use original argument to invoke vkax-cli for -help, help and RPC
-    # as vkax-cli might not be in $PATH
+    # save and use original argument to invoke jgc-cli for -help, help and RPC
+    # as jgc-cli might not be in $PATH
     dash_cli="$1"
 
     COMPREPLY=()
@@ -143,7 +143,7 @@ _dash_cli() {
             ;;
     esac
 } &&
-complete -F _dash_cli vkax-cli
+complete -F _dash_cli jgc-cli
 
 # Local variables:
 # mode: shell-script

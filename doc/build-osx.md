@@ -38,23 +38,23 @@ Next, follow the instructions in [build-generic](build-generic.md)
 Running
 -------
 
-Vkax Core is now available at `./src/vkaxd`
+Jagoan Core is now available at `./src/jgcd`
 
 Before running, it's recommended you create an RPC configuration file.
 
-    echo -e "rpcuser=dashrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/VkaxCore/dash.conf"
+    echo -e "rpcuser=dashrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/JagoanCore/dash.conf"
 
-    chmod 600 "/Users/${USER}/Library/Application Support/VkaxCore/dash.conf"
+    chmod 600 "/Users/${USER}/Library/Application Support/JagoanCore/dash.conf"
 
-The first time you run vkaxd, it will start downloading the blockchain. This process could take several hours.
+The first time you run jgcd, it will start downloading the blockchain. This process could take several hours.
 
 You can monitor the download process by looking at the debug.log file:
 
-    tail -f $HOME/Library/Application\ Support/VkaxCore/debug.log
+    tail -f $HOME/Library/Application\ Support/JagoanCore/debug.log
 
 Other commands:
 -------
 
-    ./src/vkaxd -daemon # Starts the dash daemon.
+    ./src/jgcd -daemon # Starts the dash daemon.
     ./src/dash-cli --help # Outputs a list of command-line options.
     ./src/dash-cli help # Outputs a list of RPC commands when the daemon is running.

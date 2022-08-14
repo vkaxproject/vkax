@@ -1,5 +1,5 @@
 [Protocol]
-exec=vkax-qt '%u'
+exec=jgc-qt '%u'
 protocol=dash
 input=none
 output=none

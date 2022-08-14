@@ -57,9 +57,9 @@ public:
      */
     enum Unit
     {
-        VKAX,
-        mVKAX,
-        uVKAX,
+        JGC,
+        mJGC,
+        uJGC,
         duffs
     };
 

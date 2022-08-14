@@ -1,6 +1,6 @@
-# TOR SUPPORT IN VKAX CORE
+# TOR SUPPORT IN JGC CORE
 
-It is possible to run Vkax Core as a Tor hidden service, and connect to such services.
+It is possible to run Jagoan Core as a Tor hidden service, and connect to such services.
 
 The following directions assume you have a Tor proxy running on port 9050. Many
 distributions default to having a SOCKS proxy listening on port 9050, but others
@@ -9,9 +9,9 @@ See [Tor Project FAQ:TBBSocksPort](https://www.torproject.org/docs/faq.html.en#T
 for how to properly configure Tor.
 
 
-## 1. Run Vkax Core behind a Tor proxy
+## 1. Run Jagoan Core behind a Tor proxy
 
-The first step is running Vkax Core behind a Tor proxy. This will already make all
+The first step is running Jagoan Core behind a Tor proxy. This will already make all
 outgoing connections be anonymized, but more is possible.
 
 	-proxy=ip:port  Set the proxy server. If SOCKS5 is selected (default), this proxy
@@ -35,31 +35,31 @@ outgoing connections be anonymized, but more is possible.
 An example how to start the client if the Tor proxy is running on local host on
 port 9050 and only allows .onion nodes to connect:
 
-	./vkaxd -onion=127.0.0.1:9050 -onlynet=tor -listen=0 -addnode=ssapp53tmftyjmjb.onion
+	./jgcd -onion=127.0.0.1:9050 -onlynet=tor -listen=0 -addnode=ssapp53tmftyjmjb.onion
 
 In a typical situation, this suffices to run behind a Tor proxy:
 
-	./vkaxd -proxy=127.0.0.1:9050
+	./jgcd -proxy=127.0.0.1:9050
 
 
-## 2. Run a Vkax Core hidden server
+## 2. Run a Jagoan Core hidden server
 
 If you configure your Tor system accordingly, it is possible to make your node also
 reachable from the Tor network. Add these lines to your /etc/tor/torrc (or equivalent
 config file): *Needed for Tor version 0.2.7.0 and older versions of Tor only. For newer
 versions of Tor see [Section 4](#4-automatically-listen-on-tor).*
 
-	HiddenServiceDir /var/lib/tor/vkaxcore-service/
+	HiddenServiceDir /var/lib/tor/jagoancore-service/
 	HiddenServicePort 11110 127.0.0.1:11110
 	HiddenServicePort 22220 127.0.0.1:22220
 
 The directory can be different of course, but (both) port numbers should be equal to
-your vkaxd's P2P listen port (11110 by default).
+your jgcd's P2P listen port (11110 by default).
 
-	-externalip=X   You can tell Vkax Core about its publicly reachable address using
+	-externalip=X   You can tell Jagoan Core about its publicly reachable address using
 	                this option, and this can be a .onion address. Given the above
 	                configuration, you can find your onion address in
-	                /var/lib/tor/vkaxcore-service/hostname. Onion addresses are given
+	                /var/lib/tor/jagoancore-service/hostname. Onion addresses are given
 	                preference for your node to advertise itself with, for connections
 	                coming from unroutable addresses (such as 127.0.0.1, where the
 	                Tor proxy typically runs).
@@ -76,28 +76,28 @@ your vkaxd's P2P listen port (11110 by default).
 
 In a typical situation, where you're only reachable via Tor, this should suffice:
 
-	./vkaxd -proxy=127.0.0.1:9050 -externalip=ssapp53tmftyjmjb.onion -listen
+	./jgcd -proxy=127.0.0.1:9050 -externalip=ssapp53tmftyjmjb.onion -listen
 
 (obviously, replace the Onion address with your own). It should be noted that you still
 listen on all devices and another node could establish a clearnet connection, when knowing
 your address. To mitigate this, additionally bind the address of your Tor proxy:
 
-	./vkaxd ... -bind=127.0.0.1
+	./jgcd ... -bind=127.0.0.1
 
 If you don't care too much about hiding your node, and want to be reachable on IPv4
 as well, use `discover` instead:
 
-	./vkaxd ... -discover
+	./jgcd ... -discover
 
 and open port 11110 on your firewall (or use -upnp).
 
 If you only want to use Tor to reach onion addresses, but not use it as a proxy
 for normal IPv4/IPv6 communication, use:
 
-	./vkaxd -onion=127.0.0.1:9050 -externalip=ssapp53tmftyjmjb.onion -discover
+	./jgcd -onion=127.0.0.1:9050 -externalip=ssapp53tmftyjmjb.onion -discover
 
 
-## 3. List of known Vkax Core Tor relays
+## 3. List of known Jagoan Core Tor relays
 
 Note: All these nodes are hosted by masternodehosting.com
 
@@ -117,31 +117,31 @@ Note: All these nodes are hosted by masternodehosting.com
 
 Starting with Tor version 0.2.7.1 it is possible, through Tor's control socket
 API, to create and destroy 'ephemeral' hidden services programmatically.
-Vkax Core has been updated to make use of this.
+Jagoan Core has been updated to make use of this.
 
 This means that if Tor is running (and proper authentication has been configured),
-Vkax Core automatically creates a hidden service to listen on. This will positively 
+Jagoan Core automatically creates a hidden service to listen on. This will positively 
 affect the number of available .onion nodes.
 
-This new feature is enabled by default if Vkax Core is listening (`-listen`), and
+This new feature is enabled by default if Jagoan Core is listening (`-listen`), and
 requires a Tor connection to work. It can be explicitly disabled with `-listenonion=0`
 and, if not disabled, configured using the `-torcontrol` and `-torpassword` settings.
 To show verbose debugging information, pass `-debug=tor`.
 
 Connecting to Tor's control socket API requires one of two authentication methods to be 
-configured. For cookie authentication the user running vkaxd must have write access 
+configured. For cookie authentication the user running jgcd must have write access 
 to the `CookieAuthFile` specified in Tor configuration. In some cases this is 
 preconfigured and the creation of a hidden service is automatic. If permission problems 
 are seen with `-debug=tor` they can be resolved by adding both the user running tor and 
-the user running vkaxd to the same group and setting permissions appropriately. On 
-Debian-based systems the user running vkaxd can be added to the debian-tor group, 
+the user running jgcd to the same group and setting permissions appropriately. On 
+Debian-based systems the user running jgcd can be added to the debian-tor group, 
 which has the appropriate permissions. An alternative authentication method is the use 
 of the `-torpassword` flag and a `hash-password` which can be enabled and specified in 
 Tor configuration.
 
 ## 5. Privacy recommendations
 
-- Do not add anything but Vkax Core ports to the hidden service created in section 2.
+- Do not add anything but Jagoan Core ports to the hidden service created in section 2.
   If you run a web service too, create a new hidden service for that.
   Otherwise it is trivial to link them, which may reduce privacy. Hidden
   services created automatically (as in section 3) always have only one port

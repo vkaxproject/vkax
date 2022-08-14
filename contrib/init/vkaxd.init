@@ -1,36 +1,36 @@
 #!/usr/bin/env bash
 #
-#  vkaxd The Vkax Core server.
+#  jgcd The Jagoan Core server.
 #
 #
 # chkconfig: 345 80 20
-# description: vkaxd
-# processname: vkaxd
+# description: jgcd
+# processname: jgcd
 #
 
 # Source function library.
 . /etc/init.d/functions
 
-# you can override defaults in /etc/sysconfig/vkaxd, see below
-if [ -f /etc/sysconfig/vkaxd ]; then
-        . /etc/sysconfig/vkaxd
+# you can override defaults in /etc/sysconfig/jgcd, see below
+if [ -f /etc/sysconfig/jgcd ]; then
+        . /etc/sysconfig/jgcd
 fi
 
 RETVAL=0
 
-prog=vkaxd
-# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/vkaxd
-lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/vkaxd}
+prog=jgcd
+# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/jgcd
+lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/jgcd}
 
-# vkaxd defaults to /usr/bin/vkaxd, override with BITCOIND_BIN
-vkaxd=${BITCOIND_BIN-/usr/bin/vkaxd}
+# jgcd defaults to /usr/bin/jgcd, override with BITCOIND_BIN
+jgcd=${BITCOIND_BIN-/usr/bin/jgcd}
 
-# vkaxd opts default to -disablewallet, override with BITCOIND_OPTS
-vkaxd_opts=${BITCOIND_OPTS--disablewallet}
+# jgcd opts default to -disablewallet, override with BITCOIND_OPTS
+jgcd_opts=${BITCOIND_OPTS--disablewallet}
 
 start() {
     echo -n $"Starting $prog: "
-    daemon $DAEMONOPTS $vkaxd $vkaxd_opts
+    daemon $DAEMONOPTS $jgcd $jgcd_opts
     RETVAL=$?
     echo
     [ $RETVAL -eq 0 ] && touch $lockfile

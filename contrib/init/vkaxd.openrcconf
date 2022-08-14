@@ -1,31 +1,31 @@
-# /etc/conf.d/vkaxd: config file for /etc/init.d/vkaxd
+# /etc/conf.d/jgcd: config file for /etc/init.d/jgcd
 
 # Config file location
-#BITCOIND_CONFIGFILE="/etc/vkaxcore/dash.conf"
+#BITCOIND_CONFIGFILE="/etc/jagoancore/dash.conf"
 
 # What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
-#BITCOIND_PIDDIR="/var/run/vkaxd"
+#BITCOIND_PIDDIR="/var/run/jgcd"
 
 # What filename to give the pidfile
-#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/vkaxd.pid"
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/jgcd.pid"
 
-# Where to write vkaxd data (be mindful that the blockchain is large)
-#BITCOIND_DATADIR="/var/lib/vkaxd"
+# Where to write jgcd data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/jgcd"
 
-# User and group to own vkaxd process
-#BITCOIND_USER="vkaxcore"
-#BITCOIND_GROUP="vkaxcore"
+# User and group to own jgcd process
+#BITCOIND_USER="jagoancore"
+#BITCOIND_GROUP="jagoancore"
 
-# Path to vkaxd executable
-#BITCOIND_BIN="/usr/bin/vkaxd"
+# Path to jgcd executable
+#BITCOIND_BIN="/usr/bin/jgcd"
 
-# Nice value to run vkaxd under
+# Nice value to run jgcd under
 #BITCOIND_NICE=0
 
 # Additional options (avoid -conf and -datadir, use flags above)
 #BITCOIND_OPTS=""
 
-# The timeout in seconds OpenRC will wait for vkaxd to terminate
+# The timeout in seconds OpenRC will wait for jgcd to terminate
 # after a SIGTERM has been raised.
 # Note that this will be mapped as argument to start-stop-daemon's
 # '--retry' option, which means you can specify a retry schedule

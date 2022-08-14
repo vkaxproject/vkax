@@ -1,7 +1,7 @@
 Translation Strings Policy
 ===========================
 
-This document provides guidelines for internationalization of the Vkax Core software.
+This document provides guidelines for internationalization of the Jagoan Core software.
 
 How to translate?
 ------------------
@@ -75,10 +75,10 @@ In Qt code use tr's third argument for optional plurality. For example:
 This adds `<numerusform>`s to the respective `.ts` file, which can be translated separately depending on the language. In English, this is simply:
 
     <message numerus="yes">
-        <source>%n active connection(s) to Vkax network</source>
+        <source>%n active connection(s) to Jagoan network</source>
         <translation>
-            <numerusform>%n active connection to Vkax network</numerusform>
-            <numerusform>%n active connections to Vkax network</numerusform>
+            <numerusform>%n active connection to Jagoan network</numerusform>
+            <numerusform>%n active connections to Jagoan network</numerusform>
         </translation>
     </message>
 

@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 export LC_ALL=C
-if ! [[ "$2" =~ ^(git@)?(www.)?github.com(:|/)vkaxproject/vkax(.git)?$ ]]; then
+if ! [[ "$2" =~ ^(git@)?(www.)?github.com(:|/)jgcproject/jgc(.git)?$ ]]; then
     exit 0
 fi
 

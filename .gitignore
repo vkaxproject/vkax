@@ -6,15 +6,15 @@ reset-files.bash
 *.tar.gz
 
 *.exe
-src/vkax
-src/vkaxd
-src/vkax-cli
-src/vkax-tx
-src/test/test_vkax
-src/test/test_vkax_fuzzy
-src/qt/test/test_vkax-qt
+src/jgc
+src/jgcd
+src/jgc-cli
+src/jgc-tx
+src/test/test_jgc
+src/test/test_jgc_fuzzy
+src/qt/test/test_jgc-qt
 src/qt/res/css/colors/*
-src/bench/bench_vkax
+src/bench/bench_jgc
 
 # autoreconf
 Makefile.in
@@ -85,14 +85,14 @@ libconftest.dylib*
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-vkax-qt
-Vkax-Qt.app
+jgc-qt
+Jagoan-Qt.app
 background.tiff*
 !/depends/Makefile
 
 # Unit-tests
 Makefile.test
-vkax-qt_test
+jgc-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -106,7 +106,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_vkax.coverage/
+test_jgc.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -126,13 +126,13 @@ test/cache/*
 
 libdashconsensus.pc
 contrib/devtools/split-debug.sh
-src/qt/vkax-qt.bash
+src/qt/jgc-qt.bash
 qa/pull-tester/tests-config.sh
 
 #development symlinks
-vkax-cli
-vkaxd
-vkax-qt
+jgc-cli
+jgcd
+jgc-qt
 make
 
 /docker/bin
