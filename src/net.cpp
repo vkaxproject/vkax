@@ -2116,7 +2116,7 @@ void ThreadMapPort()
             }
         }
 
-        std::string strDesc = "VKax Core " + FormatFullVersion();
+        std::string strDesc = "JGC Core " + FormatFullVersion();
 
         do {
 #ifndef UPNPDISCOVER_SUCCESS

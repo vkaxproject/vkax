@@ -12,7 +12,7 @@
  * for both jgcd and jgc-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("VKax Core");
+const std::string CLIENT_NAME("JGC Core");
 
 /**
  * Client version number
