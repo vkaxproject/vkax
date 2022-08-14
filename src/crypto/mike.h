@@ -12,7 +12,7 @@
 
 
 template<typename T1>
-inline uint256 Yescrypt(const T1 pbegin, const T1 pend)
+inline uint256 Mike(const T1 pbegin, const T1 pend)
 
 {
     sph_blake512_context     ctx_blake;

@@ -65,10 +65,10 @@ public:
     uint256 GetHash() const;
 
 
-      /// Compute the POW hash using yescrypt algorithm
+      /// Compute the POW hash using mike algorithm
     uint256 ComputeHash() const;
 
-    /// Caching lookup/computation of POW hash using yescrypt algorithm
+    /// Caching lookup/computation of POW hash using mike algorithm
     uint256 GetPOWHash(bool readCache = true) const;
 
     int64_t GetBlockTime() const
