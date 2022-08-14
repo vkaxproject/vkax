@@ -1,15 +1,15 @@
-Vkax Core version 0.17.0.3
+Jagoan Core version 0.17.0.3
 ==========================
 
 Release is now available from:
 
-  <https://www.vkax.tech/downloads/#wallets>
+  <https://www.jgc.tech/downloads/#wallets>
 
 This is a new hotfix release.
 
 Please report bugs using the issue tracker at github:
 
-  <https://github.com/vkaxproject/vkax/issues>
+  <https://github.com/jgcproject/jgc/issues>
 
 Notable changes
 ===============

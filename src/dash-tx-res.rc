@@ -16,14 +16,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "Vkax"
-            VALUE "FileDescription",    "vkax-tx (CLI Vkax transaction editor utility)"
+            VALUE "CompanyName",        "Jagoan"
+            VALUE "FileDescription",    "jgc-tx (CLI Jagoan transaction editor utility)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "vkax-tx"
+            VALUE "InternalName",       "jgc-tx"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "vkax-tx.exe"
-            VALUE "ProductName",        "vkax-tx"
+            VALUE "OriginalFilename",   "jgc-tx.exe"
+            VALUE "ProductName",        "jgc-tx"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

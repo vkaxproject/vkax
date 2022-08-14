@@ -26,16 +26,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>Vkax-Qt</string>
+  <string>Jagoan-Qt</string>
 
   <key>CFBundleName</key>
-  <string>Vkax-Qt</string>
+  <string>Jagoan-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.vkax.Vkax-Qt</string>
+  <string>org.jgc.Jagoan-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -43,10 +43,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.vkax.VkaxPayment</string>
+      <string>org.jgc.JagoanPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>vkax</string>
+        <string>jgc</string>
       </array>
     </dict>
   </array>
@@ -55,9 +55,9 @@
   <array>
     <dict>
       <key>UTTypeIdentifier</key>
-      <string>org.vkax.paymentrequest</string>
+      <string>org.jgc.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>Vkax payment request</string>
+      <string>Jagoan payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>
@@ -65,10 +65,10 @@
       <key>UTTypeTagSpecification</key>
       <dict>
         <key>public.mime-type</key>
-        <string>application/x-vkax-payment-request</string>
+        <string>application/x-jgc-payment-request</string>
         <key>public.filename-extension</key>
         <array>
-          <string>vkaxpaymentrequest</string>
+          <string>jgcpaymentrequest</string>
         </array>
       </dict>
     </dict>
@@ -81,7 +81,7 @@
       <string>Editor</string>
       <key>LSItemContentTypes</key>
       <array>
-        <string>org.vkax.paymentrequest</string>
+        <string>org.jgc.paymentrequest</string>
       </array>
       <key>LSHandlerRank</key>
       <string>Owner</string>

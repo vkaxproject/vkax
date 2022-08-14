@@ -1,16 +1,16 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Vkax Core
-Upstream-Contact: Vkax Core Group, Inc https://www.vkax.xyz/team/
-Source: https://github.com/vkaxproject/vkax
+Upstream-Name: Jagoan Core
+Upstream-Contact: Jagoan Core Group, Inc https://www.jgc.xyz/team/
+Source: https://github.com/jgcproject/jgc
 
 Files: *
 Copyright: 2009-2017, Bitcoin Core Developers,
            2019-2020, Dash Core Developers,
-           2021-2022, Vkax Core Developers
+           2021-2022, Jagoan Core Developers
 License: Expat
 Comment: The Bitcoin Core Developers encompasses the current developers listed on bitcoin.org,
-         as well as the numerous contributors to the project(particular Dash). The Vkax Core Developers
-         encompasses the current developers listed on https://www.vkax.xyz/team/, as well as
+         as well as the numerous contributors to the project(particular Dash). The Jagoan Core Developers
+         encompasses the current developers listed on https://www.jgc.xyz/team/, as well as
          the numerous contributors to the project.
 
 Files: debian/*

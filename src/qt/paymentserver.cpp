@@ -45,14 +45,14 @@
 #include <QUrlQuery>
 
 const int BITCOIN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
-const QString BITCOIN_IPC_PREFIX("vkax:");
+const QString BITCOIN_IPC_PREFIX("jgc:");
 // BIP70 payment protocol messages
 const char* BIP70_MESSAGE_PAYMENTACK = "PaymentACK";
 const char* BIP70_MESSAGE_PAYMENTREQUEST = "PaymentRequest";
 // BIP71 payment protocol media types
-const char* BIP71_MIMETYPE_PAYMENT = "application/vkax-payment";
-const char* BIP71_MIMETYPE_PAYMENTACK = "application/vkax-paymentack";
-const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/vkax-paymentrequest";
+const char* BIP71_MIMETYPE_PAYMENT = "application/jgc-payment";
+const char* BIP71_MIMETYPE_PAYMENTACK = "application/jgc-paymentack";
+const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/jgc-paymentrequest";
 
 struct X509StoreDeleter {
       void operator()(X509_STORE* b) {
@@ -76,7 +76,7 @@ namespace // Anon namespace
 //
 static QString ipcServerName()
 {
-    QString name("VkaxQt");
+    QString name("JagoanQt");
 
     // Append a simple hash of the datadir
     // Note that GetDataDir(true) returns a different path
@@ -199,11 +199,11 @@ void PaymentServer::ipcParseCommandLine(interfaces::Node& node, int argc, char* 
         if (arg.startsWith("-"))
             continue;
 
-        // If the vkax: URI contains a payment request, we are not able to detect the
+        // If the jgc: URI contains a payment request, we are not able to detect the
         // network as that would require fetching and parsing the payment request.
         // That means clicking such an URI which contains a testnet payment request
         // will start a mainnet instance and throw a "wrong network" error.
-        if (arg.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // vkax: URI
+        if (arg.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // jgc: URI
         {
             savedPaymentRequests.append(arg);
 
@@ -299,7 +299,7 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     // Install global event filter to catch QFileOpenEvents
-    // on Mac: sent when you click vkax: links
+    // on Mac: sent when you click jgc: links
     // other OSes: helpful when dealing with payment request files
     if (parent)
         parent->installEventFilter(this);
@@ -316,7 +316,7 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
         if (!uriServer->listen(name)) {
             // constructor is called early in init, so don't use "Q_EMIT message()" here
             QMessageBox::critical(0, tr("Payment request error"),
-                tr("Cannot start vkax: click-to-pay handler"));
+                tr("Cannot start jgc: click-to-pay handler"));
         }
         else {
             connect(uriServer, SIGNAL(newConnection()), this, SLOT(handleURIConnection()));
@@ -331,7 +331,7 @@ PaymentServer::~PaymentServer()
 }
 
 //
-// OSX-specific way of handling vkax: URIs and PaymentRequest mime types.
+// OSX-specific way of handling jgc: URIs and PaymentRequest mime types.
 // Also used by paymentservertests.cpp and when opening a payment request file
 // via "Open URI..." menu entry.
 //
@@ -356,7 +356,7 @@ void PaymentServer::initNetManager()
         return;
     delete netManager;
 
-    // netManager is used to fetch paymentrequests given in vkax: URIs
+    // netManager is used to fetch paymentrequests given in jgc: URIs
     netManager = new QNetworkAccessManager(this);
 
     QNetworkProxy proxy;
@@ -396,12 +396,12 @@ void PaymentServer::handleURIOrFile(const QString& s)
         return;
     }
 
-    if (s.startsWith("vkax://", Qt::CaseInsensitive))
+    if (s.startsWith("jgc://", Qt::CaseInsensitive))
     {
-        Q_EMIT message(tr("URI handling"), tr("'vkax://' is not a valid URI. Use 'vkax:' instead."),
+        Q_EMIT message(tr("URI handling"), tr("'jgc://' is not a valid URI. Use 'jgc:' instead."),
             CClientUIInterface::MSG_ERROR);
     }
-    else if (s.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // vkax: URI
+    else if (s.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // jgc: URI
     {
         QUrlQuery uri((QUrl(s)));
         if (uri.hasQueryItem("r")) // payment request URI
@@ -440,7 +440,7 @@ void PaymentServer::handleURIOrFile(const QString& s)
             }
             else
                 Q_EMIT message(tr("URI handling"),
-                    tr("URI cannot be parsed! This can be caused by an invalid Vkax address or malformed URI parameters."),
+                    tr("URI cannot be parsed! This can be caused by an invalid Jagoan address or malformed URI parameters."),
                     CClientUIInterface::ICON_WARNING);
 
             return;
@@ -552,7 +552,7 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
             addresses.append(QString::fromStdString(EncodeDestination(dest)));
         }
         else if (!recipient.authenticatedMerchant.isEmpty()) {
-            // Unauthenticated payment requests to custom vkax addresses are not supported
+            // Unauthenticated payment requests to custom jgc addresses are not supported
             // (there is no good way to tell the user where they are paying in a way they'd
             // have a chance of understanding).
             Q_EMIT message(tr("Payment request rejected"),
@@ -561,7 +561,7 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
             return false;
         }
 
-        // Vkax amounts are stored as (optional) uint64 in the protobuf messages (see paymentrequest.proto),
+        // Jagoan amounts are stored as (optional) uint64 in the protobuf messages (see paymentrequest.proto),
         // but CAmount is defined as int64_t. Because of that we need to verify that amounts are in a valid range
         // and no overflow has happened.
         if (!verifyAmount(sendingTo.second)) {

@@ -81,7 +81,7 @@ static void InitMessage(const std::string &message)
  */
 static std::string Translate(const char* psz)
 {
-    return QCoreApplication::translate("vkax-core", psz).toStdString();
+    return QCoreApplication::translate("jgc-core", psz).toStdString();
 }
 
 static QString GetLangTerritory()
@@ -128,11 +128,11 @@ static void initTranslations(QTranslator &qtTranslatorBase, QTranslator &qtTrans
     if (qtTranslator.load("qt_" + lang_territory, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
         QApplication::installTranslator(&qtTranslator);
 
-    // Load e.g. bitcoin_de.qm (shortcut "de" needs to be defined in vkax.qrc)
+    // Load e.g. bitcoin_de.qm (shortcut "de" needs to be defined in jgc.qrc)
     if (translatorBase.load(lang, ":/translations/"))
         QApplication::installTranslator(&translatorBase);
 
-    // Load e.g. bitcoin_de_DE.qm (shortcut "de_DE" needs to be defined in vkax.qrc)
+    // Load e.g. bitcoin_de_DE.qm (shortcut "de_DE" needs to be defined in jgc.qrc)
     if (translator.load(lang_territory, ":/translations/"))
         QApplication::installTranslator(&translator);
 }
@@ -148,7 +148,7 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-/** Class encapsulating Vkax Core startup and shutdown.
+/** Class encapsulating Jagoan Core startup and shutdown.
  * Allows running startup and shutdown in a different thread from the UI thread.
  */
 class BitcoinCore: public QObject
@@ -174,7 +174,7 @@ private:
     interfaces::Node& m_node;
 };
 
-/** Main Vkax application object */
+/** Main Jagoan application object */
 class BitcoinApplication: public QApplication
 {
     Q_OBJECT
@@ -514,7 +514,7 @@ void BitcoinApplication::initializeResult(bool success)
 
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
-        // vkax: URIs or payment requests:
+        // jgc: URIs or payment requests:
         connect(paymentServer, SIGNAL(receivedPaymentRequest(SendCoinsRecipient)),
                          window, SLOT(handlePaymentRequest(SendCoinsRecipient)));
         connect(window, SIGNAL(receivedURI(QString)),
@@ -537,7 +537,7 @@ void BitcoinApplication::shutdownResult()
 
 void BitcoinApplication::handleRunawayException(const QString &message)
 {
-    QMessageBox::critical(0, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. Vkax Core can no longer continue safely and will quit.") + QString("\n\n") + message);
+    QMessageBox::critical(0, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. Jagoan Core can no longer continue safely and will quit.") + QString("\n\n") + message);
     ::exit(EXIT_FAILURE);
 }
 
@@ -567,7 +567,7 @@ static void SetupUIArgs()
     gArgs.AddArg("-splash", strprintf(QObject::tr("Show splash screen on startup (default: %u)").toStdString(), DEFAULT_SPLASHSCREEN), false, OptionsCategory::GUI);
     gArgs.AddArg("-uiplatform", strprintf("Select platform to customize UI for (one of windows, macosx, other; default: %s)", BitcoinGUI::DEFAULT_UIPLATFORM), true, OptionsCategory::GUI);
     gArgs.AddArg("-debug-ui", "Updates the UI's stylesheets in realtime with changes made to the css files in -custom-css-dir and forces some widgets to show up which are usually only visible under certain circumstances. (default: 0)", true, OptionsCategory::GUI);
-    gArgs.AddArg("-windowtitle=<name>", _("Sets a window title which is appended to \"Vkax Core - \""), false, OptionsCategory::GUI);
+    gArgs.AddArg("-windowtitle=<name>", _("Sets a window title which is appended to \"Jagoan Core - \""), false, OptionsCategory::GUI);
 }
 
 #ifndef BITCOIN_QT_TEST
@@ -589,7 +589,7 @@ int main(int argc, char *argv[])
     // Do not refer to data directory yet, this can be overridden by Intro::pickDataDirectory
 
     /// 2. Basic Qt initialization (not dependent on parameters or configuration)
-    Q_INIT_RESOURCE(vkax);
+    Q_INIT_RESOURCE(jgc);
     Q_INIT_RESOURCE(dash_locale);
 
     // Generate high-dpi pixmaps
@@ -647,7 +647,7 @@ int main(int argc, char *argv[])
     if (!Intro::pickDataDirectory(*node))
         return EXIT_SUCCESS;
 
-    /// 6. Determine availability of data and blocks directory and parse vkax.conf
+    /// 6. Determine availability of data and blocks directory and parse jgc.conf
     /// - Do not call GetDataDir(true) before this step finishes
     if (!fs::is_directory(GetDataDir(false)))
     {
@@ -699,7 +699,7 @@ int main(int argc, char *argv[])
         exit(EXIT_SUCCESS);
 
     // Start up the payment server early, too, so impatient users that click on
-    // vkax: links repeatedly have their payment requests routed to this process:
+    // jgc: links repeatedly have their payment requests routed to this process:
     app.createPaymentServer();
 #endif
 

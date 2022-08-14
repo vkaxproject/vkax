@@ -2,7 +2,7 @@
 # -*- mode: makefile; coding: utf-8 -*-
 
 #DEB_MAKE_CHECK_TARGET = test_dash
-#build/vkaxd::
+#build/jgcd::
 #	$(if $(filter nocheck,$(DEB_BUILD_OPTIONS)),,src/test_dash)
 
 %:

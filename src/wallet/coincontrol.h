@@ -102,7 +102,7 @@ public:
         vOutpoints.assign(setSelected.begin(), setSelected.end());
     }
 
-    // Vkax-specific helpers
+    // Jagoan-specific helpers
 
     void UseCoinJoin(bool fUseCoinJoin)
     {

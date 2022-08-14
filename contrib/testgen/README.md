@@ -1,6 +1,6 @@
 ### TestGen ###
 
-Utilities to generate test vectors for the data-driven Vkax tests.
+Utilities to generate test vectors for the data-driven Jagoan tests.
 
 Usage: 
 

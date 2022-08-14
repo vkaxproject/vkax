@@ -1,38 +1,38 @@
-Vkax Core
+Jagoan Core
 ==========
 
-This is the official reference wallet for Vkax digital currency and comprises the backbone of the Vkax peer-to-peer network. You can [download Vkax Core](https://www.vkax.tech/downloads/) or [build it yourself](#building) using the guides below.
+This is the official reference wallet for Jagoan digital currency and comprises the backbone of the Jagoan peer-to-peer network. You can [download Jagoan Core](https://www.jgc.tech/downloads/) or [build it yourself](#building) using the guides below.
 
 Running
 ---------------------
-The following are some helpful notes on how to run Vkax on your native platform.
+The following are some helpful notes on how to run Jagoan on your native platform.
 
 ### Unix
 
 Unpack the files into a directory and run:
 
-- `bin/vkax-qt` (GUI) or
-- `bin/vkaxd` (headless)
+- `bin/jgc-qt` (GUI) or
+- `bin/jgcd` (headless)
 
 ### Windows
 
-Unpack the files into a directory, and then run vkax-qt.exe.
+Unpack the files into a directory, and then run jgc-qt.exe.
 
 ### OS X
 
-Drag Vkax-Qt to your applications folder, and then run Vkax-Qt.
+Drag Jagoan-Qt to your applications folder, and then run Jagoan-Qt.
 
 ### Need Help?
 
-* See the [Vkax documentation](https://docs.vkax.tech)
+* See the [Jagoan documentation](https://docs.jgc.tech)
 for help and more information.
-* See the [Vkax Developer Documentation](https://vkax-docs.github.io/) 
+* See the [Jagoan Developer Documentation](https://jgc-docs.github.io/) 
 for technical specifications and implementation details.
-* Ask for help on the [Vkax Forum](https://vkax.tech/forum)
+* Ask for help on the [Jagoan Forum](https://jgc.tech/forum)
 
 Building
 ---------------------
-The following are developer notes on how to build Vkax Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+The following are developer notes on how to build Jagoan Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
 - [OS X Build Notes](build-osx.md)
 - [Unix Build Notes](build-unix.md)
@@ -42,7 +42,7 @@ The following are developer notes on how to build Vkax Core on your native platf
 
 Development
 ---------------------
-The Vkax Core repo's [root README](/README.md) contains relevant information on the development process and automated testing.
+The Jagoan Core repo's [root README](/README.md) contains relevant information on the development process and automated testing.
 
 - [Developer Notes](developer-notes.md)
 - [Release Notes](release-notes.md)
@@ -58,7 +58,7 @@ The Vkax Core repo's [root README](/README.md) contains relevant information on 
 - [Benchmarking](benchmarking.md)
 
 ### Resources
-* Discuss on the [Vkax Forum](https://vkax.tech/forum), in the Development & Technical Discussion board.
+* Discuss on the [Jagoan Forum](https://jgc.tech/forum), in the Development & Technical Discussion board.
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)

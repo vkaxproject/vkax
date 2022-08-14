@@ -279,7 +279,7 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool fAllow
 
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter a Vkax address (e.g. %1)").arg(
+    widget->setPlaceholderText(QObject::tr("Enter a Jagoan address (e.g. %1)").arg(
         QString::fromStdString(DummyAddress(Params()))));
     widget->setValidator(new BitcoinAddressEntryValidator(parent, fAllowURI));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));
@@ -329,8 +329,8 @@ void setupAppearance(QWidget* parent, OptionsModel* model)
 
 bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
-    // return if URI is not valid or is no vkax: URI
-    if(!uri.isValid() || uri.scheme() != QString("vkax"))
+    // return if URI is not valid or is no jgc: URI
+    if(!uri.isValid() || uri.scheme() != QString("jgc"))
         return false;
 
     SendCoinsRecipient rv;
@@ -372,7 +372,7 @@ bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!BitcoinUnits::parse(BitcoinUnits::VKAX, i->second, &rv.amount))
+                if(!BitcoinUnits::parse(BitcoinUnits::JGC, i->second, &rv.amount))
                 {
                     return false;
                 }
@@ -404,12 +404,12 @@ bool validateBitcoinURI(const QString& uri)
 
 QString formatBitcoinURI(const SendCoinsRecipient &info)
 {
-    QString ret = QString("vkax:%1").arg(info.address);
+    QString ret = QString("jgc:%1").arg(info.address);
     int paramCount = 0;
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(BitcoinUnits::format(BitcoinUnits::VKAX, info.amount, false, BitcoinUnits::separatorNever));
+        ret += QString("?amount=%1").arg(BitcoinUnits::format(BitcoinUnits::JGC, info.amount, false, BitcoinUnits::separatorNever));
         paramCount++;
     }
 
@@ -610,7 +610,7 @@ void openConfigfile()
 {
     fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME));
 
-    /* Open vkax.conf with the associated application */
+    /* Open jgc.conf with the associated application */
     if (fs::exists(pathConfig))
         QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathConfig)));
 }
@@ -771,15 +771,15 @@ fs::path static StartupShortcutPath()
 {
     std::string chain = gArgs.GetChainName();
     if (chain == CBaseChainParams::MAIN)
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Vkax Core.lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Jagoan Core.lnk";
     if (chain == CBaseChainParams::TESTNET) // Remove this special case when CBaseChainParams::TESTNET = "testnet4"
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Vkax Core (testnet).lnk";
-    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("Vkax Core (%s).lnk", chain);
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Jagoan Core (testnet).lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("Jagoan Core (%s).lnk", chain);
 }
 
 bool GetStartOnSystemStartup()
 {
-    // check for "Vkax Core*.lnk"
+    // check for "Jagoan Core*.lnk"
     return fs::exists(StartupShortcutPath());
 }
 
@@ -869,8 +869,8 @@ fs::path static GetAutostartFilePath()
 {
     std::string chain = gArgs.GetChainName();
     if (chain == CBaseChainParams::MAIN)
-        return GetAutostartDir() / "vkaxcore.desktop";
-    return GetAutostartDir() / strprintf("vkaxcore-%s.lnk", chain);
+        return GetAutostartDir() / "jagoancore.desktop";
+    return GetAutostartDir() / strprintf("jagoancore-%s.lnk", chain);
 }
 
 bool GetStartOnSystemStartup()
@@ -910,13 +910,13 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         if (!optionFile.good())
             return false;
         std::string chain = gArgs.GetChainName();
-        // Write a vkaxcore.desktop file to the autostart directory:
+        // Write a jagoancore.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
         if (chain == CBaseChainParams::MAIN)
-            optionFile << "Name=Vkax Core\n";
+            optionFile << "Name=Jagoan Core\n";
         else
-            optionFile << strprintf("Name=Vkax Core (%s)\n", chain);
+            optionFile << strprintf("Name=Jagoan Core (%s)\n", chain);
         optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", gArgs.GetBoolArg("-testnet", false), gArgs.GetBoolArg("-regtest", false));
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
@@ -937,7 +937,7 @@ LSSharedFileListItemRef findStartupItemInList(LSSharedFileListRef list, CFURLRef
         return nullptr;
     }
 
-    // loop through the list of startup items and try to find the Vkax Core app
+    // loop through the list of startup items and try to find the Jagoan Core app
     for(int i = 0; i < CFArrayGetCount(listSnapshot); i++) {
         LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(listSnapshot, i);
         UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
@@ -994,7 +994,7 @@ bool SetStartOnSystemStartup(bool fAutoStart)
     LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, bitcoinAppUrl);
 
     if(fAutoStart && !foundItem) {
-        // add Vkax Core app to startup item list
+        // add Jagoan Core app to startup item list
         LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, nullptr, nullptr, bitcoinAppUrl, nullptr, nullptr);
     }
     else if(!fAutoStart && foundItem) {

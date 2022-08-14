@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Jagoan Core
+Comment=Jagoan P2P Cryptocurrency
+Exec=jgc-qt %u
+Terminal=false
+Type=Application
+Icon=dash128
+MimeType=x-scheme-handler/jgc;
+Categories=Office;Finance;
+StartupWMClass=Jagoan-qt
+Name[en_US]=jgc-qt.desktop

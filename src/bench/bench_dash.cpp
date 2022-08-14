@@ -31,7 +31,7 @@ void CleanupBLSDkgTests();
 
 static fs::path SetDataDir()
 {
-    fs::path ret = fs::temp_directory_path() / "bench_vkax" / fs::unique_path();
+    fs::path ret = fs::temp_directory_path() / "bench_jgc" / fs::unique_path();
     fs::create_directories(ret);
     gArgs.ForceSetArg("-datadir", ret.string());
     return ret;

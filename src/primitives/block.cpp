@@ -19,7 +19,7 @@ uint256 CBlockHeader::GetHash() const
 
 uint256 CBlockHeader::ComputeHash() const
 {
-    return Mike(BEGIN(nVersion), END(nNonce), hashPrevBlock);
+    return Yescrypt(BEGIN(nVersion), END(nNonce), hashPrevBlock);
 }
 
 uint256 CBlockHeader::GetPOWHash(bool readCache) const

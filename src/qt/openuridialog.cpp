@@ -18,7 +18,7 @@ OpenURIDialog::OpenURIDialog(QWidget *parent) :
     ui->setupUi(this);
     GUIUtil::updateFonts();
     GUIUtil::disableMacFocusRect(this);
-    ui->uriEdit->setPlaceholderText("vkax:");
+    ui->uriEdit->setPlaceholderText("jgc:");
 }
 
 OpenURIDialog::~OpenURIDialog()
@@ -49,5 +49,5 @@ void OpenURIDialog::on_selectFileButton_clicked()
     if(filename.isEmpty())
         return;
     QUrl fileUri = QUrl::fromLocalFile(filename);
-    ui->uriEdit->setText("vkax:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
+    ui->uriEdit->setText("jgc:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
 }

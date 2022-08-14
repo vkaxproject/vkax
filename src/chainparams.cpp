@@ -382,11 +382,11 @@ public:
      //   consensus.DIP0003EnforcementHash = uint256S("");
         consensus.DIP0008Height = true;
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
-        consensus.nVkaxTargetSpacing = 10 * 60; // 10-minute block spacing
-        consensus.nTargetSpacingWorkMax = 12 * consensus.nVkaxTargetSpacing; // 2-hour (TODO)
-        consensus.nPowTargetSpacing = consensus.nVkaxTargetSpacing;
-        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Vkax: 1 week
-        consensus.nPowTargetSpacing = 2.5 * 60; // Vkax: 2.5 minutes
+        consensus.nJagoanTargetSpacing = 10 * 60; // 10-minute block spacing
+        consensus.nTargetSpacingWorkMax = 12 * consensus.nJagoanTargetSpacing; // 2-hour (TODO)
+        consensus.nPowTargetSpacing = consensus.nJagoanTargetSpacing;
+        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Jagoan: 1 week
+        consensus.nPowTargetSpacing = 2.5 * 60; // Jagoan: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 40;
@@ -459,20 +459,20 @@ public:
         // release ASAP to avoid it where possible.
         vSeeds.emplace_back("147.182.144.51");
         vSeeds.emplace_back("174.138.27.60");
-        vSeeds.emplace_back("dnsseed.vkax.xyz");
+        vSeeds.emplace_back("dnsseed.jgc.xyz");
 
-        // Vkax addresses start with 'X'
+        // Jagoan addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
-        // Vkax script addresses start with '7'
+        // Jagoan script addresses start with '7'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,16);
-        // Vkax private keys start with '7' or 'X'
+        // Jagoan private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,204);
-        // Vkax BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
+        // Jagoan BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
-        // Vkax BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
+        // Jagoan BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
-        // Vkax BIP44 coin type is '960'
+        // Jagoan BIP44 coin type is '960'
         nExtCoinType = 960;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
@@ -554,11 +554,11 @@ public:
      //   consensus.DIP0003EnforcementHash = uint256S("");
         consensus.DIP0008Height = true;
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
-        consensus.nVkaxTargetSpacing = 10 * 60; // 10-minute block spacing
-        consensus.nTargetSpacingWorkMax = 12 * consensus.nVkaxTargetSpacing; // 2-hour (TODO)
-        consensus.nPowTargetSpacing = consensus.nVkaxTargetSpacing;
-        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Vkax: 1 week
-        consensus.nPowTargetSpacing = 2.5 * 60; // Vkax: 2.5 minutes
+        consensus.nJagoanTargetSpacing = 10 * 60; // 10-minute block spacing
+        consensus.nTargetSpacingWorkMax = 12 * consensus.nJagoanTargetSpacing; // 2-hour (TODO)
+        consensus.nPowTargetSpacing = consensus.nJagoanTargetSpacing;
+        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Jagoan: 1 week
+        consensus.nPowTargetSpacing = 2.5 * 60; // Jagoan: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 40;
@@ -623,20 +623,20 @@ public:
 
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testnet-seed.vkax.xyz"); // Just a static list of stable node(s), only supports x9
+        vSeeds.emplace_back("testnet-seed.jgc.xyz"); // Just a static list of stable node(s), only supports x9
 
-        // Testnet Vkax addresses start with 'y'
+        // Testnet Jagoan addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
-        // Testnet Vkax script addresses start with '8' or '9'
+        // Testnet Jagoan script addresses start with '8' or '9'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
         // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        // Testnet Vkax BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
+        // Testnet Jagoan BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
-        // Testnet Vkax BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
+        // Testnet Jagoan BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-        // Testnet Vkax BIP44 coin type is '1' (All coin's testnet default)
+        // Testnet Jagoan BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
 
         // long living quorum params
@@ -960,18 +960,18 @@ public:
             0
         };
 
-        // Regtest Vkax addresses start with 'y'
+        // Regtest Jagoan addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
-        // Regtest Vkax script addresses start with '8' or '9'
+        // Regtest Jagoan script addresses start with '8' or '9'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
         // Regtest private keys start with '9' or 'c' (Bitcoin defaults)
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        // Regtest Vkax BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
+        // Regtest Jagoan BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
-        // Regtest Vkax BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
+        // Regtest Jagoan BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-        // Regtest Vkax BIP44 coin type is '1' (All coin's testnet default)
+        // Regtest Jagoan BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
 
         // long living quorum params
