@@ -1189,17 +1189,24 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int nReallocActiva
     if (nHeight < nReallocStart) {
         // Activated but we have to wait for the next cycle to start realocation, nothing to do
         return ret;
+    } else if ((nHeight > 34400) && (nHeight < 51116)) {
+        return ret/1.5;
+    } else if ((nHeight > 51116) && (nHeight < 67732)) {
+        return ret/1.6;
+    } else if (nHeight > 67732) {
+        return ret/1.8;
     }
+
 
     // Periods used to reallocate the masternode reward from 50% to 60%
     static std::vector<int> vecPeriods{
         90, // Period 1:  90%
-        70, // Period 2:  70%
-        80, // Period 3:  80%
-        60, // Period 4:  60%
-        65, // Period 5:  65%
-        68, // Period 6:  68%
-        70, // Period 7:  70%
+        100, // Period 2:  70%
+        100, // Period 3:  80%
+        100, // Period 4:  60%
+        100, // Period 5:  65%
+        100, // Period 6:  68%
+        100, // Period 7:  70%
         72, // Period 8:  72%
         74, // Period 9:  74%
         76, // Period 10: 76%
