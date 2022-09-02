@@ -513,7 +513,7 @@ CAmount CGovernanceObject::GetMinCollateralFee(bool fork_active) const
     switch (nObjectType) {
     case GOVERNANCE_OBJECT_PROPOSAL:
         if (fork_active) return GOVERNANCE_PROPOSAL_FEE_TX;
-        else return GOVERNANCE_PROPOSAL_FEE_TX_V2
+        else return GOVERNANCE_PROPOSAL_FEE_TX_V2;
     case GOVERNANCE_OBJECT_TRIGGER:
         return 0;
     default:
