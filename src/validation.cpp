@@ -1173,6 +1173,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int nReallocActivationHeight)
 {
     CAmount ret = blockValue/4;
+    CAmount MRDS = blockValue;
 
     int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
     int nMNPIPeriod = Params().GetConsensus().nMasternodePaymentsIncreasePeriod;
@@ -1189,12 +1190,14 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int nReallocActiva
     if (nHeight < nReallocStart) {
         // Activated but we have to wait for the next cycle to start realocation, nothing to do
         return ret;
-    } else if ((nHeight > 34400) && (nHeight < 51116)) {
+    } else if ((nHeight > 34400) && (nHeight < 34700)) {
         return ret/1.5;
-    } else if ((nHeight > 51116) && (nHeight < 67732)) {
-        return ret/1.6;
+    } else if ((nHeight > 34700) && (nHeight < 51316)) {
+        return MRDS/1.5;
+    } else if ((nHeight > 51316) && (nHeight < 67732)) {
+        return MRDS/1.6;
     } else if (nHeight > 67732) {
-        return ret/1.8;
+        return MRDS/1.8;
     }
 
 
