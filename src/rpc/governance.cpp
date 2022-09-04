@@ -1117,7 +1117,8 @@ UniValue getgovernanceinfo(const JSONRPCRequest& request)
 
     UniValue obj(UniValue::VOBJ);
     obj.pushKV("governanceminquorum", Params().GetConsensus().nGovernanceMinQuorum);
-    obj.pushKV("proposalfee", ValueFromAmount(GOVERNANCE_PROPOSAL_FEE_TX));
+    bool fork_active = VersionBitsTipState(Params().GetConsensus(), Consensus::DEPLOYMENT_GOV_FEE) == ThresholdState::ACTIVE;
+    obj.pushKV("proposalfee", ValueFromAmount(fork_active ? GOVERNANCE_PROPOSAL_FEE_TX : GOVERNANCE_PROPOSAL_FEE_TX_V2));
     obj.pushKV("superblockcycle", Params().GetConsensus().nSuperblockCycle);
     obj.pushKV("lastsuperblock", nLastSuperblock);
     obj.pushKV("nextsuperblock", nNextSuperblock);
