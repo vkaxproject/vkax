@@ -578,7 +578,7 @@ bool CDeterministicMNManager::ProcessBlock(const CBlock& block, const CBlockInde
     AssertLockHeld(cs_main);
 
     const auto& consensusParams = Params().GetConsensus();
-    bool fDIP0003Active = consensusParams.DIP0003Height;
+    bool fDIP0003Active = chainActive.Height() >= consensusParams.DIP0003Height;
     if (!fDIP0003Active) {
         return true;
     }
@@ -1187,7 +1187,7 @@ bool CDeterministicMNManager::UpgradeDBIfNeeded()
     }
     evoDb.GetRawDB().Erase(std::string("b_b"));
 
-    if (Params().GetConsensus().DIP0003Height) {
+    if (chainActive.Height() < Params().GetConsensus().DIP0003Height) {
         // not reached DIP3 height yet, so no upgrade needed
         auto dbTx = evoDb.BeginTransaction();
         evoDb.WriteBestBlock(chainActive.Tip()->GetBlockHash());
@@ -1200,10 +1200,10 @@ bool CDeterministicMNManager::UpgradeDBIfNeeded()
     CDBBatch batch(evoDb.GetRawDB());
 
     CDeterministicMNList curMNList;
-    curMNList.SetHeight(1);
-    curMNList.SetBlockHash(chainActive[1]->GetBlockHash());
+    curMNList.SetHeight(Params().GetConsensus().DIP0003Height - 1);
+    curMNList.SetBlockHash(chainActive[Params().GetConsensus().DIP0003Height - 1]->GetBlockHash());
 
-    for (int nHeight = 1; nHeight <= chainActive.Height(); nHeight++) {
+    for (int nHeight = Params().GetConsensus().DIP0003Height; nHeight <= chainActive.Height(); nHeight++) {
         auto pindex = chainActive[nHeight];
 
         CDeterministicMNList newMNList;

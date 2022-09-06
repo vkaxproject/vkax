@@ -472,8 +472,8 @@ int GetUTXOConfirmations(const COutPoint& outpoint)
 bool ContextualCheckTransaction(const CTransaction& tx, CValidationState &state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
 {
     int nHeight = pindexPrev == nullptr ? 0 : pindexPrev->nHeight + 1;
-    bool fDIP0001Active_context = consensusParams.DIP0001Height;
-    bool fDIP0003Active_context = consensusParams.DIP0003Height;
+    bool fDIP0001Active_context = nHeight >= consensusParams.DIP0001Height;
+    bool fDIP0003Active_context = nHeight >= consensusParams.DIP0003Height;
 
     if (fDIP0003Active_context) {
         // check version 3 transaction types
@@ -1670,7 +1670,7 @@ int ApplyTxInUndo(Coin&& undo, CCoinsViewCache& view, const COutPoint& out)
  *  When FAILED is returned, view is left in an indeterminate state. */
 DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockIndex* pindex, CCoinsViewCache& view)
 {
-    bool fDIP0003Active = Params().GetConsensus().DIP0003Height;
+    bool fDIP0003Active = pindex->nHeight >= Params().GetConsensus().DIP0003Height;
     if (fDIP0003Active && !evoDb->VerifyBestBlock(pindex->GetBlockHash())) {
         // Nodes that upgraded after DIP3 activation will have to reindex to ensure evodb consistency
         AbortNode("Found EvoDB inconsistency, you must reindex to continue");
@@ -2075,7 +2075,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     assert(hashPrevBlock == view.GetBestBlock());
 
     if (pindex->pprev) {
-        bool fDIP0003Active = chainparams.GetConsensus().DIP0003Height;
+        bool fDIP0003Active = pindex->nHeight >= Params().GetConsensus().DIP0003Height;
         if (fDIP0003Active && pindex->nHeight != 1 && !evoDb->VerifyBestBlock(pindex->pprev->GetBlockHash())) {
             // Nodes that upgraded after DIP3 activation will have to reindex to ensure evodb consistency
             return AbortNode(state, "Found EvoDB inconsistency, you must reindex to continue");
@@ -2197,7 +2197,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     std::vector<PrecomputedTransactionData> txdata;
     txdata.reserve(block.vtx.size()); // Required so that pointers to individual PrecomputedTransactionData don't get invalidated
 
-    bool fDIP0001Active_context = Params().GetConsensus().DIP0001Height;
+    bool fDIP0001Active_context = pindex->nHeight >= Params().GetConsensus().DIP0001Height;
 
     // MUST process special txes before updating UTXO to ensure consistency between mempool and block processing
     if (!ProcessSpecialTxsInBlock(block, pindex, state, view, fJustCheck, fScriptChecks)) {
@@ -3750,8 +3750,9 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
                               ? pindexPrev->GetMedianTimePast()
                               : block.GetBlockTime();
 
-    bool fDIP0001Active_context = consensusParams.DIP0001Height;
-    bool fDIP0003Active_context = consensusParams.DIP0003Height;
+
+    bool fDIP0001Active_context = nHeight >= consensusParams.DIP0001Height;
+    bool fDIP0003Active_context = nHeight >= consensusParams.DIP0003Height;
 
     // Size limits
     unsigned int nMaxBlockSize = MaxBlockSize(fDIP0001Active_context);
@@ -3788,7 +3789,7 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
     }
 
     if (fDIP0003Active_context) {
-        if (nHeight != 0 && block.vtx[0]->nType != TRANSACTION_COINBASE) {
+        if (block.vtx[0]->nType != TRANSACTION_COINBASE) {
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-type", false, "coinbase is not a CbTx");
         }
     }

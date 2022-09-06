@@ -97,16 +97,16 @@ void CChainParams::UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64
     }
 }
 
-/*void CChainParams::UpdateDIP3Parameters(int nActivationHeight, int nEnforcementHeight)
+void CChainParams::UpdateDIP3Parameters(int nActivationHeight, int nEnforcementHeight)
 {
     consensus.DIP0003Height = nActivationHeight;
     consensus.DIP0003EnforcementHeight = nEnforcementHeight;
-}*/
+}
 
-/*void CChainParams::UpdateDIP8Parameters(int nActivationHeight)
+void CChainParams::UpdateDIP8Parameters(int nActivationHeight)
 {
     consensus.DIP0008Height = nActivationHeight;
-}*/
+}
 
 void CChainParams::UpdateBudgetParameters(int nMasternodePaymentsStartBlock, int nBudgetPaymentsStartBlock, int nSuperblockStartBlock)
 {
@@ -373,14 +373,14 @@ public:
         consensus.nGovernanceFilterElements = 20000;
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.BIP34Height = 1;
-        consensus.BIP34Hash = uint256S("0x776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8");
+        consensus.BIP34Hash = uint256S("776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8");
         consensus.BIP65Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
         consensus.BIP66Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
-        consensus.DIP0001Height = true;
-        consensus.DIP0003Height = true;
-      //  consensus.DIP0003EnforcementHeight = 1155;
-     //   consensus.DIP0003EnforcementHash = uint256S("");
-        consensus.DIP0008Height = true;
+        consensus.DIP0001Height = 1;
+        consensus.DIP0003Height = 1;
+	consensus.DIP0003EnforcementHeight = 1;
+        consensus.DIP0003EnforcementHash = uint256S("776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8");
+        consensus.DIP0008Height = 1;
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
         consensus.nVkaxTargetSpacing = 10 * 60; // 10-minute block spacing
         consensus.nTargetSpacingWorkMax = 12 * consensus.nVkaxTargetSpacing; // 2-hour (TODO)
@@ -441,7 +441,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000000000003ab000");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b");
+        consensus.defaultAssumeValid = uint256S("0x00"); // uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b");
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -516,10 +516,6 @@ public:
         checkpointData = {
             {
                 {0,    uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987")},
-                {100,  uint256S("0xe4d19872655099a6c226cf144182dcf4cfc1986c65a9cf8156201480832b62de")},
-                {201,  uint256S("0xc4a3904f8d33c7d2c7f8c1b83de6def234951127189ceee59f3fa4a722437272")},
-                {1500, uint256S("0x1c8d5b532167ee48ea9521325cb6ac300f59dddb552768fd5dce95e0b00277c3")},
-                {1877, uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b")},
             }
         };
 
@@ -558,10 +554,10 @@ public:
         consensus.BIP34Hash = uint256S("0xeac70f863cda2eab4ebf74ded9c6b51a82b394714a5f3405bd4214e9a0deb654");
         consensus.BIP65Height = 1; // eac70f863cda2eab4ebf74ded9c6b51a82b394714a5f3405bd4214e9a0deb654
         consensus.BIP66Height = 1; // eac70f863cda2eab4ebf74ded9c6b51a82b394714a5f3405bd4214e9a0deb654
-        consensus.DIP0001Height = true;
-        consensus.DIP0003Height = true;
-      //  consensus.DIP0003EnforcementHeight = 1155;
-     //   consensus.DIP0003EnforcementHash = uint256S("");
+        consensus.DIP0001Height = 1;
+        consensus.DIP0003Height = 1;
+        consensus.DIP0003EnforcementHeight = 1;
+        consensus.DIP0003EnforcementHash = uint256S("");
         consensus.DIP0008Height = true;
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
         consensus.nVkaxTargetSpacing = 10 * 60; // 10-minute block spacing
@@ -686,12 +682,6 @@ public:
         checkpointData = {
             {
                 {1,   uint256S("0xeac70f863cda2eab4ebf74ded9c6b51a82b394714a5f3405bd4214e9a0deb654")},
-                {100, uint256S("0xe6873a2341bd466da7ec43042c74c7c57a9bfc5e1269bc8869326db1b752ecde")},
-                {200, uint256S("0xeb0fa44d2869eb85080d69038376ee7b8914b8ad7c532baf0e64d0258f6f269a")},
-                {300, uint256S("0xddab51cf70d4d77915dbd796663579f104d82b711e46f4594abc1b265d690ae3")},
-                {400, uint256S("0xe48b24f49632170acf612b368c24cf4bd7961d542f4f08500b564d9a46dea06a")},
-                {468, uint256S("0xd11c08dccbff6811046ca65f8cc27a5797806a9833214c92b963ea27cef3248c")},
-                {469, uint256S("0x814a9392110cac80c8311471b4930e83232c810123a8924efb3a18cf22e6a6e7")},
             }
         };
 
@@ -730,10 +720,10 @@ public:
         consensus.BIP34Height = 1; // BIP34 activated immediately on devnet
         consensus.BIP65Height = 1; // BIP65 activated immediately on devnet
         consensus.BIP66Height = 1; // BIP66 activated immediately on devnet
-        consensus.DIP0001Height = true; // DIP0001 activated immediately on devnet
-        consensus.DIP0003Height = true; // DIP0003 activated immediately on devnet
-       // consensus.DIP0003EnforcementHeight = 2; // DIP0003 activated immediately on devnet
-        //consensus.DIP0003EnforcementHash = uint256();
+        consensus.DIP0001Height = 1; // DIP0001 activated immediately on devnet
+        consensus.DIP0003Height = 1; // DIP0003 activated immediately on devnet
+        consensus.DIP0003EnforcementHeight = 1; // DIP0003 activated immediately on devnet
+        consensus.DIP0003EnforcementHash = uint256();
         consensus.DIP0008Height = true; // DIP0008 activated immediately on devnet
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 1
         consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Dash: 1 day
@@ -897,11 +887,11 @@ public:
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 1; // BIP65 activated on regtest (Used in rpc activation tests)
         consensus.BIP66Height = 1; // BIP66 activated on regtest (Used in rpc activation tests)
-        consensus.DIP0001Height = true;
-        consensus.DIP0003Height = true;
-//        consensus.DIP0003EnforcementHeight = 500;
-  //      consensus.DIP0003EnforcementHash = uint256();
-        consensus.DIP0008Height = true;
+        consensus.DIP0001Height = 1;
+        consensus.DIP0003Height = 1;
+        consensus.DIP0003EnforcementHeight = 1;
+        consensus.DIP0003EnforcementHash = uint256();
+        consensus.DIP0008Height = 1;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 1
         consensus.nPowTargetTimespan =  7 * 24 * 60 * 60; // Dash: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
@@ -1049,15 +1039,15 @@ void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime,
     globalChainParams->UpdateVersionBitsParameters(d, nStartTime, nTimeout, nWindowSize, nThresholdStart, nThresholdMin, nFalloffCoeff);
 }
 
-/*void UpdateDIP3Parameters(int nActivationHeight, int nEnforcementHeight)
+void UpdateDIP3Parameters(int nActivationHeight, int nEnforcementHeight)
 {
     globalChainParams->UpdateDIP3Parameters(nActivationHeight, nEnforcementHeight);
-}*/
+}
 
-/*void UpdateDIP8Parameters(int nActivationHeight)
+void UpdateDIP8Parameters(int nActivationHeight)
 {
     globalChainParams->UpdateDIP8Parameters(nActivationHeight);
-}*/
+}
 
 void UpdateBudgetParameters(int nMasternodePaymentsStartBlock, int nBudgetPaymentsStartBlock, int nSuperblockStartBlock)
 {

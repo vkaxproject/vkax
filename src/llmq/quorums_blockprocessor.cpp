@@ -122,7 +122,7 @@ bool CQuorumBlockProcessor::ProcessBlock(const CBlock& block, const CBlockIndex*
 {
     AssertLockHeld(cs_main);
 
-    bool fDIP0003Active = Params().GetConsensus().DIP0003Height;
+    bool fDIP0003Active = pindex->nHeight >= Params().GetConsensus().DIP0003Height;
     if (!fDIP0003Active) {
         evoDb.Write(DB_BEST_BLOCK_UPGRADE, block.GetHash());
         return true;
@@ -332,8 +332,8 @@ bool CQuorumBlockProcessor::GetCommitmentsFromBlock(const CBlock& block, const C
 {
     AssertLockHeld(cs_main);
 
-     const auto& consensus = Params().GetConsensus();
-    bool fDIP0003Active = consensus.DIP0003Height;
+    auto& consensus = Params().GetConsensus();
+    bool fDIP0003Active = pindex->nHeight >= consensus.DIP0003Height;
 
     ret.clear();
 
