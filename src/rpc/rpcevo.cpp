@@ -455,8 +455,6 @@ static UniValue protx_register(const JSONRPCRequest& request)
 
     size_t paramIdx = 1;
 
-    CAmount collateralAmount = 1000 * COIN;
-
     CMutableTransaction tx;
     tx.nVersion = 3;
     tx.nType = TRANSACTION_PROVIDER_REGISTER;
@@ -471,7 +469,7 @@ static UniValue protx_register(const JSONRPCRequest& request)
         }
         CScript collateralScript = GetScriptForDestination(collateralDest);
 
-        CTxOut collateralTxOut(collateralAmount, collateralScript);
+        CTxOut collateralTxOut(MASTERNODE_CAMOUNT, collateralScript);
         tx.vout.emplace_back(collateralTxOut);
 
         paramIdx++;
@@ -545,7 +543,7 @@ static UniValue protx_register(const JSONRPCRequest& request)
     if (isFundRegister) {
         uint32_t collateralIndex = (uint32_t) -1;
         for (uint32_t i = 0; i < tx.vout.size(); i++) {
-            if (tx.vout[i].nValue == collateralAmount) {
+            if (tx.vout[i].nValue == MASTERNODE_CAMOUNT) {
                 collateralIndex = i;
                 break;
             }

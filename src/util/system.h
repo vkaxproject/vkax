@@ -58,6 +58,8 @@ extern const std::string gCoinJoinName;
 // Application startup time (used for uptime calculation)
 int64_t GetStartupTime();
 
+static const int DEFAULT_POW_CACHE_SIZE = 150000;
+
 extern const char * const BITCOIN_CONF_FILENAME;
 
 void SetupEnvironment();
@@ -406,6 +408,8 @@ std::string CopyrightHolders(const std::string& strPrefix, unsigned int nStartYe
  * sched_setchedule().
  */
 int ScheduleBatchPriority();
+
+void SetThreadPriority(int nPriority);
 
 namespace util {
 

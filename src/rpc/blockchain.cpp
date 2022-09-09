@@ -125,7 +125,7 @@ UniValue blockheaderToJSON(const CBlockIndex* tip, const CBlockIndex* blockindex
     return result;
 }
 
-UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIndex* blockindex, bool txDetails)
+UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIndex* blockindex, bool txDetails, bool powHash)
 {
     UniValue result(UniValue::VOBJ);
     result.pushKV("hash", blockindex->GetBlockHash().GetHex());
@@ -176,7 +176,8 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIn
         result.pushKV("nextblockhash", pnext->GetBlockHash().GetHex());
 
     result.pushKV("chainlock", chainLock);
-
+    if(powHash)
+        result.pushKV("powhash", block.GetPOWHash().GetHex());
     return result;
 }
 
@@ -1080,7 +1081,7 @@ static UniValue getmerkleblocks(const JSONRPCRequest& request)
 
 static UniValue getblock(const JSONRPCRequest& request)
 {
-    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 3)
         throw std::runtime_error(
             RPCHelpMan{"getblock",
                 "\nIf verbosity is 0, returns a string that is serialized, hex-encoded data for block 'hash'.\n"
@@ -1121,6 +1122,7 @@ static UniValue getblock(const JSONRPCRequest& request)
             "  \"nTx\" : n,             (numeric) The number of transactions in the block.\n"
             "  \"previousblockhash\" : \"hash\",  (string) The hash of the previous block\n"
             "  \"nextblockhash\" : \"hash\"       (string) The hash of the next block\n"
+            "  \"powhash\" : \"hash\"       (string) The pow hash of the this block\n"
             "}\n"
                     },
                     RPCResult{"for verbosity = 2",
@@ -1152,6 +1154,15 @@ static UniValue getblock(const JSONRPCRequest& request)
             verbosity = request.params[1].get_bool() ? 1 : 0;
     }
 
+    bool powHash = false;
+    if (!request.params[2].isNull()) {
+		if(request.params[2].isNum()) {
+			powHash = request.params[2].get_int() != 0;
+		} else {
+			powHash = request.params[2].get_bool();
+		}
+	}
+
     const CBlockIndex* pblockindex = LookupBlockIndex(hash);
     if (!pblockindex) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
@@ -1167,7 +1178,7 @@ static UniValue getblock(const JSONRPCRequest& request)
         return strHex;
     }
 
-    return blockToJSON(block, ::ChainActive().Tip(), pblockindex, verbosity >= 2);
+    return blockToJSON(block, ::ChainActive().Tip(), pblockindex, verbosity >= 2, powHash);
 }
 
 static UniValue pruneblockchain(const JSONRPCRequest& request)

@@ -46,7 +46,7 @@ struct bilingual_str;
 //  Note that, when blocking is not required, the wallet is implicitly unloaded
 //  by the shared pointer deleter.
 void UnloadWallet(std::shared_ptr<CWallet>&& wallet);
-
+CWallet *GetFirstWallet();
 bool AddWallet(const std::shared_ptr<CWallet>& wallet);
 bool RemoveWallet(const std::shared_ptr<CWallet>& wallet);
 bool HasWallets();

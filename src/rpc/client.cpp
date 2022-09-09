@@ -27,6 +27,8 @@ public:
 static const CRPCConvertParam vRPCConvertParams[] =
 {
     { "setmocktime", 0, "timestamp" },
+    { "setgenerate", 0, "generate" },
+    { "setgenerate", 1, "genproclimit" },
 #if ENABLE_MINER
     { "generate", 0, "nblocks" },
     { "generate", 1, "maxtries" },
