@@ -38,7 +38,6 @@
 #include <policy/fees.h>
 #include <policy/policy.h>
 #include <policy/settings.h>
-#include <primitives/powcache.h>
 #include <rpc/blockchain.h>
 #include <rpc/register.h>
 #include <rpc/server.h>
@@ -269,8 +268,6 @@ void PrepareShutdown(InitInterfaces& interfaces)
             CFlatDB<CGovernanceManager> flatdb3("governance.dat", "magicGovernanceCache");
             flatdb3.Dump(governance);
         }
-        CFlatDB<CPowCache> flatdb7("powcache.dat", "powCache");
-        flatdb7.Dump(CPowCache::Instance());
     }
 
     // After the threads that potentially access these pointers have been stopped,
@@ -2178,20 +2175,6 @@ bool AppInitMain(InitInterfaces& interfaces)
         ::feeEstimator.Read(est_filein);
     fFeeEstimatesInitialized = true;
 
-    // ********************************************************* Step 8a: load powcache.dat
-
-    {
-        fs::path pathDB = GetDataDir();
-        std::string strDBName = "powcache.dat";
-
-        // Always load the powcache if available:
-        uiInterface.InitMessage(_("Loading POW cache..."));
-        CFlatDB<CPowCache> flatdb7(strDBName, "powCache");
-        if(!flatdb7.Load(CPowCache::Instance())) {
-            return InitError(_("Failed to load POW cache from") + "\n" + (pathDB / strDBName).string());
-        }
-    }
-
     // ********************************************************* Step 8: start indexers
     if (gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
         g_txindex = MakeUnique<TxIndex>(nTxIndexCache, false, fReindex);
@@ -2352,9 +2335,6 @@ bool AppInitMain(InitInterfaces& interfaces)
         scheduler.scheduleEvery(std::bind(&CCoinJoinServer::DoMaintenance, std::ref(coinJoinServer), std::ref(*g_connman)), 1 * 1000);
         scheduler.scheduleEvery(std::bind(&llmq::CDKGSessionManager::CleanupOldContributions, std::ref(*llmq::quorumDKGSessionManager)), 60 * 60 * 1000);
     }
-
-    // Periodic flush of POW Cache if cache has grown enough
-    scheduler.scheduleEvery(std::bind(&CPowCache::DoMaintenance, &CPowCache::Instance()), 60 * 1000);
 
     if (gArgs.GetBoolArg("-statsenabled", DEFAULT_STATSD_ENABLE)) {
         int nStatsPeriod = std::min(std::max((int)gArgs.GetArg("-statsperiod", DEFAULT_STATSD_PERIOD), MIN_STATSD_PERIOD), MAX_STATSD_PERIOD);
@@ -2519,3 +2499,4 @@ bool AppInitMain(InitInterfaces& interfaces)
 
     return true;
 }
+

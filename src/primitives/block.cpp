@@ -8,45 +8,21 @@
 #include <hash.h>
 #include <streams.h>
 #include <tinyformat.h>
-#include <primitives/powcache.h>
 #include <sync.h>
 #include <uint256.h>
 #include <util/system.h>
+#include <util/strencodings.h>
 
 uint256 CBlockHeader::GetHash() const
 {
     return SerializeHash(*this);
 }
 
-uint256 CBlockHeader::ComputeHash() const
+uint256 CBlockHeader::GetPOWHash() const
 {
-    return Mike(BEGIN(nVersion), END(nNonce), hashPrevBlock);
+	return Mike(BEGIN(nVersion), END(nNonce), hashPrevBlock);
 }
 
-uint256 CBlockHeader::GetPOWHash(bool readCache) const
-{
-    LOCK(cs_pow);
-    CPowCache& cache(CPowCache::Instance());
-
-    uint256 headerHash = GetHash();
-    uint256 powHash;
-    bool found = false;
-
-    if (readCache) {
-        found = cache.get(headerHash, powHash);
-    }
-
-    if (!found || cache.IsValidate()) {
-        uint256 powHash2 = ComputeHash();
-        if (found && powHash2 != powHash) {
-           LogPrintf("PowCache failure: headerHash: %s, from cache: %s, computed: %s, correcting\n", headerHash.ToString(), powHash.ToString(), powHash2.ToString());
-        }
-        powHash = powHash2;
-        cache.erase(headerHash); // If it exists, replace it
-        cache.insert(headerHash, powHash2);
-    }
-    return powHash;
-}
 
 std::string CBlock::ToString() const
 {

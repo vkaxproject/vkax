@@ -21,6 +21,7 @@
 #include <timedata.h>
 #include <util/moneystr.h>
 #include <util/system.h>
+#include <util/time.h>
 #include <util/validation.h>
 
 #include <evo/specialtx.h>
@@ -517,7 +518,7 @@ static bool ProcessBlockFound(const CBlock* pblock, const CChainParams& chainpar
     // Found a solution
     {
         LOCK(cs_main);
-        if (pblock->hashPrevBlock != chainActive.Tip()->GetBlockHash())
+        if (pblock->hashPrevBlock != ::ChainActive().Tip()->GetBlockHash())
             return error("ProcessBlockFound -- generated block is stale");
     }
 
@@ -538,7 +539,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
 {
     LogPrintf("VkaxMiner -- started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("vkax-miner");
+    util::ThreadRename("vkax-miner");
 
     unsigned int nExtraNonce = 0;
 
@@ -548,9 +549,6 @@ void static BitcoinMiner(const CChainParams& chainparams)
     #ifdef ENABLE_WALLET
         pWallet = GetFirstWallet();
     #endif
-    if (!EnsureWalletIsAvailable(pWallet, false)) {
-        LogPrintf("VkaxMiner -- Wallet not available\n");
-    }
 
     if (pWallet == NULL)
     {
@@ -586,7 +584,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
                 // Busy-wait for the network to come online so we don't waste time mining
                 // on an obsolete chain. In regtest mode we expect to fly solo.
                 do {
-                    if ((g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL) > 0) && !IsInitialBlockDownload()) {
+                    if ((g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL) > 0)) {
                         break;
                     }
 
@@ -599,7 +597,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
             // Create new block
             //
             unsigned int nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
-            CBlockIndex* pindexPrev = chainActive.Tip();
+            CBlockIndex* pindexPrev = ::ChainActive().Tip();
             if(!pindexPrev) break;
             std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(Params()).CreateNewBlock(coinbaseScript->reserveScript));
 
@@ -659,7 +657,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
                     break;
                 if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 60)
                     break;
-                if (pindexPrev != chainActive.Tip())
+                if (pindexPrev != ::ChainActive().Tip())
                     break;
 
                 // Update nTime every few seconds

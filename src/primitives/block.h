@@ -11,7 +11,7 @@
 #include <serialize.h>
 #include <uint256.h>
 #include <unordered_lru_cache.h>
-#include <util.h>
+#include <util/system.h>
 #include <cstddef>
 #include <type_traits>
 
@@ -61,7 +61,7 @@ public:
     uint256 ComputeHash() const;
 
     // Caching lookup/computation of POW hash using mike algorithm
-    uint256 GetPOWHash(bool readCache = true) const;
+    uint256 GetPOWHash() const;
 
     int64_t GetBlockTime() const
     {

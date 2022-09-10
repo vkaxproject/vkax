@@ -967,7 +967,7 @@ bool CheckPOW(const CBlock& block, const Consensus::Params& consensusParams)
     if (!CheckProofOfWork(block.GetPOWHash(), block.nBits, consensusParams)) {
         LogPrintf("CheckPOW: CheckProofOfWork failed for %s, retesting without POW cache\n", block.GetHash().ToString());
         // Retest without POW cache in case cache was corrupted:
-        return CheckProofOfWork(block.GetPOWHash(false), block.nBits, consensusParams);
+        return CheckProofOfWork(block.GetPOWHash(), block.nBits, consensusParams);
     }
     return true;
 }
@@ -993,6 +993,7 @@ bool ReadBlockFromDisk(CBlock& block, const FlatFilePos& pos, const Consensus::P
     if (!CheckPOW(block, consensusParams)) {
         return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
     }
+
     return true;
 }
 
@@ -1039,7 +1040,6 @@ NOTE:   unlike bitcoin we are using PREVIOUS block height here,
 */
 CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
-    double dDiff;
     CAmount nSubsidyBase;
 
     if(nPrevHeight <= 1950005)
@@ -1071,7 +1071,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int nReallocActivationHeight)
 {
-    CAmount ret = blockValue/4;
+    CAmount ret = blockValue/4; // start at 20%
     CAmount MRDS = blockValue;
 
     int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
@@ -1090,7 +1090,7 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int nReallocActiva
     if (nHeight < nReallocStart) {
         // Activated but we have to wait for the next cycle to start realocation, nothing to do
         return ret;
-    } else if ((nHeight > 34400) && (nHeight < 34700)) {
+    }else if ((nHeight > 34400) && (nHeight < 34700)) {
         return ret/1.5;
     } else if ((nHeight > 34700) && (nHeight < 51316)) {
         return MRDS/1.5;
@@ -3698,6 +3698,7 @@ static bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state,
     // Check proof of work matches claimed amount
     if (fCheckPOW && !CheckPOW(block, consensusParams)) {
         return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "proof of work failed");
+    }
 
     // Check DevNet
     if (!consensusParams.hashDevnetGenesisBlock.IsNull() &&
@@ -3811,19 +3812,6 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
 
     // Check proof of work
     const Consensus::Params& consensusParams = params.GetConsensus();
-    if(Params().NetworkIDString() == CBaseChainParams::MAIN && nHeight <= 68589){
-        // architecture issues with DGW v1 and v2)
-        unsigned int nBitsNext = GetNextWorkRequired(pindexPrev, &block, consensusParams);
-        double n1 = ConvertBitsToDouble(block.nBits);
-        double n2 = ConvertBitsToDouble(nBitsNext);
-
-        if (abs(n1-n2) > n1*0.5)
-            return state.DoS(100, error("%s : incorrect proof of work (DGW pre-fork) - %f %f %f at %d", __func__, abs(n1-n2), n1, n2, nHeight),
-                            REJECT_INVALID, "bad-diffbits");
-    } else {
-        if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
-            return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, strprintf("incorrect proof of work at %d", nHeight));
-    }
 
     // Check against checkpoints
     if (fCheckpointsEnabled) {
@@ -3844,11 +3832,11 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
         return state.Invalid(false, REJECT_INVALID, "time-too-new", strprintf("block timestamp too far in the future %d %d", block.GetBlockTime(), nAdjustedTime + 2 * 60 * 60));
 
     // check for version 2, 3 and 4 upgrades
-    if((block.nVersion < 2 && nHeight >= consensusParams.BIP34Height) ||
-       (block.nVersion < 3 && nHeight >= consensusParams.BIP66Height) ||
-       (block.nVersion < 4 && nHeight >= consensusParams.BIP65Height))
-            return state.Invalid(false, REJECT_OBSOLETE, strprintf("bad-version(0x%08x)", block.nVersion),
-                                 strprintf("rejected nVersion=0x%08x block", block.nVersion));
+  //  if((block.nVersion < 2 && nHeight >= consensusParams.BIP34Height) ||
+    //   (block.nVersion < 3 && nHeight >= consensusParams.BIP66Height) ||
+   //    (block.nVersion < 4 && nHeight >= consensusParams.BIP65Height))
+     //       return state.Invalid(false, REJECT_OBSOLETE, strprintf("bad-version(0x%08x)", block.nVersion),
+       //                          strprintf("rejected nVersion=0x%08x block", block.nVersion));
 
     return true;
 }

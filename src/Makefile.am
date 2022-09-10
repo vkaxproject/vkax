@@ -570,6 +570,8 @@ crypto_libdash_crypto_base_a_SOURCES += \
   crypto/shavite.c \
   crypto/simd.c \
   crypto/skein.c \
+  crypto/sph_sha2.c \
+  crypto/sph_sha512.c \
   crypto/sph_blake.h \
   crypto/sph_bmw.h \
   crypto/sph_cubehash.h \
@@ -581,6 +583,7 @@ crypto_libdash_crypto_base_a_SOURCES += \
   crypto/sph_shavite.h \
   crypto/sph_simd.h \
   crypto/sph_skein.h \
+  crypto/sph_sha2.h \
   cryptonote/aesb.c \
   cryptonote/c_blake256.c \
   cryptonote/c_groestl.c \
@@ -642,8 +645,6 @@ libdash_consensus_a_SOURCES = \
   prevector.h \
   primitives/block.cpp \
   primitives/block.h \
-  primitives/powcache.cpp \
-  primitives/powcache.h \
   primitives/transaction.cpp \
   primitives/transaction.h \
   pubkey.cpp \
