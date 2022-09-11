@@ -264,7 +264,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000000000003ab000"); // 1718500
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00"); 
+        consensus.defaultAssumeValid = uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b"); 
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -344,6 +344,10 @@ public:
         checkpointData = {
             {
                 {0,    uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987")},
+                {1,    uint256S("0x776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8")},
+                {100,  uint256S("0xe4d19872655099a6c226cf144182dcf4cfc1986c65a9cf8156201480832b62de")},
+                {201,  uint256S("0xc4a3904f8d33c7d2c7f8c1b83de6def234951127189ceee59f3fa4a722437272")},
+                {1877, uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b")}
             }
         };
 

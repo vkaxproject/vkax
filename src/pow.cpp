@@ -176,7 +176,6 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
         return bnPowLimit.GetCompact();
     }
 
-
     // Note: GetNextWorkRequiredBTC has it's own special difficulty rule,
     // so we only apply this to post-BTC algos.
     if (params.fPowAllowMinDifficultyBlocks) {
@@ -194,10 +193,14 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
         }
     }
 
+//    if (pindexLast->nHeight + 1 < params.nPowDGWHeight) {
+//        return KimotoGravityWell(pindexLast, params);
+//    }
+
+
     if (pindexLast->nHeight + 1 < params.nPowFVK) {
         return GetNextWorkRequiredBTC(pindexLast, pblock, params);
     }
-
     return DarkGravityWave(pindexLast, params);
 }
 
@@ -245,3 +248,4 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
 
     return true;
 }
+
