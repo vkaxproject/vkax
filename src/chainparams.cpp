@@ -174,7 +174,7 @@ public:
         consensus.DIP0003EnforcementHeight = 1;
         consensus.DIP0003EnforcementHash = uint256S("776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8");
         consensus.DIP0008Height = 1; // 00000000000000112e41e4b3afda8b233b8cc07c532d2eac5de097b68358c43e
-        consensus.BRRHeight = 1374912; // 000000000000000c5a124f3eccfbe6e17876dca79cec9e63dfa70d269113c926
+        consensus.BRRHeight = 1374912; // not needed
         consensus.MinBIP9WarningHeight = 1090656; // dip8 activation height + miner confirmation window
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
         consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Vkax: 1 day

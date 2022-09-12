@@ -26,15 +26,15 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>Dash-Qt</string>
+  <string>Vkax-Qt</string>
   <key>CFBundleName</key>
-  <string>Dash-Qt</string>
+  <string>Vkax-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.dash.Dash-Qt</string>
+  <string>org.dash.Vkax-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -42,10 +42,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.dash.DashPayment</string>
+      <string>org.dash.VkaxPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>dash</string>
+        <string>vkax</string>
       </array>
     </dict>
   </array>
@@ -56,7 +56,7 @@
       <key>UTTypeIdentifier</key>
       <string>org.dash.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>Dash payment request</string>
+      <string>Vkax payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>
