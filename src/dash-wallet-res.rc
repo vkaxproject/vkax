@@ -16,14 +16,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "Dash Core"
-            VALUE "FileDescription",    "dash-wallet (CLI tool for " PACKAGE_NAME " wallets)"
+            VALUE "CompanyName",        "Vkax Core"
+            VALUE "FileDescription",    "vkax-wallet (CLI tool for " PACKAGE_NAME " wallets)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "dash-wallet"
+            VALUE "InternalName",       "vkax-wallet"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "dash-wallet.exe"
-            VALUE "ProductName",        "dash-wallet"
+            VALUE "OriginalFilename",   "vkax-wallet.exe"
+            VALUE "ProductName",        "vkax-wallet"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

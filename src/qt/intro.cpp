@@ -127,7 +127,7 @@ Intro::Intro(QWidget *parent, uint64_t blockchain_size, uint64_t chain_state_siz
         .arg(PACKAGE_NAME)
         .arg(m_blockchain_size)
         .arg(2014)
-        .arg("Dash")
+        .arg("Vkax")
     );
     ui->lblExplanation2->setText(ui->lblExplanation2->text().arg(PACKAGE_NAME));
 
@@ -146,7 +146,7 @@ Intro::Intro(QWidget *parent, uint64_t blockchain_size, uint64_t chain_state_siz
     }
     requiredSpace += m_chain_state_size;
     ui->sizeWarningLabel->setText(
-        tr("%1 will download and store a copy of the Dash block chain.").arg(PACKAGE_NAME) + " " +
+        tr("%1 will download and store a copy of the Vkax block chain.").arg(PACKAGE_NAME) + " " +
         storageRequiresMsg.arg(requiredSpace) + " " +
         tr("The wallet will also be stored in this directory.")
     );
@@ -238,8 +238,8 @@ bool Intro::pickDataDirectory(interfaces::Node& node)
         settings.setValue("fReset", false);
     }
     /* Only override -datadir if different from the default, to make it possible to
-     * override -datadir in the dash.conf file in the default data directory
-     * (to be consistent with dashd behavior)
+     * override -datadir in the vkax.conf file in the default data directory
+     * (to be consistent with vkaxd behavior)
      */
     if(dataDir != GUIUtil::getDefaultDataDirectory()) {
         node.softSetArg("-datadir", GUIUtil::qstringToBoostPath(dataDir).string()); // use OS locale for path setting

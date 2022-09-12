@@ -3,9 +3,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-bin_PROGRAMS += bench/bench_dash
+bin_PROGRAMS += bench/bench_vkax
 BENCH_SRCDIR = bench
-BENCH_BINARY = bench/bench_dash$(EXEEXT)
+BENCH_BINARY = bench/bench_vkax$(EXEEXT)
 
 RAW_BENCH_FILES = \
   bench/data/block813851.raw

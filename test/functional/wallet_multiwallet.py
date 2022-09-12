@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test multiwallet.
 
-Verify that a dashd node can load multiple wallet files
+Verify that a Vkaxd node can load multiple wallet files
 """
 import os
 import shutil
@@ -341,7 +341,7 @@ class MultiWalletTest(BitcoinTestFramework):
         assert_raises_rpc_error(
             -4,
             'Wallet loading failed. Error loading {}: Wallet requires newer version of {}'.format(
-                wallet_dir('high_minversion', 'wallet.dat'), "Dash Core"),
+                wallet_dir('high_minversion', 'wallet.dat'), "Vkax Core"),
             lambda: self.nodes[0].loadwallet(filename='high_minversion'),
         )
 

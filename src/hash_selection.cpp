@@ -1,4 +1,5 @@
 /* Copyright (c) 2020 The Raptoreum Core developers
+ * Copyright (c) 2022 The Vkax Core developers
  * Distributed under the MIT software license, see the accompanying
  * file COPYING or http://www.opensource.org/licenses/mit-license.php.
  *

@@ -56,7 +56,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(interfaces::Wal
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                 if (wtx.txout_address_is_mine[i])
                 {
-                    // Received by Dash Address
+                    // Received by Vkax Address
                     sub.type = TransactionRecord::RecvWithAddress;
                     sub.strAddress = EncodeDestination(wtx.txout_address[i]);
                     sub.txDest = wtx.txout_address[i];
@@ -117,7 +117,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(interfaces::Wal
                 CTxDestination address;
                 if (ExtractDestination(wtx.tx->vout[0].scriptPubKey, address))
                 {
-                    // Sent to Dash Address
+                    // Sent to Vkax Address
                     sub.strAddress = EncodeDestination(address);
                     sub.txDest = address;
                     sub.updateLabel(wallet);
@@ -209,7 +209,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(interfaces::Wal
 
                 if (!boost::get<CNoDestination>(&wtx.txout_address[nOut]))
                 {
-                    // Sent to Dash Address
+                    // Sent to Vkax Address
                     sub.type = TransactionRecord::SendToAddress;
                     sub.strAddress = EncodeDestination(wtx.txout_address[nOut]);
                     sub.txDest = wtx.txout_address[nOut];

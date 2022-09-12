@@ -95,13 +95,13 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>These are your Dash addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>These are your Dash addresses for sending payments. Always check the amount and the receiving address before sending coins.</translation>
+        <source>These are your Vkax addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>These are your Vkax addresses for sending payments. Always check the amount and the receiving address before sending coins.</translation>
     </message>
     <message>
         <location line="+5"/>
-        <source>These are your Dash addresses for receiving payments. Use the &apos;Create new receiving address&apos; button in the receive tab to create new addresses.</source>
-        <translation>These are your Dash addresses for receiving payments. Use the &apos;Create new receiving address&apos; button in the receive tab to create new addresses.</translation>
+        <source>These are your Vkax addresses for receiving payments. Use the &apos;Create new receiving address&apos; button in the receive tab to create new addresses.</source>
+        <translation>These are your Vkax addresses for receiving payments. Use the &apos;Create new receiving address&apos; button in the receive tab to create new addresses.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -287,8 +287,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR DASH&lt;/b&gt;!</source>
-        <translation>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR DASH&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR VKAX&lt;/b&gt;!</source>
+        <translation>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR VKAX&lt;/b&gt;!</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -417,8 +417,8 @@
     <name>BitcoinGUI</name>
     <message>
         <location filename="../dash.cpp" line="+396"/>
-        <source>A fatal error occurred. Dash Core can no longer continue safely and will quit.</source>
-        <translation>A fatal error occurred. Dash Core can no longer continue safely and will quit.</translation>
+        <source>A fatal error occurred. Vkax Core can no longer continue safely and will quit.</source>
+        <translation>A fatal error occurred. Vkax Core can no longer continue safely and will quit.</translation>
     </message>
     <message>
         <location filename="../bitcoingui.cpp" line="+652"/>
@@ -437,8 +437,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Send coins to a Dash address</source>
-        <translation>Send coins to a Dash address</translation>
+        <source>Send coins to a Vkax address</source>
+        <translation>Send coins to a Vkax address</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -447,8 +447,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
-        <translation>Request payments (generates QR codes and dash: URIs)</translation>
+        <source>Request payments (generates QR codes and vkax: URIs)</source>
+        <translation>Request payments (generates QR codes and vkax: URIs)</translation>
     </message>
     <message>
         <location line="+70"/>
@@ -557,8 +557,8 @@
     </message>
     <message>
         <location line="-22"/>
-        <source>Send %1 funds to a Dash address</source>
-        <translation>Send %1 funds to a Dash address</translation>
+        <source>Send %1 funds to a Vkax address</source>
+        <translation>Send %1 funds to a Vkax address</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -627,8 +627,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Sign messages with your Dash addresses to prove you own them</source>
-        <translation>Sign messages with your Dash addresses to prove you own them</translation>
+        <source>Sign messages with your Vkax addresses to prove you own them</source>
+        <translation>Sign messages with your Vkax addresses to prove you own them</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -637,8 +637,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Verify messages to ensure they were signed with specified Dash addresses</source>
-        <translation>Verify messages to ensure they were signed with specified Dash addresses</translation>
+        <source>Verify messages to ensure they were signed with specified Vkax addresses</source>
+        <translation>Verify messages to ensure they were signed with specified Vkax addresses</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -727,8 +727,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Open a dash: URI or payment request</source>
-        <translation>Open a dash: URI or payment request</translation>
+        <source>Open a vkax: URI or payment request</source>
+        <translation>Open a vkax: URI or payment request</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -737,8 +737,8 @@
     </message>
     <message>
         <location line="+2"/>
-        <source>Show the %1 help message to get a list with possible Dash command-line options</source>
-        <translation>Show the %1 help message to get a list with possible Dash command-line options</translation>
+        <source>Show the %1 help message to get a list with possible Vkax command-line options</source>
+        <translation>Show the %1 help message to get a list with possible Vkax command-line options</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -819,10 +819,10 @@
     </message>
     <message numerus="yes">
         <location line="+548"/>
-        <source>%n active connection(s) to Dash network</source>
+        <source>%n active connection(s) to Vkax network</source>
         <translation>
-            <numerusform>%n active connection to Dash network</numerusform>
-            <numerusform>%n active connections to Dash network</numerusform>
+            <numerusform>%n active connection to Vkax network</numerusform>
+            <numerusform>%n active connections to Vkax network</numerusform>
         </translation>
     </message>
     <message>
@@ -1383,8 +1383,8 @@
     </message>
     <message>
         <location line="+74"/>
-        <source>The entered address &quot;%1&quot; is not a valid Dash address.</source>
-        <translation>The entered address &quot;%1&quot; is not a valid Dash address.</translation>
+        <source>The entered address &quot;%1&quot; is not a valid Vkax address.</source>
+        <translation>The entered address &quot;%1&quot; is not a valid Vkax address.</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -1492,8 +1492,8 @@
     </message>
     <message>
         <location line="+4"/>
-        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Dash in your wallet is comprised of different &quot;inputs&quot; which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type=&quot;1&quot;&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 DASH, 0.01 DASH, 0.1 DASH, 1 DASH and 10 DASH -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called &quot;masternodes.&quot; These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know &quot;who&quot; you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users&apos; wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it&apos;s called a &quot;round.&quot; Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these &quot;change addresses.&quot; Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style=&quot;%2&quot; href=&quot;%3&quot;&gt;%1 documentation&lt;/a&gt;.</source>
-        <translation>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Dash in your wallet is comprised of different &quot;inputs&quot; which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type=&quot;1&quot;&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 DASH, 0.01 DASH, 0.1 DASH, 1 DASH and 10 DASH -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called &quot;masternodes.&quot; These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know &quot;who&quot; you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users&apos; wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it&apos;s called a &quot;round.&quot; Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these &quot;change addresses.&quot; Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style=&quot;%2&quot; href=&quot;%3&quot;&gt;%1 documentation&lt;/a&gt;.</translation>
+        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Vkax in your wallet is comprised of different &quot;inputs&quot; which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type=&quot;1&quot;&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 VKAX, 0.01 VKAX, 0.1 VKAX, 1 VKAX and 10 VKAX -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called &quot;masternodes.&quot; These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know &quot;who&quot; you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users&apos; wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it&apos;s called a &quot;round.&quot; Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these &quot;change addresses.&quot; Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style=&quot;%2&quot; href=&quot;%3&quot;&gt;%1 documentation&lt;/a&gt;.</source>
+        <translation>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Vkax in your wallet is comprised of different &quot;inputs&quot; which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type=&quot;1&quot;&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 VKAX, 0.01 VKAX, 0.1 VKAX, 1 VKAX and 10 VKAX -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called &quot;masternodes.&quot; These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know &quot;who&quot; you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users&apos; wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it&apos;s called a &quot;round.&quot; Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these &quot;change addresses.&quot; Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style=&quot;%2&quot; href=&quot;%3&quot;&gt;%1 documentation&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1550,8 +1550,8 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>%1 will download and store a copy of the Dash block chain.</source>
-        <translation>%1 will download and store a copy of the Dash block chain.</translation>
+        <source>%1 will download and store a copy of the Vkax block chain.</source>
+        <translation>%1 will download and store a copy of the Vkax block chain.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1744,13 +1744,13 @@
     </message>
     <message>
         <location line="+100"/>
-        <source>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Dash network, as detailed below.</source>
-        <translation>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Dash network, as detailed below.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Vkax network, as detailed below.</source>
+        <translation>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Vkax network, as detailed below.</translation>
     </message>
     <message>
         <location line="+13"/>
-        <source>Attempting to spend Dash that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Attempting to spend Dash that are affected by not-yet-displayed transactions will not be accepted by the network.</translation>
+        <source>Attempting to spend Vkax that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Attempting to spend Vkax that are affected by not-yet-displayed transactions will not be accepted by the network.</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -1996,8 +1996,8 @@
     </message>
     <message>
         <location line="+42"/>
-        <source>Automatically open the Dash Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automatically open the Dash Core client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
+        <source>Automatically open the Vkax Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatically open the Vkax Core client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2021,8 +2021,8 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>Connect to the Dash network through a SOCKS5 proxy.</source>
-        <translation>Connect to the Dash network through a SOCKS5 proxy.</translation>
+        <source>Connect to the Vkax network through a SOCKS5 proxy.</source>
+        <translation>Connect to the Vkax network through a SOCKS5 proxy.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2163,8 +2163,8 @@
     </message>
     <message>
         <location line="+22"/>
-        <source>Connect to the Dash network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Connect to the Dash network through a separate SOCKS5 proxy for Tor hidden services.</translation>
+        <source>Connect to the Vkax network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Connect to the Vkax network through a separate SOCKS5 proxy for Tor hidden services.</translation>
     </message>
     <message>
         <location line="-551"/>
@@ -2199,9 +2199,9 @@
     <message>
         <location line="+21"/>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/vkax/</source>
         <translation>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/vkax/</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -2286,8 +2286,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <location line="+60"/>
         <location line="+298"/>
         <location line="+237"/>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Dash network after a connection is established, but this process has not completed yet.</source>
-        <translation>The displayed information may be out of date. Your wallet automatically synchronizes with the Dash network after a connection is established, but this process has not completed yet.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Vkax network after a connection is established, but this process has not completed yet.</source>
+        <translation>The displayed information may be out of date. Your wallet automatically synchronizes with the Vkax network after a connection is established, but this process has not completed yet.</translation>
     </message>
     <message>
         <location line="-325"/>
@@ -2386,8 +2386,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>0 DASH / 0 Rounds</source>
-        <translation>0 DASH / 0 Rounds</translation>
+        <source>0 VKAX / 0 Rounds</source>
+        <translation>0 VKAX / 0 Rounds</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2586,8 +2586,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="-529"/>
-        <source>Cannot start dash: click-to-pay handler</source>
-        <translation>Cannot start dash: click-to-pay handler</translation>
+        <source>Cannot start vkax: click-to-pay handler</source>
+        <translation>Cannot start vkax: click-to-pay handler</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -2600,8 +2600,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="-55"/>
-        <source>&apos;dash://&apos; is not a valid URI. Use &apos;dash:&apos; instead.</source>
-        <translation>&apos;dash://&apos; is not a valid URI. Use &apos;dash:&apos; instead.</translation>
+        <source>&apos;vkax://&apos; is not a valid URI. Use &apos;vkax:&apos; instead.</source>
+        <translation>&apos;vkax://&apos; is not a valid URI. Use &apos;vkax:&apos; instead.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2621,8 +2621,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>URI cannot be parsed! This can be caused by an invalid Dash address or malformed URI parameters.</source>
-        <translation>URI cannot be parsed! This can be caused by an invalid Dash address or malformed URI parameters.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Vkax address or malformed URI parameters.</source>
+        <translation>URI cannot be parsed! This can be caused by an invalid Vkax address or malformed URI parameters.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2920,8 +2920,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location filename="../guiutil.cpp" line="+272"/>
-        <source>Enter a Dash address (e.g. %1)</source>
-        <translation>Enter a Dash address (e.g. %1)</translation>
+        <source>Enter a Vkax address (e.g. %1)</source>
+        <translation>Enter a Vkax address (e.g. %1)</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3709,8 +3709,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     <name>ReceiveCoinsDialog</name>
     <message>
         <location filename="../forms/receivecoinsdialog.ui" line="+34"/>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Dash network.</source>
-        <translation>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Dash network.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Vkax network.</source>
+        <translation>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Vkax network.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3725,8 +3725,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="-14"/>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Dash network.</source>
-        <translation>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Dash network.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Vkax network.</source>
+        <translation>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Vkax network.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4022,8 +4022,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     <message>
         <location line="+30"/>
         <location line="+13"/>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for dash transactions than the network can process.</source>
-        <translation>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for dash transactions than the network can process.</translation>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for vkax transactions than the network can process.</source>
+        <translation>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for vkax transactions than the network can process.</translation>
     </message>
     <message>
         <location line="-40"/>
@@ -4304,8 +4304,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+101"/>
-        <source>Warning: Invalid Dash address</source>
-        <translation>Warning: Invalid Dash address</translation>
+        <source>Warning: Invalid Vkax address</source>
+        <translation>Warning: Invalid Vkax address</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4337,8 +4337,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+18"/>
-        <source>The Dash address to send the payment to</source>
-        <translation>The Dash address to send the payment to</translation>
+        <source>The Vkax address to send the payment to</source>
+        <translation>The Vkax address to send the payment to</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4391,8 +4391,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Dash than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Dash than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Vkax than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Vkax than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4411,8 +4411,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+10"/>
-        <source>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Dash network.</source>
-        <translation>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Dash network.</translation>
+        <source>A message that was attached to the vkax: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Vkax network.</source>
+        <translation>A message that was attached to the vkax: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Vkax network.</translation>
     </message>
     <message>
         <location line="+433"/>
@@ -4478,13 +4478,13 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+35"/>
-        <source>You can sign messages/agreements with your addresses to prove you can receive Dash sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>You can sign messages/agreements with your addresses to prove you can receive Dash sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Vkax sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>You can sign messages/agreements with your addresses to prove you can receive Vkax sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</translation>
     </message>
     <message>
         <location line="+18"/>
-        <source>The Dash address to sign the message with</source>
-        <translation>The Dash address to sign the message with</translation>
+        <source>The Vkax address to sign the message with</source>
+        <translation>The Vkax address to sign the message with</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4526,8 +4526,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+14"/>
-        <source>Sign the message to prove you own this Dash address</source>
-        <translation>Sign the message to prove you own this Dash address</translation>
+        <source>Sign the message to prove you own this Vkax address</source>
+        <translation>Sign the message to prove you own this Vkax address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4557,8 +4557,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+21"/>
-        <source>The Dash address the message was signed with</source>
-        <translation>The Dash address the message was signed with</translation>
+        <source>The Vkax address the message was signed with</source>
+        <translation>The Vkax address the message was signed with</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -4574,8 +4574,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="+9"/>
-        <source>Verify the message to ensure it was signed with the specified Dash address</source>
-        <translation>Verify the message to ensure it was signed with the specified Dash address</translation>
+        <source>Verify the message to ensure it was signed with the specified Vkax address</source>
+        <translation>Verify the message to ensure it was signed with the specified Vkax address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5467,7 +5467,7 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
 </context>
 <context>
-    <name>dash-core</name>
+    <name>vkax-core</name>
     <message>
         <location filename="../dashstrings.cpp" line="+41"/>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
@@ -6482,8 +6482,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="-208"/>
-        <source>%s corrupt. Try using the wallet tool dash-wallet to salvage or restoring a backup.</source>
-        <translation>%s corrupt. Try using the wallet tool dash-wallet to salvage or restoring a backup.</translation>
+        <source>%s corrupt. Try using the wallet tool vkax-wallet to salvage or restoring a backup.</source>
+        <translation>%s corrupt. Try using the wallet tool vkax-wallet to salvage or restoring a backup.</translation>
     </message>
     <message>
         <location line="+12"/>

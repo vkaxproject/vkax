@@ -76,7 +76,7 @@ EXTENDED_SCRIPTS = [
 BASE_SCRIPTS = [
     # Scripts that are run by default.
     # Longest test should go first, to favor running tests in parallel
-    'feature_dip3_deterministicmns.py', # NOTE: needs dash_hash to pass
+    'feature_dip3_deterministicmns.py', # NOTE: needs vkax_hash to pass
     'feature_llmq_data_recovery.py',
     'feature_fee_estimation.py',
     'wallet_hd.py',
@@ -84,7 +84,7 @@ BASE_SCRIPTS = [
     # vv Tests less than 5m vv
     'mining_getblocktemplate_longpoll.py', # FIXME: "socket.error: [Errno 54] Connection reset by peer" on my Mac, same as https://github.com/bitcoin/bitcoin/issues/6651
     'feature_maxuploadtarget.py',
-    'feature_block.py', # NOTE: needs dash_hash to pass
+    'feature_block.py', # NOTE: needs vkax_hash to pass
     'rpc_fundrawtransaction.py',
     'rpc_fundrawtransaction_hd.py',
     'wallet_multiwallet.py --usecli',
@@ -98,20 +98,20 @@ BASE_SCRIPTS = [
     'wallet_dump.py',
     'wallet_listtransactions.py',
     'feature_multikeysporks.py',
-    'feature_llmq_signing.py', # NOTE: needs dash_hash to pass
-    'feature_llmq_signing.py --spork21', # NOTE: needs dash_hash to pass
-    'feature_llmq_chainlocks.py', # NOTE: needs dash_hash to pass
-    'feature_llmq_rotation.py', # NOTE: needs dash_hash to pass
-    'feature_llmq_connections.py', # NOTE: needs dash_hash to pass
-    'feature_llmq_simplepose.py', # NOTE: needs dash_hash to pass
-    'feature_llmq_is_cl_conflicts.py', # NOTE: needs dash_hash to pass
-    'feature_llmq_is_migration.py', # NOTE: needs dash_hash to pass
-    'feature_llmq_is_retroactive.py', # NOTE: needs dash_hash to pass
-    'feature_llmq_dkgerrors.py', # NOTE: needs dash_hash to pass
-    'feature_dip4_coinbasemerkleroots.py', # NOTE: needs dash_hash to pass
+    'feature_llmq_signing.py', # NOTE: needs vkax_hash to pass
+    'feature_llmq_signing.py --spork21', # NOTE: needs vkax_hash to pass
+    'feature_llmq_chainlocks.py', # NOTE: needs vkax_hash to pass
+    'feature_llmq_rotation.py', # NOTE: needs vkax_hash to pass
+    'feature_llmq_connections.py', # NOTE: needs vkax_hash to pass
+    'feature_llmq_simplepose.py', # NOTE: needs vkax_hash to pass
+    'feature_llmq_is_cl_conflicts.py', # NOTE: needs vkax_hash to pass
+    'feature_llmq_is_migration.py', # NOTE: needs vkax_hash to pass
+    'feature_llmq_is_retroactive.py', # NOTE: needs vkax_hash to pass
+    'feature_llmq_dkgerrors.py', # NOTE: needs vkax_hash to pass
+    'feature_dip4_coinbasemerkleroots.py', # NOTE: needs vkax_hash to pass
     # vv Tests less than 60s vv
-    'p2p_sendheaders.py', # NOTE: needs dash_hash to pass
-    'p2p_sendheaders_compressed.py', # NOTE: needs dash_hash to pass
+    'p2p_sendheaders.py', # NOTE: needs vkax_hash to pass
+    'p2p_sendheaders_compressed.py', # NOTE: needs vkax_hash to pass
     'wallet_zapwallettxes.py',
     'wallet_importmulti.py',
     'mempool_limit.py',
@@ -209,7 +209,7 @@ BASE_SCRIPTS = [
     'wallet_resendwallettransactions.py',
     'wallet_fallbackfee.py',
     'feature_minchainwork.py',
-    'p2p_unrequested_blocks.py', # NOTE: needs dash_hash to pass
+    'p2p_unrequested_blocks.py', # NOTE: needs vkax_hash to pass
     'feature_shutdown.py',
     'rpc_coinjoin.py',
     'rpc_masternode.py',
@@ -377,11 +377,11 @@ def main():
 def run_tests(*, test_list, src_dir, build_dir, tmpdir, jobs=1, enable_coverage=False, args=None, combined_logs_len=0,failfast=False, runs_ci=False):
     args = args or []
 
-    # Warn if dashd is already running (unix only)
+    # Warn if vkaxd is already running (unix only)
     try:
-        pidof_output = subprocess.check_output(["pidof", "dashd"])
+        pidof_output = subprocess.check_output(["pidof", "vkaxd"])
         if not (pidof_output is None or pidof_output == b''):
-            print("%sWARNING!%s There is already a dashd process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
+            print("%sWARNING!%s There is already a vkaxd process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
     except (OSError, subprocess.SubprocessError):
         pass
 
@@ -646,7 +646,7 @@ class RPCCoverage():
     Coverage calculation works by having each test script subprocess write
     coverage files into a particular directory. These files contain the RPC
     commands invoked during testing, as well as a complete listing of RPC
-    commands per `dash-cli help` (`rpc_interface.txt`).
+    commands per `vkax-cli help` (`rpc_interface.txt`).
 
     After all tests complete, the commands run are combined and diff'd against
     the complete list to calculate uncovered RPC commands.

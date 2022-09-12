@@ -256,7 +256,7 @@ extern const char *GETCFCHECKPT;
  */
 extern const char *CFCHECKPT;
 
-// Dash message types
+// Vkax message types
 // NOTE: do NOT declare non-implmented here, we don't want them to be exposed to the outside
 // TODO: add description
 extern const char *LEGACYTXLOCKREQUEST; // only present for backwards compatibility
@@ -312,14 +312,14 @@ enum ServiceFlags : uint64_t {
     // Nothing
     NODE_NONE = 0,
     // NODE_NETWORK means that the node is capable of serving the complete block chain. It is currently
-    // set by all Dash Core non pruned nodes, and is unset by SPV clients or other light clients.
+    // set by all Vkax Core non pruned nodes, and is unset by SPV clients or other light clients.
     NODE_NETWORK = (1 << 0),
     // NODE_GETUTXO means the node is capable of responding to the getutxo protocol request.
-    // Dash Core does not support this but a patch set called Bitcoin XT does.
+    // Vkax Core does not support this but a patch set called Bitcoin XT does.
     // See BIP 64 for details on how this is implemented.
     NODE_GETUTXO = (1 << 1),
     // NODE_BLOOM means the node is capable and willing to handle bloom-filtered connections.
-    // Dash Core nodes used to support this by default, without advertising this bit,
+    // Vkax Core nodes used to support this by default, without advertising this bit,
     // but no longer do as of protocol version 70201 (= NO_BLOOM_VERSION)
     NODE_BLOOM = (1 << 2),
     // NODE_COMPACT_FILTERS means the node will service basic block filter requests.
@@ -444,12 +444,12 @@ enum GetDataMsg {
     MSG_BLOCK = 2,
     // The following can only occur in getdata. Invs always use TX or BLOCK.
     MSG_FILTERED_BLOCK = 3,  //!< Defined in BIP37
-    // Dash message types
+    // Vkax message types
     // NOTE: declare non-implmented here, we must keep this enum consistent and backwards compatible
     MSG_LEGACY_TXLOCK_REQUEST = 4,
     /* MSG_TXLOCK_VOTE = 5, Legacy InstantSend and not used anymore  */
     MSG_SPORK = 6,
-    /* 7 - 15 were used in old Dash versions and were mainly budget and MN broadcast/ping related*/
+    /* 7 - 15 were used in old Vkax versions and were mainly budget and MN broadcast/ping related*/
     MSG_DSTX = 16,
     MSG_GOVERNANCE_OBJECT = 17,
     MSG_GOVERNANCE_OBJECT_VOTE = 18,

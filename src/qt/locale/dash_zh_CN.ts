@@ -74,11 +74,11 @@
         <translation>正在接收地址</translation>
     </message>
     <message>
-        <source>These are your Dash addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your Vkax addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation>这些是您要付款过去的Dash地址。在付款之前，务必要检查金额和收款地址是否正确。</translation>
     </message>
     <message>
-        <source>These are your Dash addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
+        <source>These are your Vkax addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
         <translation>这些是用于接收付款的Dash地址. 使用接收标签中的 '创建新接收地址' 按钮来创建新地址.</translation>
     </message>
     <message>
@@ -227,7 +227,7 @@
         <translation>确认加密钱包</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR DASH&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR VKAX&lt;/b&gt;!</source>
         <translation>警告:如果把钱包加​​密后又忘记密码，您就会从此&lt;b&gt;失去所有的Dash&lt;/b&gt;！</translation>
     </message>
     <message>
@@ -324,7 +324,7 @@
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <source>A fatal error occurred. Dash Core can no longer continue safely and will quit.</source>
+        <source>A fatal error occurred. Vkax Core can no longer continue safely and will quit.</source>
         <translation>发生严重错误。Dash Core钱包不再能安全地运行下去，程序将会关闭。</translation>
     </message>
     <message>
@@ -340,7 +340,7 @@
         <translation>发送(&amp;S)</translation>
     </message>
     <message>
-        <source>Send coins to a Dash address</source>
+        <source>Send coins to a Vkax address</source>
         <translation>发送币至Dash地址</translation>
     </message>
     <message>
@@ -348,7 +348,7 @@
         <translation>接收(&amp;R)</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and vkax: URIs)</source>
         <translation>请求付款(生成二维码和Dash付款协议的URI)</translation>
     </message>
     <message>
@@ -436,7 +436,7 @@
         <translation>关于 %1</translation>
     </message>
     <message>
-        <source>Send %1 funds to a Dash address</source>
+        <source>Send %1 funds to a Vkax address</source>
         <translation>发送%1资金至一个Dash地址</translation>
     </message>
     <message>
@@ -492,7 +492,7 @@
         <translation>消息签名(&amp;M)...</translation>
     </message>
     <message>
-        <source>Sign messages with your Dash addresses to prove you own them</source>
+        <source>Sign messages with your Vkax addresses to prove you own them</source>
         <translation>使用您的Dash地址进行消息签名以证明对此地址的所有权</translation>
     </message>
     <message>
@@ -500,7 +500,7 @@
         <translation>验证消息(&amp;V)...</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Dash addresses</source>
+        <source>Verify messages to ensure they were signed with specified Vkax addresses</source>
         <translation>验证消息是用来确定此消息是用指定的Dash地址签发的</translation>
     </message>
     <message>
@@ -572,7 +572,7 @@
         <translation>打开 &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a dash: URI or payment request</source>
+        <source>Open a vkax: URI or payment request</source>
         <translation>打开一个Dash协议的URI或付款请求</translation>
     </message>
     <message>
@@ -580,7 +580,7 @@
         <translation>命令行选项(&amp;C)</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Dash command-line options</source>
+        <source>Show the %1 help message to get a list with possible Vkax command-line options</source>
         <translation>显示 %1 帮助信息，获取可用命令行选项列表</translation>
     </message>
     <message>
@@ -646,7 +646,7 @@
         <translation>查看治理提案</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Dash network</source>
+        <source>%n active connection(s) to Vkax network</source>
         <translation><numerusform>%n个有效的Dash网络连接</numerusform></translation>
     </message>
     <message>
@@ -1096,7 +1096,7 @@
         <translation>编辑发送地址</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Dash address.</source>
+        <source>The entered address "%1" is not a valid Vkax address.</source>
         <translation>输入的地址“%1”不是有效的Dash地址。</translation>
     </message>
     <message>
@@ -1185,8 +1185,8 @@
         <translation>%1信息</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Dash in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 DASH, 0.01 DASH, 0.1 DASH, 1 DASH and 10 DASH -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
-        <translation>&lt;h3&gt;%1基础知识&lt;/h3&gt;%1通过隐藏您的资金来源为您提供真正的财务隐私。您的钱包中所有的Dash都由不同的“输入”组成，您可以将其视为分开的离散硬币。&lt;br&gt;%1使用创新的方法将您的输入与其他两个人的输入相结合，而过程中不会让您的Dash离开您的钱包。每时每刻，您仍然控制着您的钱。&lt;hr&gt;&lt;b&gt;%1的运作原理如下：&lt;/b&gt;&lt;ol type="1"&gt;&lt;li&gt;%1首先将您的交易分柝成多个标准面额的交易。这些标准面额分别为0.001 DASH，0.01 DASH，0.1 DASH，1 DASH和10 DASH --有点像您每天使用的纸币。&lt;/li&gt;&lt;li&gt;您的钱包然后发送请求到网络上有专门配置的软件节点，称为“主节点”。这些主节点会收到您希望混合一些资金的通知。没有可识别的信息发送到主节点，所以他们永远不会知道您是“谁”。&lt;li&gt;当另外两个人发送类似的消息时，表示希望混合相同的面额的话，混合会话就会开始。相关的主节点会混合这些输入，并指示所有三个用户的钱包将已经转换了输入的交易支付给自己。您的钱包直接支付给自己，但是付给不同的位址（称之为找零地址）。&lt;/li&gt;&lt;li&gt;为了完全掩盖您的资金来源，您的钱包必须以每个面额来重复此过程数次。每次这个过程完成后，都称之为一个“循环”。每个循环的%1都会令确定您的资金来源的工作倍加困难。&lt;/li&gt;&lt;li&gt;这种混合过程发生在后台，而不需要您进行任何操作。当您想进行交易时，您的资金将已被混币处理。不需再花额外的时间等待。&lt;/li&gt;&lt;/ol&gt;&lt;hr&gt;重要：&lt;b&gt;您的钱包只能拥有1000个“找零地址”。每次混合事件发生时，最多会使用9个找零地址。这意味着这1000个地址可以容许100次的混合事件。当其的中900个已经被使用后，您的钱包必须创建更多的地址。如果您启用了自动备份，则只能够这样做。&lt;br&gt;因此，禁用备份的用户也将禁用%1。&lt;hr&gt;如欲了解更多信息请参阅&lt;a style="%2" href="%3"&gt;%1文档&lt;/a&gt;。</translation>
+        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Vkax in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 VKAX, 0.01 VKAX, 0.1 VKAX, 1 VKAX and 10 VKAX -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
+        <translation>&lt;h3&gt;%1基础知识&lt;/h3&gt;%1通过隐藏您的资金来源为您提供真正的财务隐私。您的钱包中所有的Dash都由不同的“输入”组成，您可以将其视为分开的离散硬币。&lt;br&gt;%1使用创新的方法将您的输入与其他两个人的输入相结合，而过程中不会让您的Dash离开您的钱包。每时每刻，您仍然控制着您的钱。&lt;hr&gt;&lt;b&gt;%1的运作原理如下：&lt;/b&gt;&lt;ol type="1"&gt;&lt;li&gt;%1首先将您的交易分柝成多个标准面额的交易。这些标准面额分别为0.001 DASH，0.01 DASH，0.1 DASH，1 DASH和10 VKAX --有点像您每天使用的纸币。&lt;/li&gt;&lt;li&gt;您的钱包然后发送请求到网络上有专门配置的软件节点，称为“主节点”。这些主节点会收到您希望混合一些资金的通知。没有可识别的信息发送到主节点，所以他们永远不会知道您是“谁”。&lt;li&gt;当另外两个人发送类似的消息时，表示希望混合相同的面额的话，混合会话就会开始。相关的主节点会混合这些输入，并指示所有三个用户的钱包将已经转换了输入的交易支付给自己。您的钱包直接支付给自己，但是付给不同的位址（称之为找零地址）。&lt;/li&gt;&lt;li&gt;为了完全掩盖您的资金来源，您的钱包必须以每个面额来重复此过程数次。每次这个过程完成后，都称之为一个“循环”。每个循环的%1都会令确定您的资金来源的工作倍加困难。&lt;/li&gt;&lt;li&gt;这种混合过程发生在后台，而不需要您进行任何操作。当您想进行交易时，您的资金将已被混币处理。不需再花额外的时间等待。&lt;/li&gt;&lt;/ol&gt;&lt;hr&gt;重要：&lt;b&gt;您的钱包只能拥有1000个“找零地址”。每次混合事件发生时，最多会使用9个找零地址。这意味着这1000个地址可以容许100次的混合事件。当其的中900个已经被使用后，您的钱包必须创建更多的地址。如果您启用了自动备份，则只能够这样做。&lt;br&gt;因此，禁用备份的用户也将禁用%1。&lt;hr&gt;如欲了解更多信息请参阅&lt;a style="%2" href="%3"&gt;%1文档&lt;/a&gt;。</translation>
     </message>
 </context>
 <context>
@@ -1232,7 +1232,7 @@
         <translation>会在此目录中存储约 %1 GB 的数据。</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Dash block chain.</source>
+        <source>%1 will download and store a copy of the Vkax block chain.</source>
         <translation>%1 将会下载并存储Dash区块链.</translation>
     </message>
     <message>
@@ -1386,11 +1386,11 @@
         <translation>表单</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Dash network, as detailed below.</source>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Vkax network, as detailed below.</source>
         <translation>最近的交易可能尚未显示，因此您的钱包的余额可能不正确。一旦您的钱包完成与Dash网络的同步，这个信息将会修正，如下所述。</translation>
     </message>
     <message>
-        <source>Attempting to spend Dash that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <source>Attempting to spend Vkax that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
         <translation>假如您正在尝试花费尚未显示出来的Dash，这个交易将不会被网络所接受。</translation>
     </message>
     <message>
@@ -1587,7 +1587,7 @@
         <translation>目标余额</translation>
     </message>
     <message>
-        <source>Automatically open the Dash Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <source>Automatically open the Vkax Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation>自动在路由器打开Dash Core客户端端口。此项只在路由器支持UPnP且开启时有效。</translation>
     </message>
     <message>
@@ -1607,7 +1607,7 @@
         <translation>允许连入连接</translation>
     </message>
     <message>
-        <source>Connect to the Dash network through a SOCKS5 proxy.</source>
+        <source>Connect to the Vkax network through a SOCKS5 proxy.</source>
         <translation>通过SOCKS5代理连接Dash网络。</translation>
     </message>
     <message>
@@ -1715,7 +1715,7 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Dash network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <source>Connect to the Vkax network through a separate SOCKS5 proxy for Tor hidden services.</source>
         <translation>通过另一个SOCKS5代理服务器作为Tor隐藏服务来连接到Dash网络。</translation>
     </message>
     <message>
@@ -1744,9 +1744,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/vkax/</source>
         <translation>缺少相关语言或翻译不完整？请到这里协助翻译：
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/vkax/</translation>
     </message>
     <message>
         <source>&amp;Unit to show amounts in:</source>
@@ -1812,7 +1812,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>表单</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Dash network after a connection is established, but this process has not completed yet.</source>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Vkax network after a connection is established, but this process has not completed yet.</source>
         <translation>显示的信息也许已过期。当与Dash网络连接后钱包程序会自动同步，但现在还未完成。</translation>
     </message>
     <message>
@@ -1892,8 +1892,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>数量与循环次数：</translation>
     </message>
     <message>
-        <source>0 DASH / 0 Rounds</source>
-        <translation>0 Dash / 0 循环数</translation>
+        <source>0 VKAX / 0 Rounds</source>
+        <translation>0 Vkax / 0 循环数</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -2035,7 +2035,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>支付请求出错</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
+        <source>Cannot start vkax: click-to-pay handler</source>
         <translation>无法启动Dash程序：click-to-pay handler</translation>
     </message>
     <message>
@@ -2043,8 +2043,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>URI 处理</translation>
     </message>
     <message>
-        <source>'dash://' is not a valid URI. Use 'dash:' instead.</source>
-        <translation>'dash://' 不是一个有效链接. 请使用'dash:'</translation>
+        <source>'vkax://' is not a valid URI. Use 'vkax:' instead.</source>
+        <translation>'vkax://' 不是一个有效链接. 请使用'vkax:'</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -2059,7 +2059,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>无效的付款地址 %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid Dash address or malformed URI parameters.</source>
+        <source>URI cannot be parsed! This can be caused by an invalid Vkax address or malformed URI parameters.</source>
         <translation>URI不能被解析! 原因可能是无效的Dash地址或URI参数格式错误。</translation>
     </message>
     <message>
@@ -2295,7 +2295,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>金额</translation>
     </message>
     <message>
-        <source>Enter a Dash address (e.g. %1)</source>
+        <source>Enter a Vkax address (e.g. %1)</source>
         <translation>输入一个Dash地址(例如 %1)</translation>
     </message>
     <message>
@@ -2878,7 +2878,7 @@ https://www.transifex.com/projects/p/dash/</translation>
 <context>
     <name>ReceiveCoinsDialog</name>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Dash network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Vkax network.</source>
         <translation>附加在付款要求中的讯息，可以不填，打开要求内容时会显示。注意：这个讯息不会随着付款送到Dash网路上。</translation>
     </message>
     <message>
@@ -2890,7 +2890,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>可为新建的收款地址添加一个可选标签。</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Dash network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Vkax network.</source>
         <translation>附加在付款要求中的讯息，可以不填，打开要求内容时会显示。&lt;br&gt;注意：这个讯息不会随着付款送到Dash网路上。</translation>
     </message>
     <message>
@@ -3127,7 +3127,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>如果自定手续费设定为1000 duffs，而交易信息只有250字节的话，那么选择"每千字节"就只会支付250 duffs的手续费，&lt;br /&gt;而"至少"会支付1000 duffs。但如果交易信息大于一千字节,那么两者都要按每千字节付费。</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for dash transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for vkax transactions than the network can process.</source>
         <translation>当交易量少于区块可容纳的空间时，只需支付最低手续费。&lt;br /&gt;但当交易量的需求增长到超过总体网络可处理的量时，可能会造成一笔一直不被确认的交易。</translation>
     </message>
     <message>
@@ -3343,7 +3343,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation><numerusform>预计在%n 个区块内开始确认。</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid Dash address</source>
+        <source>Warning: Invalid Vkax address</source>
         <translation>警告：无效的Dash地址</translation>
     </message>
     <message>
@@ -3370,7 +3370,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>付给(&amp;T)：</translation>
     </message>
     <message>
-        <source>The Dash address to send the payment to</source>
+        <source>The Vkax address to send the payment to</source>
         <translation>选择发款地址</translation>
     </message>
     <message>
@@ -3410,7 +3410,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>在所选单位中发送的金额</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Dash than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Vkax than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
         <translation>手续费将从发送金额中扣除。接收者将收到的Dash金额将会比您在金额字段中输入的金额为少。如果选择了多个收款人，该费用将会被平均摊分。</translation>
     </message>
     <message>
@@ -3426,7 +3426,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>消息：</translation>
     </message>
     <message>
-        <source>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Dash network.</source>
+        <source>A message that was attached to the vkax: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Vkax network.</source>
         <translation>附加在Dash付款协议URI中的信息，会和交易内容一并存储，可供您参考。提示：此信息不会发送到Dash网络上。</translation>
     </message>
     <message>
@@ -3479,11 +3479,11 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>签名消息(&amp;S)</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive Dash sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Vkax sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>您可以用自己的地址签署信息/协议，来证明您对地址的所有权。但是请小心，不要签署语意含糊不清的内容，因为钓鱼式诈骗可能会用骗您签署的手法来冒充是您。只有在语句中的细节您都同意时才签署。</translation>
     </message>
     <message>
-        <source>The Dash address to sign the message with</source>
+        <source>The Vkax address to sign the message with</source>
         <translation>对此地址进行签名</translation>
     </message>
     <message>
@@ -3515,7 +3515,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>复制当前签名至剪切板</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Dash address</source>
+        <source>Sign the message to prove you own this Vkax address</source>
         <translation>签署信息证明您拥有此Dash地址</translation>
     </message>
     <message>
@@ -3539,7 +3539,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>请在下面输入接收者地址、消息（确保换行符、空格符、制表符等完全相同）和签名以验证消息。请仔细核对签名信息，以提防中间人攻击。请注意，这只是证明接收方签名的地址，它不能证明任何交易！</translation>
     </message>
     <message>
-        <source>The Dash address the message was signed with</source>
+        <source>The Vkax address the message was signed with</source>
         <translation>已签名的地址</translation>
     </message>
     <message>
@@ -3551,7 +3551,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>签名消息时所用的签名</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Dash address</source>
+        <source>Verify the message to ensure it was signed with the specified Vkax address</source>
         <translation>验证信息用来确保此被签署信息对应相对的Dash地址</translation>
     </message>
     <message>
@@ -4249,7 +4249,7 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
 </context>
 <context>
-    <name>dash-core</name>
+    <name>vkax-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>错误：监听外来连接失败(监听回馈错误 %s)</translation>
@@ -5061,8 +5061,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>上一次队列才被创建.</translation>
     </message>
     <message>
-        <source>%s corrupt. Try using the wallet tool dash-wallet to salvage or restoring a backup.</source>
-        <translation>%s 已损坏. 请尝试使用钱包工具 dash-wallet 来挽救或恢复备份.</translation>
+        <source>%s corrupt. Try using the wallet tool vkax-wallet to salvage or restoring a backup.</source>
+        <translation>%s 已损坏. 请尝试使用钱包工具 vkax-wallet 来挽救或恢复备份.</translation>
     </message>
     <message>
         <source>Can't generate a change-address key. No keys in the internal keypool and can't generate any keys.</source>

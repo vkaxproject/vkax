@@ -6,17 +6,17 @@ reset-files.bash
 *.tar.gz
 
 *.exe
-src/dash
-src/dashd
-src/dash-cli
-src/dash-tx
-src/dash-wallet
+src/vkax
+src/vkaxd
+src/vkax-cli
+src/vkax-tx
+src/vkax-wallet
 src/test/fuzz
 !src/test/fuzz/*.*
-src/test/test_dash
-src/qt/test/test_dash-qt
+src/test/test_vkax
+src/qt/test/test_vkax-qt
 src/qt/res/css/colors/*
-src/bench/bench_dash
+src/bench/bench_vkax
 
 # autoreconf
 Makefile.in
@@ -93,8 +93,8 @@ libconftest.dylib*
 *.qm
 Makefile
 !depends/Makefile
-dash-qt
-Dash-Qt.app
+vkax-qt
+Vkax-Qt.app
 background.tiff*
 !/depends/Makefile
 
@@ -103,7 +103,7 @@ Makefile.am.user
 
 # Unit-tests
 Makefile.test
-dash-qt_test
+vkax-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -141,9 +141,9 @@ src/qt/dash-qt.bash
 qa/pull-tester/tests-config.sh
 
 #development symlinks
-dash-cli
-dashd
-dash-qt
+vkax-cli
+vkaxd
+vkax-qt
 make
 
 /docker/bin

@@ -55,11 +55,11 @@
     </message>
     <message>
         <source>Choose the address to send coins to</source>
-        <translation>Kies het adres om Dash naar over te maken</translation>
+        <translation>Kies het adres om Vkax naar over te maken</translation>
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
-        <translation>Kies het adres om Dash mee te ontvangen</translation>
+        <translation>Kies het adres om Vkax mee te ontvangen</translation>
     </message>
     <message>
         <source>C&amp;hoose</source>
@@ -74,12 +74,12 @@
         <translation>Ontvangstadressen</translation>
     </message>
     <message>
-        <source>These are your Dash addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Dit zijn uw Dash adressen om betalingen mee uit te voeren. Controleer altijd het bedrag en ontvangstadres voordat u uw Dash verzendt.</translation>
+        <source>These are your Vkax addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Dit zijn uw Vkax adressen om betalingen mee uit te voeren. Controleer altijd het bedrag en ontvangstadres voordat u uw Vkax verzendt.</translation>
     </message>
     <message>
-        <source>These are your Dash addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
-        <translation>Dit zijn je Dash adressen voor het ontvangen van betalingen. Gebruik de knop 'Nieuw ontvangstadres maken' in het tabblad Ontvangen om nieuwe adressen aan te maken.</translation>
+        <source>These are your Vkax addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
+        <translation>Dit zijn je Vkax adressen voor het ontvangen van betalingen. Gebruik de knop 'Nieuw ontvangstadres maken' in het tabblad Ontvangen om nieuwe adressen aan te maken.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -227,8 +227,8 @@
         <translation>Bevestig de versleuteling van uw portemonnee</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR DASH&lt;/b&gt;!</source>
-        <translation>Waarschuwing: Als u uw portemonnee versleuteld en uw wachtwoord kwijt raakt zult u &lt;b&gt;AL UW DASH KWIJTRAKEN!&lt;/b&gt;</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR VKAX&lt;/b&gt;!</source>
+        <translation>Waarschuwing: Als u uw portemonnee versleuteld en uw wachtwoord kwijt raakt zult u &lt;b&gt;AL UW VKAX KWIJTRAKEN!&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -324,8 +324,8 @@
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <source>A fatal error occurred. Dash Core can no longer continue safely and will quit.</source>
-        <translation>Er heeft zich een fatale fout voorgedaan. Dash Core kan niet veilig worden voortgezet en zal worden afgesloten.</translation>
+        <source>A fatal error occurred. Vkax Core can no longer continue safely and will quit.</source>
+        <translation>Er heeft zich een fatale fout voorgedaan. Vkax Core kan niet veilig worden voortgezet en zal worden afgesloten.</translation>
     </message>
     <message>
         <source>&amp;Overview</source>
@@ -340,16 +340,16 @@
         <translation>&amp;Verzenden</translation>
     </message>
     <message>
-        <source>Send coins to a Dash address</source>
-        <translation>Verstuur Dash naar een Dashadres</translation>
+        <source>Send coins to a Vkax address</source>
+        <translation>Verstuur Vkax naar een Dashadres</translation>
     </message>
     <message>
         <source>&amp;Receive</source>
         <translation>&amp;Ontvangen</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
-        <translation>Vraag betaling aan (genereert QR-codes en Dash: URI's)</translation>
+        <source>Request payments (generates QR codes and vkax: URIs)</source>
+        <translation>Vraag betaling aan (genereert QR-codes en Vkax: URI's)</translation>
     </message>
     <message>
         <source>&amp;Sending addresses</source>
@@ -436,8 +436,8 @@
         <translation>&amp;Over %1</translation>
     </message>
     <message>
-        <source>Send %1 funds to a Dash address</source>
-        <translation>Stuur %1 vergoeding naar een Dash-adres</translation>
+        <source>Send %1 funds to a Vkax address</source>
+        <translation>Stuur %1 vergoeding naar een Vkax-adres</translation>
     </message>
     <message>
         <source>Modify configuration options for %1</source>
@@ -492,7 +492,7 @@
         <translation>Onderteken &amp;bericht</translation>
     </message>
     <message>
-        <source>Sign messages with your Dash addresses to prove you own them</source>
+        <source>Sign messages with your Vkax addresses to prove you own them</source>
         <translation>Onderteken berichten met uw Dashadressen om te bewijzen dat u deze adressen bezit.</translation>
     </message>
     <message>
@@ -500,7 +500,7 @@
         <translation>&amp;Verifieer handtekening</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Dash addresses</source>
+        <source>Verify messages to ensure they were signed with specified Vkax addresses</source>
         <translation>Verifieer handtekeningen om zeker te zijn dat de berichten zijn ondertekend met de gespecificeerde Dashadressen.</translation>
     </message>
     <message>
@@ -572,16 +572,16 @@
         <translation>Open &amp;URI</translation>
     </message>
     <message>
-        <source>Open a dash: URI or payment request</source>
-        <translation>Open een dash: URI of betalingsaanvraag</translation>
+        <source>Open a vkax: URI or payment request</source>
+        <translation>Open een vkax: URI of betalingsaanvraag</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Command-line opties</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Dash command-line options</source>
-        <translation>Toon het %1 hulpbericht om een lijst te krijgen met mogelijke Dash commandoregelopties</translation>
+        <source>Show the %1 help message to get a list with possible Vkax command-line options</source>
+        <translation>Toon het %1 hulpbericht om een lijst te krijgen met mogelijke Vkax commandoregelopties</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -646,8 +646,8 @@
         <translation>Governance voorstellen bekijken</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Dash network</source>
-        <translation><numerusform>%n actieve verbinding met het Dash netwerk</numerusform><numerusform>%n actieve verbindingen met het Dash netwerk</numerusform></translation>
+        <source>%n active connection(s) to Vkax network</source>
+        <translation><numerusform>%n actieve verbinding met het Vkax netwerk</numerusform><numerusform>%n actieve verbindingen met het Vkax netwerk</numerusform></translation>
     </message>
     <message>
         <source>Network activity disabled</source>
@@ -1096,8 +1096,8 @@
         <translation>Bewerk verzendadres</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Dash address.</source>
-        <translation>Het ingevoerde adres "%1" is geen geldig Dash adres.</translation>
+        <source>The entered address "%1" is not a valid Vkax address.</source>
+        <translation>Het ingevoerde adres "%1" is geen geldig Vkax adres.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -1185,8 +1185,8 @@
         <translation>%1 Informatie</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Dash in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 DASH, 0.01 DASH, 0.1 DASH, 1 DASH and 10 DASH -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
-        <translation>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 geeft u een echte financiële privacy door de oorsprong van uw geld te verschuilen. Alle Dash in uw portefeuille bestaat uit verschillende "inputs" die u kunt beschouwen als afzonderlijke, discrete munten.&lt;br&gt; %1 maakt gebruik van een innovatief proces om uw invoer te mengen met de invoer van twee andere mensen, zonder dat uw munten ooit uw portemonnee verlaten . U behoudt de controle over uw geld te allen tijde. &lt;hr&gt; &lt;b&gt;Het %1-proces werkt als volgt: &lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begint door uw transactie-inputs in de standaard denominaties te breken. Deze denominaties zijn 0,001 DASH, 0,01 DASH, 0,1 DASH, 1 DASH en 10 DASH - zoals het papiergeld dat u elke dag gebruikt.&lt;/li&gt; &lt;li&gt;Uw portemonnee stuurt dan verzoeken naar speciaal geconfigureerde software nodes op het netwerk, genaamd "masternodes." Deze masternodes worden dan op de hoogte gesteld dat u geïnteresseerd bent in het mengen van een bepaalde denominaties. Er wordt geen identificeerbare informatie naar de masternodes gestuurd, zodat ze nooit weten wie u bent.&lt;/li&gt; &lt;li&gt;Wanneer twee andere mensen dezelfde berichten sturen, die aanduiden dat ze dezelfde denominaties willen vermengen, begint een mengsessie. De masternode mengt alle invoeren en instrueert de portefeuilles van alle drie de gebruikers om de nu getransformeerde invoer aan zichzelf terug te betalen. Uw portemonnee betaalt die denominaties rechtstreeks naar zichzelf, maar met een ander adres (een wijzigingadres genoemd).&lt;/li&gt; &lt;li&gt;Om uw geld volledig te verschuilen, moet uw portemonnee dit proces een aantal keren herhalen voor alle denominaties. Elke keer dat het proces wordt voltooid, heet dit een 'ronde'. Elke ronde van %1 maakt het exponentieel moeilijker om te bepalen waar uw geld van afkomstig is.&lt;/li&gt; &lt;li&gt;Dit mengproces gebeurt op de achtergrond zonder enige interventie van uw kant. Wanneer u een transactie wenst uit te voeren, is uw saldo al geanonimiseerd. Er is geen extra wachttijd nodig.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;BELANGRIJK:&lt;/b&gt; Uw portemonnee bevat slechts 1000 van deze "wijzigingsadressen". Elke keer dat er een mengsessie plaatsvindt, worden maximaal 9 van uw adressen opgebruikt. Dit betekent dat deze 1000 adressen voor ongeveer 100 mengsessies volstaat. Wanneer er 900 zijn verbruikt, moet uw portemonnee meer adressen aanmaken. Dit kan alleen maar als u automatische back-ups hebt ingeschakeld.&lt;br&gt; Daarom zodra gebruikers die back-ups hebben uitgeschakeld, ook %1 is uitgeschakeld. &lt;hr&gt;Voor meer informatie zie de &lt;a style="%2" href="%3"&gt;%1 documentatie&lt;/a&gt;.</translation>
+        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Vkax in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 VKAX, 0.01 VKAX, 0.1 VKAX, 1 VKAX and 10 VKAX -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
+        <translation>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 geeft u een echte financiële privacy door de oorsprong van uw geld te verschuilen. Alle Vkax in uw portefeuille bestaat uit verschillende "inputs" die u kunt beschouwen als afzonderlijke, discrete munten.&lt;br&gt; %1 maakt gebruik van een innovatief proces om uw invoer te mengen met de invoer van twee andere mensen, zonder dat uw munten ooit uw portemonnee verlaten . U behoudt de controle over uw geld te allen tijde. &lt;hr&gt; &lt;b&gt;Het %1-proces werkt als volgt: &lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begint door uw transactie-inputs in de standaard denominaties te breken. Deze denominaties zijn 0,001 VKAX, 0,01 VKAX, 0,1 VKAX, 1 VKAX en 10 VKAX - zoals het papiergeld dat u elke dag gebruikt.&lt;/li&gt; &lt;li&gt;Uw portemonnee stuurt dan verzoeken naar speciaal geconfigureerde software nodes op het netwerk, genaamd "masternodes." Deze masternodes worden dan op de hoogte gesteld dat u geïnteresseerd bent in het mengen van een bepaalde denominaties. Er wordt geen identificeerbare informatie naar de masternodes gestuurd, zodat ze nooit weten wie u bent.&lt;/li&gt; &lt;li&gt;Wanneer twee andere mensen dezelfde berichten sturen, die aanduiden dat ze dezelfde denominaties willen vermengen, begint een mengsessie. De masternode mengt alle invoeren en instrueert de portefeuilles van alle drie de gebruikers om de nu getransformeerde invoer aan zichzelf terug te betalen. Uw portemonnee betaalt die denominaties rechtstreeks naar zichzelf, maar met een ander adres (een wijzigingadres genoemd).&lt;/li&gt; &lt;li&gt;Om uw geld volledig te verschuilen, moet uw portemonnee dit proces een aantal keren herhalen voor alle denominaties. Elke keer dat het proces wordt voltooid, heet dit een 'ronde'. Elke ronde van %1 maakt het exponentieel moeilijker om te bepalen waar uw geld van afkomstig is.&lt;/li&gt; &lt;li&gt;Dit mengproces gebeurt op de achtergrond zonder enige interventie van uw kant. Wanneer u een transactie wenst uit te voeren, is uw saldo al geanonimiseerd. Er is geen extra wachttijd nodig.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;BELANGRIJK:&lt;/b&gt; Uw portemonnee bevat slechts 1000 van deze "wijzigingsadressen". Elke keer dat er een mengsessie plaatsvindt, worden maximaal 9 van uw adressen opgebruikt. Dit betekent dat deze 1000 adressen voor ongeveer 100 mengsessies volstaat. Wanneer er 900 zijn verbruikt, moet uw portemonnee meer adressen aanmaken. Dit kan alleen maar als u automatische back-ups hebt ingeschakeld.&lt;br&gt; Daarom zodra gebruikers die back-ups hebben uitgeschakeld, ook %1 is uitgeschakeld. &lt;hr&gt;Voor meer informatie zie de &lt;a style="%2" href="%3"&gt;%1 documentatie&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1232,8 +1232,8 @@
         <translation>Gemiddeld %1 GB aan data zal worden opgeslagen in deze map.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Dash block chain.</source>
-        <translation>%1 zal een kopie van de blokketen van Dash downloaden en opslaan.</translation>
+        <source>%1 will download and store a copy of the Vkax block chain.</source>
+        <translation>%1 zal een kopie van de blokketen van Vkax downloaden en opslaan.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1386,12 +1386,12 @@
         <translation>Vorm</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Dash network, as detailed below.</source>
-        <translation>Recente transacties zijn mogelijk nog niet zichtbaar. De balans van de portemonnee is daarom mogelijk niet correct. Deze informatie is correct van zodra de synchronisatie met het Dash-netwerk werd voltooid, zoals onderaan beschreven.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Vkax network, as detailed below.</source>
+        <translation>Recente transacties zijn mogelijk nog niet zichtbaar. De balans van de portemonnee is daarom mogelijk niet correct. Deze informatie is correct van zodra de synchronisatie met het Vkax-netwerk werd voltooid, zoals onderaan beschreven.</translation>
     </message>
     <message>
-        <source>Attempting to spend Dash that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Pogingen om Dash uit te geven die betrokken zijn bij nog-niet-weergegeven transacties zullen niet worden geaccepteerd door het netwerk</translation>
+        <source>Attempting to spend Vkax that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Pogingen om Vkax uit te geven die betrokken zijn bij nog-niet-weergegeven transacties zullen niet worden geaccepteerd door het netwerk</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1587,8 +1587,8 @@
         <translation>Target Saldo</translation>
     </message>
     <message>
-        <source>Automatically open the Dash Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Open automatisch de Dash client poort op de router. Dit werkt alleen als uw router UPnP ondersteunt en dit is ingeschakeld.</translation>
+        <source>Automatically open the Vkax Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Open automatisch de Vkax client poort op de router. Dit werkt alleen als uw router UPnP ondersteunt en dit is ingeschakeld.</translation>
     </message>
     <message>
         <source>Automatically open the Bitcoin client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
@@ -1607,8 +1607,8 @@
         <translation>Sta inkomen&amp;de verbindingen toe</translation>
     </message>
     <message>
-        <source>Connect to the Dash network through a SOCKS5 proxy.</source>
-        <translation>Verbind met het Dash netwerk via een SOCKS proxy.</translation>
+        <source>Connect to the Vkax network through a SOCKS5 proxy.</source>
+        <translation>Verbind met het Vkax netwerk via een SOCKS proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1715,7 +1715,7 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Dash network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <source>Connect to the Vkax network through a separate SOCKS5 proxy for Tor hidden services.</source>
         <translation>Maak verbinding met Dashnetwerk door een aparte SOCKS5-proxy voor verborgen diensten van Tor.</translation>
     </message>
     <message>
@@ -1744,9 +1744,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/vkax/</source>
         <translation>Is een een taal te kort of een vertaling onvolledig ? Help de vertaling hier: 
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/vkax/</translation>
     </message>
     <message>
         <source>&amp;Unit to show amounts in:</source>
@@ -1812,8 +1812,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Vorm</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Dash network after a connection is established, but this process has not completed yet.</source>
-        <translation>De weergegeven informatie kan achterhaald zijn. De beurs synchroniseert automatisch met het Dash netwerk nadat de verbinding is gelegd, maar dit proces is nog niet beeindigd.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Vkax network after a connection is established, but this process has not completed yet.</source>
+        <translation>De weergegeven informatie kan achterhaald zijn. De beurs synchroniseert automatisch met het Vkax netwerk nadat de verbinding is gelegd, maar dit proces is nog niet beeindigd.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -1892,8 +1892,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Bedrag en Rondes:</translation>
     </message>
     <message>
-        <source>0 DASH / 0 Rounds</source>
-        <translation>0 DASH / 0 Rondes</translation>
+        <source>0 VKAX / 0 Rounds</source>
+        <translation>0 VKAX / 0 Rondes</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -2036,16 +2036,16 @@ Om te mixen moeten andere gebruikers exact dezelfde denominaties inbrengen.</tra
         <translation>Fout bij betalingsverzoek</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
-        <translation>Kan Dash niet starten: click-to-pay handler</translation>
+        <source>Cannot start vkax: click-to-pay handler</source>
+        <translation>Kan Vkax niet starten: click-to-pay handler</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>URI-afhandeling</translation>
     </message>
     <message>
-        <source>'dash://' is not a valid URI. Use 'dash:' instead.</source>
-        <translation>'dash://' is geen geldige URI. Gebruik in plaats daarvan 'dash:'.</translation>
+        <source>'vkax://' is not a valid URI. Use 'vkax:' instead.</source>
+        <translation>'vkax://' is geen geldige URI. Gebruik in plaats daarvan 'vkax:'.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -2060,8 +2060,8 @@ Om te mixen moeten andere gebruikers exact dezelfde denominaties inbrengen.</tra
         <translation>Ongeldig betalingsadres %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid Dash address or malformed URI parameters.</source>
-        <translation>URI kan niet verwerkt worden! Dit kan het gevolg zijn van een ongeldig Dash adres of misvormde URI parameters.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Vkax address or malformed URI parameters.</source>
+        <translation>URI kan niet verwerkt worden! Dit kan het gevolg zijn van een ongeldig Vkax adres of misvormde URI parameters.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -2296,7 +2296,7 @@ Om te mixen moeten andere gebruikers exact dezelfde denominaties inbrengen.</tra
         <translation>Bedrag</translation>
     </message>
     <message>
-        <source>Enter a Dash address (e.g. %1)</source>
+        <source>Enter a Vkax address (e.g. %1)</source>
         <translation>Voer een Dashadres in (bijv. %1)</translation>
     </message>
     <message>
@@ -2879,8 +2879,8 @@ Om te mixen moeten andere gebruikers exact dezelfde denominaties inbrengen.</tra
 <context>
     <name>ReceiveCoinsDialog</name>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Dash network.</source>
-        <translation>Een optioneel bericht om aan het betalingsverzoek toe te voegen, die zal worden getoond wanneer het verzoek wordt geopend. Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwerk.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Vkax network.</source>
+        <translation>Een optioneel bericht om aan het betalingsverzoek toe te voegen, die zal worden getoond wanneer het verzoek wordt geopend. Nota: Het bericht zal niet verzonden worden met de betaling over het Vkax netwerk.</translation>
     </message>
     <message>
         <source>&amp;Message:</source>
@@ -2891,9 +2891,9 @@ Om te mixen moeten andere gebruikers exact dezelfde denominaties inbrengen.</tra
         <translation>Een optioneel label om te associëren met het nieuwe ontvangende adres</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Dash network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Vkax network.</source>
         <translation>Een optioneel bericht om aan het betalingsverzoek toe te voegen, die zal worden getoond wanneer het verzoek wordt geopend. &lt;br&gt;
-Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwerk.</translation>
+Nota: Het bericht zal niet verzonden worden met de betaling over het Vkax netwerk.</translation>
     </message>
     <message>
         <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
@@ -3129,8 +3129,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation>Als de aangepaste vergoeding is ingesteld op 1000 duffs en de transactie is maar 250 bytes, dan wordt bij "per kilobyte" 250 duffs aan toeslag berekend, &lt;br /&gt;terwijl er bij "tenminste" 1000 duffs worden berekend. Voor transacties die groter zijn dan een kilobyte, wordt in beide gevallen per kilobyte de toeslag berekend.</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for dash transactions than the network can process.</source>
-        <translation>Het betalen van de minimale vergoeding is prima zo lang er minder transactie volume is dan ruimte in de blocks. &lt;br /&gt;Maar houd er rekening mee dat dit kan eindigen in een nooit bevestigde transactie zodra er meer vraag is voor Dash transacties fdan het netwerk kan verwerken.</translation>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for vkax transactions than the network can process.</source>
+        <translation>Het betalen van de minimale vergoeding is prima zo lang er minder transactie volume is dan ruimte in de blocks. &lt;br /&gt;Maar houd er rekening mee dat dit kan eindigen in een nooit bevestigde transactie zodra er meer vraag is voor Vkax transacties fdan het netwerk kan verwerken.</translation>
     </message>
     <message>
         <source>per kilobyte</source>
@@ -3345,8 +3345,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation><numerusform>Schatting is dat bevestiging begint binnen %n blok.</numerusform><numerusform>Schatting is dat bevestiging begint binnen %n blocks.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid Dash address</source>
-        <translation>WAARSCHUWING: Ongeldig Dash adres</translation>
+        <source>Warning: Invalid Vkax address</source>
+        <translation>WAARSCHUWING: Ongeldig Vkax adres</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -3372,7 +3372,7 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation>Betaal &amp;Aan:</translation>
     </message>
     <message>
-        <source>The Dash address to send the payment to</source>
+        <source>The Vkax address to send the payment to</source>
         <translation>Het Dashadres om betaling aan te versturen</translation>
     </message>
     <message>
@@ -3412,8 +3412,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation>Het te verzenden bedrag in de geselecteerde eenheid</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Dash than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>De vergoeding zal worden afgetrokken van het bedrag dat wordt verzonden. De ontvanger zal een lagere hoeveelheid Dash ontvangt dan u in het veld bedrag invoert. Als meerdere ontvangers zijn geselecteerd, wordt de vergoeding gelijk verdeeld.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Vkax than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>De vergoeding zal worden afgetrokken van het bedrag dat wordt verzonden. De ontvanger zal een lagere hoeveelheid Vkax ontvangt dan u in het veld bedrag invoert. Als meerdere ontvangers zijn geselecteerd, wordt de vergoeding gelijk verdeeld.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -3428,8 +3428,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation>Bericht:</translation>
     </message>
     <message>
-        <source>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Dash network.</source>
-        <translation>Een boodschap die was bijgevoegd aan de dash: URI die met de transactie voor uw referentie wordt opgeslagen. Opmerking: Dit bericht zal niet over het Dash netwerk worden verzonden.</translation>
+        <source>A message that was attached to the vkax: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Vkax network.</source>
+        <translation>Een boodschap die was bijgevoegd aan de vkax: URI die met de transactie voor uw referentie wordt opgeslagen. Opmerking: Dit bericht zal niet over het Vkax netwerk worden verzonden.</translation>
     </message>
     <message>
         <source>This is an unauthenticated payment request.</source>
@@ -3481,11 +3481,11 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation>O&amp;nderteken Bericht</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive Dash sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Vkax sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>U kunt berichten/overeenkomsten ondertekenen met een van uw adressen om te bewijzen dat u dit adres bezit. Pas op dat u geen onduidelijke of willekeurige dingen ondertekent, want phishingaanvallen zouden u kunnen misleiden om zo uw identiteit te stelen. Onderteken alleen berichten waarmee u het volledig eens bent.</translation>
     </message>
     <message>
-        <source>The Dash address to sign the message with</source>
+        <source>The Vkax address to sign the message with</source>
         <translation>Het Dashadres om bericht mee te ondertekenen</translation>
     </message>
     <message>
@@ -3517,8 +3517,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation>Kopieer de huidige handtekening naar het systeemklembord</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Dash address</source>
-        <translation>Teken het bericht om te bewijzen dat u dit Dash adres bezit</translation>
+        <source>Sign the message to prove you own this Vkax address</source>
+        <translation>Teken het bericht om te bewijzen dat u dit Vkax adres bezit</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -3541,7 +3541,7 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation>Voer het adres van de ontvanger in, bericht (zorg ervoor dat de regeleinden, spaties, tabs etc. precies kloppen) en onderteken onderaan om het bericht te verifiëren. Wees voorzicht om niet meer in de ondertekening te lezen dan in het getekende bericht zelf, om te voorkomen dat je wordt aangevallen met een man-in-the-middle attack. Houd er mee rekening dat dit alleen de ondertekende partij bewijst met het ontvangen adres, er kan niet bewezen worden dat er een transactie heeft plaatsgevonden!</translation>
     </message>
     <message>
-        <source>The Dash address the message was signed with</source>
+        <source>The Vkax address the message was signed with</source>
         <translation>Het Dashadres waarmee het bericht ondertekend is</translation>
     </message>
     <message>
@@ -3553,8 +3553,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation>De handtekening die is gegeven toen het bericht werd ondertekend</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Dash address</source>
-        <translation>Verifieer het bericht om zeker te zijn dat het getekend werd met het opgegeven Dash adres</translation>
+        <source>Verify the message to ensure it was signed with the specified Vkax address</source>
+        <translation>Verifieer het bericht om zeker te zijn dat het getekend werd met het opgegeven Vkax adres</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -4251,7 +4251,7 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
     </message>
 </context>
 <context>
-    <name>dash-core</name>
+    <name>vkax-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>Fout: luisteren naar binnenkomende verbindingen mislukt (luisteren gaf foutmelding %s)</translation>
@@ -5063,7 +5063,7 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Dash netwer
         <translation>Vorige wachtrij is te recent gecreëerd.</translation>
     </message>
     <message>
-        <source>%s corrupt. Try using the wallet tool dash-wallet to salvage or restoring a backup.</source>
+        <source>%s corrupt. Try using the wallet tool vkax-wallet to salvage or restoring a backup.</source>
         <translation>%s corrupt. Probeer de portemonnee tool te gebruiken om een back-up te redden of te herstellen.</translation>
     </message>
     <message>
