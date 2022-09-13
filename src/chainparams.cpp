@@ -251,7 +251,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
         // Proposal fee is 5 Million Vkax not good at all, so will reduce it 
-        consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].bit = 7;
+        consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].bit = 8;
         consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].nStartTime = 1662141600; // Friday, September 2, 2022 6:00:00 PM
         consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].nTimeout = 1693677600; // Saturday, September 2, 2023 6:00:00 PM
         consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].nWindowSize = 4032;
