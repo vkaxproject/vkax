@@ -341,8 +341,8 @@ bool CQuorumBlockProcessor::UpgradeDB()
 
    // if (::ChainActive().Height() >= Params().GetConsensus().DIP0003EnforcementHeight) {
    //     auto pindex = ::ChainActive()[Params().GetConsensus().DIP0003EnforcementHeight];
-    if (chainActive.Height() >= 1) {
-           auto pindex = chainActive[1];
+    if (::ChainActive().Height() >= 1) {
+           auto pindex = ::ChainActive()[1];
         while (pindex) {
             if (fPruneMode && !(pindex->nStatus & BLOCK_HAVE_DATA)) {
                 // Too late, we already pruned blocks we needed to reprocess commitments

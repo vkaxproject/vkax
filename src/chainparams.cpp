@@ -243,8 +243,8 @@ public:
 
         // Deployment of Quorum Rotation DIP 
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].bit = 7;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 1663259083; // Thursday, September 15, 2022 4:24:43 PM
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 1694795083;   // Friday, September 15, 2023 4:24:43 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 1665704041; // Thursday, October 13, 2022 11:34:01 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 1697240041;   // Friday, October 13, 2023 11:34:01 PM
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
