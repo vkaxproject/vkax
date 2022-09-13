@@ -210,7 +210,7 @@ void CChainLocksHandler::CheckActiveState()
     bool fDIP0008Active;
     {
         LOCK(cs_main);
-        fDIP0008Active = ::ChainActive().Tip() && ::ChainActive().Tip()->pprev && ::ChainActive().Tip()->pprev->nHeight >= Params().GetConsensus().DIP0008Height;
+        fDIP0008Active = Params().GetConsensus().DIP0008Height;
     }
 
     bool oldIsEnforced = isEnforced;
