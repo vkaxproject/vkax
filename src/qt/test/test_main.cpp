@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     // Don't remove this, it's needed to access
     // QApplication:: and QCoreApplication:: in the tests
     BitcoinApplication app(*node);
-    app.setApplicationName("Dash-Qt-test");
+    app.setApplicationName("Vkax-Qt-test");
 
 #if USE_OPENSSL
     SSL_library_init();

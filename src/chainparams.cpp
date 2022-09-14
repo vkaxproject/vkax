@@ -167,18 +167,18 @@ public:
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = uint256S("0x776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8");
-        consensus.BIP65Height = 1; // 00000000000076d8fcea02ec0963de4abfd01e771fec0863f960c2c64fe6f357
-        consensus.BIP66Height = 1; // 00000000000b1fa2dfa312863570e13fae9ca7b5566cb27e55422620b469aefa
+        consensus.BIP65Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
+        consensus.BIP66Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
         consensus.DIP0001Height = 1;
         consensus.DIP0003Height = 1;
         consensus.DIP0003EnforcementHeight = 1;
         consensus.DIP0003EnforcementHash = uint256S("776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8");
-        consensus.DIP0008Height = 1; // 00000000000000112e41e4b3afda8b233b8cc07c532d2eac5de097b68358c43e
-        consensus.BRRHeight = 1374912; // 000000000000000c5a124f3eccfbe6e17876dca79cec9e63dfa70d269113c926
+        consensus.DIP0008Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
+        consensus.BRRHeight = 1374912; // not needed
         consensus.MinBIP9WarningHeight = 1090656; // dip8 activation height + miner confirmation window
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
-        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Dash: 1 day
-        consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
+        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Vkax: 1 day
+        consensus.nPowTargetSpacing = 2.5 * 60; // Vkax: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 40;
@@ -192,8 +192,8 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1486252800; // Feb 5th, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1517788800; // Feb 5th, 2018
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1663250542; //Thursday, September 15, 2022 2:02:22 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1694786542;  // Friday, September 15, 2023 2:02:22 PM
 
         // Deployment of DIP0001
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
@@ -204,8 +204,8 @@ public:
 
         // Deployment of BIP147
         consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].bit = 2;
-        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nStartTime = 1524477600; // Apr 23th, 2018
-        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nTimeout = 1556013600; // Apr 23th, 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nStartTime = 1663250542; //Thursday, September 15, 2022 2:02:22 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nTimeout = 1694786542;  // Friday, September 15, 2023 2:02:22 PM
         consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nThresholdStart = 3226; // 80% of 4032
 
@@ -226,7 +226,7 @@ public:
         // Deployment of Block Reward Reallocation
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].bit = 5;
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nStartTime = 1659225070; // July 30th, 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nTimeout = 1662047403; // Sept 1st, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nTimeout = 1690761070; // July 30th, 2023
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_REALLOC].nThresholdMin = 2420; // 60% of 4032
@@ -243,15 +243,15 @@ public:
 
         // Deployment of Quorum Rotation DIP 
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].bit = 7;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 1663259083; // Thursday, September 15, 2022 4:24:43 PM
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 1694795083;   // Friday, September 15, 2023 4:24:43 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 1665704041; // Thursday, October 13, 2022 11:34:01 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 1697240041;   // Friday, October 13, 2023 11:34:01 PM
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
         // Proposal fee is 5 Million Vkax not good at all, so will reduce it 
-        consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].bit = 7;
+        consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].bit = 8;
         consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].nStartTime = 1662141600; // Friday, September 2, 2022 6:00:00 PM
         consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].nTimeout = 1693677600; // Saturday, September 2, 2023 6:00:00 PM
         consensus.vDeployments[Consensus::DEPLOYMENT_GOV_FEE].nWindowSize = 4032;
@@ -295,18 +295,18 @@ public:
         vSeeds.emplace_back("174.138.27.60");
         vSeeds.emplace_back("dnsseed-02.vkax.xyz");
 
-        // Dash addresses start with 'X'
+        // Vkax addresses start with 'X'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,76);
-        // Dash script addresses start with '7'
+        // Vkax script addresses start with '7'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,16);
-        // Dash private keys start with '7' or 'X'
+        // Vkax private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,204);
-        // Dash BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
+        // Vkax BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
-        // Dash BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
+        // Vkax BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
-        // Dash BIP44 coin type is '960'
+        // Vkax BIP44 coin type is '960'
         nExtCoinType = 960;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
@@ -344,10 +344,10 @@ public:
         checkpointData = {
             {
                 {0,    uint256S("0xef99ea0231cf5ccee64a5350f79d8b17348f9a72cc1899113c4082c9f6aa1987")},
-                {1,    uint256S("0x776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8")},
                 {100,  uint256S("0xe4d19872655099a6c226cf144182dcf4cfc1986c65a9cf8156201480832b62de")},
                 {201,  uint256S("0xc4a3904f8d33c7d2c7f8c1b83de6def234951127189ceee59f3fa4a722437272")},
-                {1877, uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b")}
+                {1500, uint256S("0x1c8d5b532167ee48ea9521325cb6ac300f59dddb552768fd5dce95e0b00277c3")},
+                {1877, uint256S("0x9a50fb296b63dafba79e9c51fbe5315ae1c7d413d26209322bc639f002d3233b")},
             }
         };
 
@@ -394,8 +394,8 @@ public:
         consensus.BRRHeight = 387500;
         consensus.MinBIP9WarningHeight = 201;  // dip8 activation height + miner confirmation window
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
-        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Dash: 1 day
-        consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
+        consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Vkax: 1 day
+        consensus.nPowTargetSpacing = 2.5 * 60; // Vkax: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4002; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
@@ -502,18 +502,18 @@ public:
         // nodes with support for servicebits filtering should be at the top
         vSeeds.emplace_back("testnet-seed.vkax.xyz"); // Just a static list of stable node(s), only supports x9
 
-        // Testnet Dash addresses start with 'y'
+        // Testnet Vkax addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
-        // Testnet Dash script addresses start with '8' or '9'
+        // Testnet Vkax script addresses start with '8' or '9'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
         // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        // Testnet Dash BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
+        // Testnet Vkax BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
-        // Testnet Dash BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
+        // Testnet Vkax BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-        // Testnet Dash BIP44 coin type is '1' (All coin's testnet default)
+        // Testnet Vkax BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
 
         // long living quorum params
@@ -592,8 +592,8 @@ public:
         consensus.BRRHeight = 201;
         consensus.MinBIP9WarningHeight = 2018; // dip8 activation height + miner confirmation window
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 1
-        consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
-        consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
+        consensus.nPowTargetTimespan = 24 * 60 * 60; // Vkax: 1 day
+        consensus.nPowTargetSpacing = 2.5 * 60; // Vkax: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
@@ -689,20 +689,20 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        //vSeeds.push_back(CDNSSeedData("dashevo.org",  "devnet-seed.dashevo.org"));
+        //vSeeds.push_back(CDNSSeedData("evo.vkax.xyz",  "devnet-seed.vkax.xyz"));
 
-        // Testnet Dash addresses start with 'y'
+        // Testnet Vkax addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
-        // Testnet Dash script addresses start with '8' or '9'
+        // Testnet Vkax script addresses start with '8' or '9'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
         // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        // Testnet Dash BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
+        // Testnet Vkax BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
-        // Testnet Dash BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
+        // Testnet Vkax BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-        // Testnet Dash BIP44 coin type is '1' (All coin's testnet default)
+        // Testnet Vkax BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
 
         // long living quorum params
@@ -852,8 +852,8 @@ public:
         consensus.BRRHeight = 2500; // see block_reward_reallocation_tests
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 1
-        consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
-        consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
+        consensus.nPowTargetTimespan = 24 * 60 * 60; // Vkax: 1 day
+        consensus.nPowTargetSpacing = 2.5 * 60; // Vkax: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
         consensus.nPowKGWHeight = 15200; // same as mainnet
@@ -960,18 +960,18 @@ public:
             0
         };
 
-        // Regtest Dash addresses start with 'y'
+        // Regtest Vkax addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
-        // Regtest Dash script addresses start with '8' or '9'
+        // Regtest Vkax script addresses start with '8' or '9'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
         // Regtest private keys start with '9' or 'c' (Bitcoin defaults)
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        // Regtest Dash BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
+        // Regtest Vkax BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
-        // Regtest Dash BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
+        // Regtest Vkax BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-        // Regtest Dash BIP44 coin type is '1' (All coin's testnet default)
+        // Regtest Vkax BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
 
         // long living quorum params

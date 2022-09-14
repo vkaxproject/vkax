@@ -18,7 +18,7 @@ public:
     /** Add wallets that should be opened to list of init interfaces. */
     virtual void Construct(InitInterfaces& interfaces) const = 0;
 
-    // Dash Specific WalletInitInterface
+    // Vkax Specific WalletInitInterface
     virtual void AutoLockMasternodeCollaterals() const = 0;
     virtual void InitCoinJoinSettings() const = 0;
     virtual bool InitAutoBackup() const = 0;

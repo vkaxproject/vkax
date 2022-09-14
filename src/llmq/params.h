@@ -159,7 +159,7 @@ static constexpr std::array<LLMQParams, 11> available_llmqs = {
     },
 
     /**
-     * llmq_test (Dash Core 0.17) aka llmq_test_v17
+     * llmq_test (Vkax Core 0.17) aka llmq_test_v17
      * This quorum is only used for testing
      *
      */
@@ -366,7 +366,7 @@ static constexpr std::array<LLMQParams, 11> available_llmqs = {
      * This quorum is deployed on mainnet and requires
      * 80 - 100 participants
      *
-     * Used by Dash Platform
+     * Used by Vkax Platform
      */
     LLMQParams{
         .type = LLMQType::LLMQ_100_67,

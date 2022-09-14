@@ -1,7 +1,7 @@
-Contributing to Dash Core
+Contributing to Vkax Core
 ============================
 
-The Dash Core project operates an open contributor model where anyone is
+The Vkax Core project operates an open contributor model where anyone is
 welcome to contribute towards development in the form of peer review, testing
 and patches. This document explains the practical process and guidelines for
 contributing.
@@ -62,7 +62,7 @@ the pull request affects. Valid areas as:
 
   - *Consensus* for changes to consensus critical code
   - *Doc* for changes to the documentation
-  - *Qt* for changes to dash-qt
+  - *Qt* for changes to vkax-qt
   - *Log* Changes to log messages
   - *Mining* for changes to the mining code
   - *Net* or *P2P* for changes to the peer-to-peer network code
@@ -180,11 +180,11 @@ where possible keep them short, uncomplex and easy to verify.
 "Decision Making" Process
 -------------------------
 
-The following applies to code changes to the Dash Core project (and related
-projects such as libsecp256k1), and is not to be confused with overall Dash
+The following applies to code changes to the Vkax Core project (and related
+projects such as libsecp256k1), and is not to be confused with overall Vkax
 Network Protocol consensus changes.
 
-Whether a pull request is merged into Dash Core rests with the project merge
+Whether a pull request is merged into Vkax Core rests with the project merge
 maintainers and ultimately the project lead.
 
 Maintainers will take into consideration if a patch is in line with the general
@@ -203,7 +203,7 @@ In general, all pull requests must:
     demonstrating the bug and also proving the fix. This helps prevent regression.
   - Change relevant comments and documentation when behaviour of code changes.
 
-Patches that change Dash consensus rules are considerably more involved than
+Patches that change Vkax consensus rules are considerably more involved than
 normal because they affect the entire ecosystem and so must be preceded by
 extensive mailing list discussions and have a numbered BIP. While each case will
 be different, one should be prepared to expend more time and effort than for
@@ -259,7 +259,7 @@ higher in terms of discussion and peer review requirements, keeping in mind that
 mistakes could be very costly to the wider community. This includes refactoring
 of consensus critical code.
 
-Where a patch set proposes to change the Dash consensus, it must have been
+Where a patch set proposes to change the Vkax consensus, it must have been
 discussed extensively on the mailing list and IRC, be accompanied by a widely
 discussed BIP and have a generally widely perceived technical consensus of being
 a worthwhile change based on the judgement of the maintainers.
@@ -285,7 +285,7 @@ function gfd() {
 
 ### Finding Reviewers
 
-The review process is normally fairly responsive on the Dash Core repository, however
+The review process is normally fairly responsive on the Vkax Core repository, however
 this might not always be the case. If you find that you've been waiting
 for a pull request to be given attention for several months, there may be a number
 of reasons for this, some of which you can do something about:
@@ -339,10 +339,10 @@ https://github.com/bitcoin/bitcoin/pull/16189).
 Also see the [backport.py script](
 https://github.com/bitcoin-core/bitcoin-maintainer-tools#backport).
 
-Bitcoin Backports are an incredibly valuable part of Dash's development. Backporting allows us to easily implement new
+Bitcoin Backports are an incredibly valuable part of Dash's and Vkax's development. Backporting allows us to easily implement new
 features, improvements and fixes as bitcoin implements them.
 
-To see detailed statistics & progress see Google Sheet tracker: [Bitcoin backports for Dash](https://docs.google.com/spreadsheets/d/1DnKxat0S0H62CJOzXpKGPXTa8hgoVOjGYZzoClmGSB8/edit?usp=sharing).
+To see detailed statistics & progress see Google Sheet tracker: [Bitcoin backports for Dash and Vkax](https://docs.google.com/spreadsheets/d/1DnKxat0S0H62CJOzXpKGPXTa8hgoVOjGYZzoClmGSB8/edit?usp=sharing).
 You should use this sheet to find what PRs to backport and its commit.
 
 Updating the Spreadsheet
@@ -413,7 +413,7 @@ When pasting the contents, make sure to split the values into the cells so every
 Release Policy
 --------------
 
-The project leader is the release manager for each Dash Core release.
+The project leader is the release manager for each Vkax Core release.
 
 Copyright
 ---------

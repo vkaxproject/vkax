@@ -98,9 +98,9 @@ QModelIndex FindTx(const QAbstractItemModel& model, const uint256& txid)
 //
 // This also requires overriding the default minimal Qt platform:
 //
-//     QT_QPA_PLATFORM=xcb     src/qt/test/test_dash-qt  # Linux
-//     QT_QPA_PLATFORM=windows src/qt/test/test_dash-qt  # Windows
-//     QT_QPA_PLATFORM=cocoa   src/qt/test/test_dash-qt  # macOS
+//     QT_QPA_PLATFORM=xcb     src/qt/test/test_vkax-qt  # Linux
+//     QT_QPA_PLATFORM=windows src/qt/test/test_vkax-qt  # Windows
+//     QT_QPA_PLATFORM=cocoa   src/qt/test/test_vkax-qt  # macOS
 void TestGUI()
 {
     // Set up wallet and chain with 105 blocks (5 mature blocks for spending).
@@ -187,7 +187,7 @@ void TestGUI()
             QString paymentText = rlist->toPlainText();
             QStringList paymentTextList = paymentText.split('\n');
             QCOMPARE(paymentTextList.at(0), QString("Payment information"));
-            QVERIFY(paymentTextList.at(2).indexOf(QString("URI: dash:")) != -1);
+            QVERIFY(paymentTextList.at(2).indexOf(QString("URI: vkax:")) != -1);
             QVERIFY(paymentTextList.at(3).indexOf(QString("Address:")) != -1);
             QCOMPARE(paymentTextList.at(4), QString("Amount: 0.00000001 ") + BitcoinUnits::name(unit));
             QCOMPARE(paymentTextList.at(5), QString("Label: TEST_LABEL_1"));
@@ -226,7 +226,7 @@ void WalletTests::walletTests()
         // and fails to handle returned nulls
         // (https://bugreports.qt.io/browse/QTBUG-49686).
         QWARN("Skipping WalletTests on mac build with 'minimal' platform set due to Qt bugs. To run AppTests, invoke "
-              "with 'QT_QPA_PLATFORM=cocoa test_dash-qt' on mac, or else use a linux or windows build.");
+              "with 'QT_QPA_PLATFORM=cocoa test_vkax-qt' on mac, or else use a linux or windows build.");
         return;
     }
 #endif
