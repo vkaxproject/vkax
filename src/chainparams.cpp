@@ -192,8 +192,8 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1486252800; // Feb 5th, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1517788800; // Feb 5th, 2018
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1663254000; //September 15, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1694790000;  // September 15, 2023
 
         // Deployment of DIP0001
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
@@ -204,10 +204,10 @@ public:
 
         // Deployment of BIP147
         consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].bit = 2;
-        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nStartTime = 1524477600; // Apr 23th, 2018
-        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nTimeout = 1556013600; // Apr 23th, 2019
-        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nWindowSize = 4032;
-        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nThresholdStart = 3226; // 80% of 4032
+        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nStartTime = 1663254000; //September 15, 2022 3:00 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nTimeout = 1694790000;   // September 15, 2023 3:00 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nWindowSize = 2016;
+        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nThresholdStart = 1512; // 75% of 2016
 
         // Deployment of DIP0003
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].bit = 3;
@@ -243,8 +243,8 @@ public:
 
         // Deployment of Quorum Rotation DIP 
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].bit = 7;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 1665704041; // Thursday, October 13, 2022 11:34:01 PM
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 1697240041;   // Friday, October 13, 2023 11:34:01 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 1667142000; // October 30, 2022 3:00:00 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 1698678000;   // October 30, 2023 3:00:00 PM
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
