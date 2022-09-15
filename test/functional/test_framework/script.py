@@ -7,26 +7,25 @@
 This file is modified from python-bitcoinlib.
 """
 
-
-from .mininode import CTransaction, CTxOut, sha256, hash256
-from binascii import hexlify
-import hashlib
 import struct
 
 from .bignum import bn2vch
+from .messages import CTransaction, CTxOut, sha256, hash256
+
+from .ripemd160 import ripemd160
 
 MAX_SCRIPT_ELEMENT_SIZE = 520
 
 OPCODE_NAMES = {}
 
 def hash160(s):
-    return hashlib.new('ripemd160', sha256(s)).digest()
+    return ripemd160(sha256(s))
 
 
 _opcode_instances = []
 class CScriptOp(int):
     """A single script opcode"""
-    __slots__ = []
+    __slots__ = ()
 
     @staticmethod
     def encode_op_pushdata(d):
@@ -363,8 +362,11 @@ class CScriptTruncatedPushDataError(CScriptInvalidError):
         self.data = data
         super(CScriptTruncatedPushDataError, self).__init__(msg)
 
+
 # This is used, eg, for blockchain heights in coinbase scripts (bip34)
-class CScriptNum():
+class CScriptNum:
+    __slots__ = ("value",)
+
     def __init__(self, d=0):
         self.value = d
 
@@ -384,6 +386,22 @@ class CScriptNum():
             r[-1] |= 0x80
         return bytes([len(r)]) + r
 
+    @staticmethod
+    def decode(vch):
+        result = 0
+        # We assume valid push_size and minimal encoding
+        value = vch[1:]
+        if len(value) == 0:
+            return result
+        for i, byte in enumerate(value):
+            result |= int(byte) << 8*i
+        if value[-1] >= 0x80:
+            # Mask for all but the highest result bit
+            num_mask = (2**(len(value)*8) - 1) >> 1
+            result &= num_mask
+            result *= -1
+        return result
+
 
 class CScript(bytes):
     """Serialized script
@@ -395,6 +413,8 @@ class CScript(bytes):
 
     iter(script) however does iterate by opcode.
     """
+    __slots__ = ()
+
     @classmethod
     def __coerce_instance(cls, other):
         # Coerce other into bytes
@@ -522,7 +542,7 @@ class CScript(bytes):
     def __repr__(self):
         def _repr(o):
             if isinstance(o, bytes):
-                return "x('%s')" % hexlify(o).decode('ascii')
+                return "x('%s')" % o.hex()
             else:
                 return repr(o)
 

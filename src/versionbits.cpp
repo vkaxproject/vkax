@@ -5,54 +5,6 @@
 #include <versionbits.h>
 #include <consensus/params.h>
 
-const struct VBDeploymentInfo VersionBitsDeploymentInfo[Consensus::MAX_VERSION_BITS_DEPLOYMENTS] = {
-    {
-        /*.name =*/ "testdummy",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "csv",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "dip0001",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ true,
-    },
-    {
-        /*.name =*/ "bip147",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "dip0003",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "dip0008",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "realloc",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "dip0020",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "gov_fee",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-};
-
 ThresholdState AbstractThresholdConditionChecker::GetStateFor(const CBlockIndex* pindexPrev, const Consensus::Params& params, ThresholdConditionCache& cache) const
 {
     int nPeriod = Period(params);
@@ -146,7 +98,6 @@ ThresholdState AbstractThresholdConditionChecker::GetStateFor(const CBlockIndex*
     return state;
 }
 
-// return the numerical statistics of blocks signalling the specified BIP9 condition in this current period
 BIP9Stats AbstractThresholdConditionChecker::GetStateStatisticsFor(const CBlockIndex* pindex, const Consensus::Params& params, ThresholdConditionCache& cache) const
 {
     BIP9Stats stats = {};

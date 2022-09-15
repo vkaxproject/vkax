@@ -12,12 +12,11 @@ Two nodes. Node1 is under test. Node0 is providing transactions and generating b
 - connect node1 to node0. Verify that they sync and node1 receives its funds."""
 import os
 import shutil
-import sys
 
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
-    connect_nodes_bi,
+    connect_nodes,
 )
 
 
@@ -25,8 +24,10 @@ class KeypoolRestoreTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
-        self.extra_args = [['-usehd=0'], ['-usehd=1', '-keypool=100', '-keypoolmin=20']]
-        self.stderr = sys.stdout
+        self.extra_args = [['-usehd=0'], ['-usehd=1', '-keypool=100']]
+
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
 
     def run_test(self):
         wallet_path = os.path.join(self.nodes[1].datadir, self.chain, "wallets", "wallet.dat")
@@ -37,7 +38,7 @@ class KeypoolRestoreTest(BitcoinTestFramework):
         self.stop_node(1)
         shutil.copyfile(wallet_path, wallet_backup_path)
         self.start_node(1, self.extra_args[1])
-        connect_nodes_bi(self.nodes, 0, 1)
+        connect_nodes(self.nodes[0], 1)
 
         self.log.info("Generate keys for wallet")
         for _ in range(90):
@@ -56,7 +57,7 @@ class KeypoolRestoreTest(BitcoinTestFramework):
         self.stop_node(1)
         shutil.copyfile(wallet_backup_path, wallet_path)
         self.start_node(1, self.extra_args[1])
-        connect_nodes_bi(self.nodes, 0, 1)
+        connect_nodes(self.nodes[0], 1)
         self.sync_all()
 
         self.log.info("Verify keypool is restored and balance is correct")

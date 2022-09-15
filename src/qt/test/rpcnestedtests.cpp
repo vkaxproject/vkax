@@ -4,19 +4,14 @@
 
 #include <qt/test/rpcnestedtests.h>
 
-#include <chainparams.h>
-#include <consensus/validation.h>
-#include <fs.h>
 #include <interfaces/node.h>
-#include <validation.h>
-#include <rpc/register.h>
 #include <rpc/server.h>
 #include <qt/rpcconsole.h>
-#include <test/test_dash.h>
+#include <test/util/setup_common.h>
 #include <univalue.h>
-#include <util.h>
+#include <util/system.h>
 
-#include <llmq/quorums_init.h>
+#include <llmq/init.h>
 
 #include <QDir>
 #include <QtGlobal>
@@ -43,7 +38,7 @@ void RPCNestedTests::rpcNestedTests()
 
     TestingSetup test;
 
-    SetRPCWarmupFinished();
+    if (RPCIsInWarmup(nullptr)) SetRPCWarmupFinished();
 
     std::string result;
     std::string result2;

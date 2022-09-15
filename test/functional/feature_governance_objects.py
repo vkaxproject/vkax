@@ -2,11 +2,14 @@
 # Copyright (c) 2018-2020 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Tests around dash governance objects."""
+"""Tests around vkax governance objects."""
 
+import json
+import time
+
+from test_framework.messages import uint256_to_string
 from test_framework.test_framework import DashTestFramework
-from test_framework.util import *
-from test_framework.messages import *
+from test_framework.util import assert_equal, assert_greater_than, assert_raises_rpc_error
 
 
 def validate_object(prepared, rpc_prepared):
@@ -33,7 +36,7 @@ class DashGovernanceTest (DashTestFramework):
             "end_epoch": proposal_time + 24 * 60 * 60,
             "payment_amount": amount,
             "payment_address": self.nodes[0].getnewaddress(),
-            "url": "https://dash.org"
+            "url": "https://vkax.xyz"
         }
         proposal_hex = ''.join(format(x, '02x') for x in json.dumps(proposal_template).encode())
         collateral_hash = self.nodes[0].gobject("prepare", parent_hash, proposal_rev, proposal_time, proposal_hex)

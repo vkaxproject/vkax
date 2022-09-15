@@ -4,10 +4,9 @@
 
 #include <test/scriptnum10.h>
 #include <script/script.h>
-#include <test/test_dash.h>
+#include <test/util/setup_common.h>
 
 #include <boost/test/unit_test.hpp>
-#include <limits.h>
 #include <stdint.h>
 
 BOOST_FIXTURE_TEST_SUITE(scriptnum_tests, BasicTestingSetup)

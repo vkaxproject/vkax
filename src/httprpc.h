@@ -5,8 +5,6 @@
 #ifndef BITCOIN_HTTPRPC_H
 #define BITCOIN_HTTPRPC_H
 
-#include <string>
-#include <map>
 
 /** Start HTTP RPC subsystem.
  * Precondition; HTTP and RPC has been started.
@@ -23,7 +21,7 @@ void StopHTTPRPC();
 /** Start HTTP REST subsystem.
  * Precondition; HTTP and RPC has been started.
  */
-bool StartREST();
+void StartREST();
 /** Interrupt RPC REST subsystem.
  */
 void InterruptREST();

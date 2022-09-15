@@ -1,19 +1,17 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include <arith_uint256.h>
+#include <streams.h>
 #include <uint256.h>
 #include <version.h>
-#include <test/test_dash.h>
+#include <test/util/setup_common.h>
 
 #include <boost/test/unit_test.hpp>
-#include <stdint.h>
 #include <sstream>
 #include <iomanip>
-#include <limits>
-#include <cmath>
 #include <string>
-#include <stdio.h>
 
 BOOST_FIXTURE_TEST_SUITE(uint256_tests, BasicTestingSetup)
 
@@ -48,7 +46,7 @@ const unsigned char MaxArray[] =
 const uint256 MaxL = uint256(std::vector<unsigned char>(MaxArray,MaxArray+32));
 const uint160 MaxS = uint160(std::vector<unsigned char>(MaxArray,MaxArray+20));
 
-std::string ArrayToString(const unsigned char A[], unsigned int width)
+static std::string ArrayToString(const unsigned char A[], unsigned int width)
 {
     std::stringstream Stream;
     Stream << std::hex;

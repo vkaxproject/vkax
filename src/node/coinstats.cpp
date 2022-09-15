@@ -5,15 +5,13 @@
 
 #include <node/coinstats.h>
 
-#include <amount.h>
 #include <coins.h>
-#include <chain.h>
 #include <hash.h>
 #include <serialize.h>
 #include <validation.h>
 #include <uint256.h>
 // #include <util/system.h>
-#include <util.h>
+#include <util/system.h>
 
 #include <map>
 

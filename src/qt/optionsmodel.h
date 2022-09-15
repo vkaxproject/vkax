@@ -31,51 +31,55 @@ class OptionsModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    explicit OptionsModel(interfaces::Node& node, QObject *parent = 0, bool resetSettings = false);
+    explicit OptionsModel(interfaces::Node& node, QObject *parent = nullptr, bool resetSettings = false);
 
     enum OptionID {
-        StartAtStartup,         // bool
-        HideTrayIcon,           // bool
-        MinimizeToTray,         // bool
-        MapPortUPnP,            // bool
-        MinimizeOnClose,        // bool
-        ProxyUse,               // bool
-        ProxyIP,                // QString
-        ProxyPort,              // int
-        ProxyUseTor,            // bool
-        ProxyIPTor,             // QString
-        ProxyPortTor,           // int
-        DisplayUnit,            // BitcoinUnits::Unit
-        ThirdPartyTxUrls,       // QString
-        Digits,                 // QString
-        Theme,                  // QString
-        FontFamily,             // int
-        FontScale,              // int
-        FontWeightNormal,       // int
-        FontWeightBold,         // int
-        Language,               // QString
-        CoinControlFeatures,    // bool
-        ThreadsScriptVerif,     // int
-        DatabaseCache,          // int
-        SpendZeroConfChange,    // bool
-        ShowMasternodesTab,     // bool
-        CoinJoinEnabled,     // bool
-        ShowAdvancedCJUI,       // bool
-        ShowCoinJoinPopups,  // bool
-        LowKeysWarning,         // bool
-        CoinJoinRounds,      // int
-        CoinJoinAmount,      // int
-        CoinJoinMultiSession,// bool
-        Listen,                 // bool
+        StartAtStartup,       // bool
+        HideTrayIcon,         // bool
+        MinimizeToTray,       // bool
+        MapPortUPnP,          // bool
+        MapPortNatpmp,        // bool
+        MinimizeOnClose,      // bool
+        ProxyUse,             // bool
+        ProxyIP,              // QString
+        ProxyPort,            // int
+        ProxyUseTor,          // bool
+        ProxyIPTor,           // QString
+        ProxyPortTor,         // int
+        DisplayUnit,          // BitcoinUnits::Unit
+        ThirdPartyTxUrls,     // QString
+        Digits,               // QString
+        Theme,                // QString
+        FontFamily,           // int
+        FontScale,            // int
+        FontWeightNormal,     // int
+        FontWeightBold,       // int
+        Language,             // QString
+        CoinControlFeatures,  // bool
+        ThreadsScriptVerif,   // int
+        Prune,                // bool
+        PruneSize,            // int
+        DatabaseCache,        // int
+        SpendZeroConfChange,  // bool
+        ShowMasternodesTab,   // bool
+        ShowGovernanceTab,    // bool
+        CoinJoinEnabled,      // bool
+        ShowAdvancedCJUI,     // bool
+        ShowCoinJoinPopups,   // bool
+        LowKeysWarning,       // bool
+        CoinJoinRounds,       // int
+        CoinJoinAmount,       // int
+        CoinJoinMultiSession, // bool
+        Listen,               // bool
         OptionIDRowCount,
     };
 
     void Init(bool resetSettings = false);
     void Reset();
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
+    int rowCount(const QModelIndex & parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole) override;
     /** Updates current unit in memory, settings and emits displayUnitChanged(newUnit) signal */
     void setDisplayUnit(const QVariant &value);
 

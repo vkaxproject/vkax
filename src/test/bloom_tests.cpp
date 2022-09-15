@@ -9,13 +9,11 @@
 #include <key_io.h>
 #include <merkleblock.h>
 #include <primitives/block.h>
-#include <random.h>
 #include <serialize.h>
 #include <streams.h>
 #include <uint256.h>
-#include <util.h>
-#include <utilstrencodings.h>
-#include <test/test_dash.h>
+#include <util/strencodings.h>
+#include <test/util/setup_common.h>
 
 #include <vector>
 
@@ -285,7 +283,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_1)
     CMerkleBlock merkleBlock(block, filter);
     BOOST_CHECK_EQUAL(merkleBlock.header.GetHash().GetHex(), block.GetHash().GetHex());
 
-    BOOST_CHECK_EQUAL(merkleBlock.vMatchedTxn.size(), 1);
+    BOOST_CHECK_EQUAL(merkleBlock.vMatchedTxn.size(), 1U);
     std::pair<unsigned int, uint256> pair = merkleBlock.vMatchedTxn[0];
 
     BOOST_CHECK(merkleBlock.vMatchedTxn[0].second == uint256S("0x74d681e0e03bafa802c8aa084379aa98d9fcd632ddc2ed9782b586ec87451f20"));
@@ -561,7 +559,7 @@ static std::vector<unsigned char> RandomData()
 
 BOOST_AUTO_TEST_CASE(rolling_bloom)
 {
-    SeedInsecureRand(/* deterministic */ true);
+    SeedInsecureRand(SeedRand::ZEROS);
     g_mock_deterministic_tests = true;
 
     // last-100-entry, 1% false positive:

@@ -3,15 +3,18 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import DashTestFramework
-from test_framework.util import *
-
 '''
 feature_llmq_connections.py
 
 Checks intra quorum connections
 
 '''
+
+import time
+
+from test_framework.test_framework import DashTestFramework
+from test_framework.util import assert_greater_than_or_equal, connect_nodes, wait_until
+
 
 class LLMQConnections(DashTestFramework):
     def set_test_params(self):
@@ -30,7 +33,7 @@ class LLMQConnections(DashTestFramework):
             count = self.get_mn_connection_count(mn.node)
             total_count += count
             assert_greater_than_or_equal(count, 2)
-        assert(total_count < 40)
+        assert total_count < 40
 
         self.check_reconnects(2)
 
@@ -65,6 +68,20 @@ class LLMQConnections(DashTestFramework):
         self.wait_for_sporks_same()
 
         self.check_reconnects(4)
+
+        self.log.info("check that inter-quorum masternode conections are added")
+        added = False
+        for mn in self.mninfo:
+            if len(mn.node.quorum("memberof", mn.proTxHash)) > 0:
+                try:
+                    with mn.node.assert_debug_log(['adding mn inter-quorum connections']):
+                        self.mine_quorum()
+                    added = True
+                except:
+                    pass # it's ok to not add connections sometimes
+            if added:
+                break
+        assert added # no way we added none
 
     def check_reconnects(self, expected_connection_count):
         self.log.info("disable and re-enable networking on all masternodes")

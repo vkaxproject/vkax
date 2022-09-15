@@ -6,7 +6,7 @@
 from decimal import Decimal
 import random
 
-from test_framework.mininode import CTransaction, CTxIn, CTxOut, COutPoint, ToHex, COIN
+from test_framework.messages import CTransaction, CTxIn, CTxOut, COutPoint, ToHex, COIN
 from test_framework.script import CScript, OP_1, OP_DROP, OP_2, OP_HASH160, OP_EQUAL, hash160, OP_TRUE
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
@@ -63,7 +63,7 @@ def small_txpuzzle_randfee(from_node, conflist, unconflist, amount, min_fee, fee
     # the ScriptSig that will satisfy the ScriptPubKey.
     for inp in tx.vin:
         inp.scriptSig = SCRIPT_SIG[inp.prevout.n]
-    txid = from_node.sendrawtransaction(ToHex(tx), True)
+    txid = from_node.sendrawtransaction(hexstring=ToHex(tx), maxfeerate=0)
     unconflist.append({"txid": txid, "vout": 0, "amount": total_in - amount - fee})
     unconflist.append({"txid": txid, "vout": 1, "amount": amount})
 
@@ -93,7 +93,7 @@ def split_inputs(from_node, txins, txouts, initial_split=False):
     else:
         tx.vin[0].scriptSig = SCRIPT_SIG[prevtxout["vout"]]
         completetx = ToHex(tx)
-    txid = from_node.sendrawtransaction(completetx, True)
+    txid = from_node.sendrawtransaction(hexstring=completetx, maxfeerate=0)
     txouts.append({"txid": txid, "vout": 0, "amount": half_change})
     txouts.append({"txid": txid, "vout": 1, "amount": rem_change})
 
@@ -120,9 +120,19 @@ def check_estimates(node, fees_seen):
         else:
             assert_greater_than_or_equal(i + 1, e["blocks"])
 
+
 class EstimateFeeTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 3
+        # mine non-standard txs (e.g. txs with "dust" outputs)
+        self.extra_args = [
+            ["-acceptnonstdtxn=1", "-maxorphantxsize=1000", "-whitelist=127.0.0.1"],
+            ["-acceptnonstdtxn=1", "-blockmaxsize=17000", "-maxorphantxsize=1000", "-whitelist=127.0.0.1"],
+            ["-acceptnonstdtxn=1", "-blockmaxsize=8000", "-maxorphantxsize=1000", "-whitelist=127.0.0.1"]
+        ]
+
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
 
     def setup_network(self):
         """
@@ -130,9 +140,7 @@ class EstimateFeeTest(BitcoinTestFramework):
         But first we need to use one node to create a lot of outputs
         which we will use to generate our transactions.
         """
-        self.add_nodes(3, extra_args=[["-maxorphantxsize=1000", "-whitelist=127.0.0.1"],
-                                      ["-blockmaxsize=17000", "-maxorphantxsize=1000", "-whitelist=127.0.0.1"],
-                                      ["-blockmaxsize=8000", "-maxorphantxsize=1000", "-whitelist=127.0.0.1"]])
+        self.add_nodes(3, extra_args=self.extra_args)
         # Use node0 to mine blocks for input splitting
         # Node1 mines small blocks but that are bigger than the expected transaction rate.
         # NOTE: the CreateNewBlock code starts counting block size at 1,000 bytes,
@@ -165,6 +173,11 @@ class EstimateFeeTest(BitcoinTestFramework):
                 else:
                     newmem.append(utx)
             self.memutxo = newmem
+
+    def import_deterministic_coinbase_privkeys(self):
+        self.start_nodes()
+        super().import_deterministic_coinbase_privkeys()
+        self.stop_nodes()
 
     def run_test(self):
         self.log.info("This test is time consuming, please be patient")

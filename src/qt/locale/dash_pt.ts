@@ -1,4 +1,4 @@
-<TS language="pt" version="2.1">
+<TS version="2.1" language="pt">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -74,12 +74,12 @@
         <translation>Endereços de recebimento</translation>
     </message>
     <message>
-        <source>These are your Vkax addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your Dash addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation>Esses são os seus endereços para enviar pagamentos. Sempre cheque a quantia e o endereço de recebimento antes de enviar moedas,</translation>
     </message>
     <message>
-        <source>These are your Vkax addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Estes são os seus endereços para receber pagamentos. É recomendado usar um novo para cada transação.</translation>
+        <source>These are your Dash addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
+        <translation>Estes são seus endereços Dash para receber pagamentos. Use o botão 'Criar novo endereço de recebimento' na aba de recebimento para criar novos endereços.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -191,12 +191,8 @@
         <translation>Repita a nova frase de segurança</translation>
     </message>
     <message>
-        <source>Show password</source>
-        <translation>Mostrar senha</translation>
-    </message>
-    <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Insira a nova senha para a carteira.&lt;br/&gt;Favor usar uma senha com &lt;b&gt;dez ou mais caracteres aleatórios&lt;/b&gt;, ou &lt;b&gt;oito ou mais palavras&lt;/b&gt;.</translation>
+        <source>Show passphrase</source>
+        <translation>Mostrar frase de segurança</translation>
     </message>
     <message>
         <source>Encrypt wallet</source>
@@ -227,16 +223,12 @@
         <translation>Alterar frase de segurança</translation>
     </message>
     <message>
-        <source>Enter the old passphrase and new passphrase to the wallet.</source>
-        <translation>Insira a senha antiga e a nova para a carteira.</translation>
-    </message>
-    <message>
         <source>Confirm wallet encryption</source>
         <translation>Confirmar criptografia da carteira</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR VKAX&lt;/b&gt;!</source>
-        <translation>Aviso: Se você encriptar sua wallet e perder sua senha, você vai &lt;b&gt;PERDER TODAS AS SUAS VKAX&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR DASH&lt;/b&gt;!</source>
+        <translation>Aviso: Se você encriptar sua wallet e perder sua senha, você vai &lt;b&gt;PERDER TODAS AS SUAS DASH&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -245,6 +237,30 @@
     <message>
         <source>Wallet encrypted</source>
         <translation>Carteira criptografada</translation>
+    </message>
+    <message>
+        <source>Enter the new passphrase for the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
+        <translation>Insira uma nova frase de segurança para a carteira.&lt;br/&gt;Por favor, use uma frase de segurança com dez ou mais caracteres aleatórios&lt;/b&gt;, ou com &lt;b&gt; oito ou mais palavras&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <source>Enter the old passphrase and new passphrase for the wallet.</source>
+        <translation>Insira a frase de segurança antiga e a nova para a carteira.</translation>
+    </message>
+    <message>
+        <source>Remember that encrypting your wallet cannot fully protect your funds from being stolen by malware infecting your computer.</source>
+        <translation>Lembre-se de que criptografar sua carteira pode não proteger totalmente seus Dash de serem roubados por malwares que infectem seu computador.</translation>
+    </message>
+    <message>
+        <source>Wallet to be encrypted</source>
+        <translation>Carteira a ser criptografada</translation>
+    </message>
+    <message>
+        <source>Your wallet is about to be encrypted. </source>
+        <translation>Sua carteira está prestes a ser criptografada.</translation>
+    </message>
+    <message>
+        <source>Your wallet is now encrypted. </source>
+        <translation>Sua carteira agora está criptografada.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. Previous backups of the unencrypted wallet file contain the same HD seed and still have full access to all your funds just like the new, encrypted wallet.</source>
@@ -308,20 +324,8 @@
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <source>A fatal error occurred. Vkax Core can no longer continue safely and will quit.</source>
-        <translation>Ocorreu um erro fatal. A Vkax não pode mais continuar de forma segura, e irá fechar</translation>
-    </message>
-    <message>
-        <source>Vkax Core</source>
-        <translation>Vkax Core</translation>
-    </message>
-    <message>
-        <source>Wallet</source>
-        <translation>Carteira</translation>
-    </message>
-    <message>
-        <source>Node</source>
-        <translation>Nó</translation>
+        <source>A fatal error occurred. Dash Core can no longer continue safely and will quit.</source>
+        <translation>Ocorreu um erro fatal. A Dash não pode mais continuar de forma segura, e irá fechar</translation>
     </message>
     <message>
         <source>&amp;Overview</source>
@@ -336,8 +340,8 @@
         <translation>&amp;Enviar</translation>
     </message>
     <message>
-        <source>Send coins to a Vkax address</source>
-        <translation>Envie moedas para um endereço Vkax</translation>
+        <source>Send coins to a Dash address</source>
+        <translation>Envie moedas para um endereço Dash</translation>
     </message>
     <message>
         <source>&amp;Receive</source>
@@ -345,7 +349,51 @@
     </message>
     <message>
         <source>Request payments (generates QR codes and vkax: URIs)</source>
-        <translation>Solicitações de pagamentos (gera códigos QR e Vkax: URIs)</translation>
+        <translation>Solicitações de pagamentos (gera códigos QR e Dash: URIs)</translation>
+    </message>
+    <message>
+        <source>&amp;Sending addresses</source>
+        <translation>&amp;Endereços de envio</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses</source>
+        <translation>&amp;Endereços de recebimento</translation>
+    </message>
+    <message>
+        <source>Open Wallet</source>
+        <translation>Abrir Carteira</translation>
+    </message>
+    <message>
+        <source>Open a wallet</source>
+        <translation>Abrir uma carteira</translation>
+    </message>
+    <message>
+        <source>Close Wallet...</source>
+        <translation>Fechar Carteira...</translation>
+    </message>
+    <message>
+        <source>Close wallet</source>
+        <translation>Fechar carteira</translation>
+    </message>
+    <message>
+        <source>No wallets available</source>
+        <translation>Não há carteiras disponíveis</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Janela</translation>
+    </message>
+    <message>
+        <source>Minimize</source>
+        <translation>Minimizar</translation>
+    </message>
+    <message>
+        <source>Zoom</source>
+        <translation>Zoom</translation>
+    </message>
+    <message>
+        <source>Main Window</source>
+        <translation>Janela Principal</translation>
     </message>
     <message>
         <source>&amp;Transactions</source>
@@ -372,10 +420,6 @@
         <translation>Sair da aplicação</translation>
     </message>
     <message>
-        <source>Show information about Vkax Core</source>
-        <translation>Exibe informações sobre Vkax Core</translation>
-    </message>
-    <message>
         <source>About &amp;Qt</source>
         <translation>Sobre &amp;Qt</translation>
     </message>
@@ -392,8 +436,8 @@
         <translation>&amp;Sobre %1</translation>
     </message>
     <message>
-        <source>Send %1 funds to a Vkax address</source>
-        <translation>Enviar recursos %1 para um endereço Vkax</translation>
+        <source>Send %1 funds to a Dash address</source>
+        <translation>Enviar recursos %1 para um endereço Dash</translation>
     </message>
     <message>
         <source>Modify configuration options for %1</source>
@@ -448,16 +492,16 @@
         <translation>Assinar &amp;Mensagem...</translation>
     </message>
     <message>
-        <source>Sign messages with your Vkax addresses to prove you own them</source>
-        <translation>Assine mensagens com seus endereços Vkax para provar que você é dono delas</translation>
+        <source>Sign messages with your Dash addresses to prove you own them</source>
+        <translation>Assine mensagens com seus endereços Dash para provar que você é dono delas</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
         <translation>&amp;Verificar mensagem...</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Vkax addresses</source>
-        <translation>Verifique as mensagens para ter certeza de que elas foram assinadas com o endereço da Vkax especificado</translation>
+        <source>Verify messages to ensure they were signed with specified Dash addresses</source>
+        <translation>Verifique as mensagens para ter certeza de que elas foram assinadas com o endereço da Dash especificado</translation>
     </message>
     <message>
         <source>&amp;Information</source>
@@ -516,16 +560,8 @@
         <translation>Mostrar backups da carteira criados automaticamente </translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>Endereço&amp;s de envio...</translation>
-    </message>
-    <message>
         <source>Show the list of used sending addresses and labels</source>
         <translation>Mostrar a lista de endereços de envio e rótulos usados</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>Endereços de &amp;recebimento...</translation>
     </message>
     <message>
         <source>Show the list of used receiving addresses and labels</source>
@@ -537,15 +573,19 @@
     </message>
     <message>
         <source>Open a vkax: URI or payment request</source>
-        <translation>Abrir um Vkax: URI ou cobrança</translation>
+        <translation>Abrir um Dash: URI ou cobrança</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Opções de linha de &amp;comando</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Vkax command-line options</source>
-        <translation>Mostrar a mensagem de ajuda do %1 para obter uma lista com possíveis opções de linha de comando Vkax</translation>
+        <source>Show the %1 help message to get a list with possible Dash command-line options</source>
+        <translation>Mostrar a mensagem de ajuda do %1 para obter uma lista com possíveis opções de linha de comando Dash</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>carteira padrão</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -566,6 +606,18 @@
         <translation>&amp;Arquivo</translation>
     </message>
     <message>
+        <source>Show information about %1</source>
+        <translation>Mostrar informação sobre %1</translation>
+    </message>
+    <message>
+        <source>Create Wallet...</source>
+        <translation>Criar Carteira...</translation>
+    </message>
+    <message>
+        <source>Create a new wallet</source>
+        <translation>Criar uma nova carteira</translation>
+    </message>
+    <message>
         <source>%1 &amp;information</source>
         <translation>%1 &amp;Informação</translation>
     </message>
@@ -578,10 +630,6 @@
         <translation>&amp;Configurações</translation>
     </message>
     <message>
-        <source>&amp;Tools</source>
-        <translation>&amp;Ferramentas</translation>
-    </message>
-    <message>
         <source>&amp;Help</source>
         <translation>&amp;Ajuda</translation>
     </message>
@@ -589,9 +637,17 @@
         <source>Tabs toolbar</source>
         <translation>Barra de ferramentas</translation>
     </message>
+    <message>
+        <source>&amp;Governance</source>
+        <translation>&amp;Governança</translation>
+    </message>
+    <message>
+        <source>View Governance Proposals</source>
+        <translation>Ver Propostas de Governança</translation>
+    </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Vkax network</source>
-        <translation><numerusform>%n conexões ativas com a rede Vkax</numerusform><numerusform>%n conexões ativas com a rede Vkax</numerusform></translation>
+        <source>%n active connection(s) to Dash network</source>
+        <translation><numerusform>%n conexões ativas com a rede Dash</numerusform><numerusform>%n conexões ativas com a rede Dash</numerusform></translation>
     </message>
     <message>
         <source>Network activity disabled</source>
@@ -654,8 +710,16 @@
         <translation>Erro</translation>
     </message>
     <message>
+        <source>Error: %1</source>
+        <translation>Erro: %1</translation>
+    </message>
+    <message>
         <source>Warning</source>
         <translation>Atenção</translation>
+    </message>
+    <message>
+        <source>Warning: %1</source>
+        <translation>Aviso: %1</translation>
     </message>
     <message>
         <source>Information</source>
@@ -738,6 +802,14 @@
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>Carteira está &lt;b&gt;criptografada&lt;/b&gt; e atualmente &lt;b&gt;bloqueada&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Proxy is &lt;b&gt;enabled&lt;/b&gt;: %1</source>
+        <translation>O proxy está &lt;b&gt;habilitado&lt;/b&gt;: %1</translation>
+    </message>
+    <message>
+        <source>Original message:</source>
+        <translation>Mensagem original:</translation>
     </message>
 </context>
 <context>
@@ -936,6 +1008,60 @@
     </message>
 </context>
 <context>
+    <name>CreateWalletActivity</name>
+    <message>
+        <source>Creating Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation>Criando Carteira &lt;b&gt;%1&lt;/b&gt;...</translation>
+    </message>
+    <message>
+        <source>Create wallet failed</source>
+        <translation>Falha ao criar carteira</translation>
+    </message>
+    <message>
+        <source>Create wallet warning</source>
+        <translation>Aviso de criação de carteira </translation>
+    </message>
+</context>
+<context>
+    <name>CreateWalletDialog</name>
+    <message>
+        <source>Create Wallet</source>
+        <translation>Criar carteira</translation>
+    </message>
+    <message>
+        <source>Wallet Name</source>
+        <translation>Nome da Carteira</translation>
+    </message>
+    <message>
+        <source>Encrypt the wallet. The wallet will be encrypted with a passphrase of your choice.</source>
+        <translation>Criptografar a carteira. A carteira será criptografada com uma frase de segurança de sua escolha.</translation>
+    </message>
+    <message>
+        <source>Encrypt Wallet</source>
+        <translation>Criptografar Carteira</translation>
+    </message>
+    <message>
+        <source>Disable private keys for this wallet. Wallets with private keys disabled will have no private keys and cannot have an HD seed or imported private keys. This is ideal for watch-only wallets.</source>
+        <translation>Desativar as chaves privadas para esta carteira. Carteiras com chaves privadas desabilitadas não terão chaves privadas e não podem ter uma "HD seed" ou chaves privadas importadas. Isso é ideal para carteiras apenas para relógios.</translation>
+    </message>
+    <message>
+        <source>Disable Private Keys</source>
+        <translation>Desabilitar Chaves Privadas</translation>
+    </message>
+    <message>
+        <source>Make a blank wallet. Blank wallets do not initially have private keys or scripts. Private keys and addresses can be imported, or an HD seed can be set, at a later time.</source>
+        <translation>Faça uma carteira em branco. Carteiras em branco inicialmente não possuem chaves privadas ou scripts. Chaves privadas e endereços podem ser importados, ou uma "HD seed" pode ser definida posteriormente.</translation>
+    </message>
+    <message>
+        <source>Make Blank Wallet</source>
+        <translation>Fazer Carteira em Branco</translation>
+    </message>
+    <message>
+        <source>Create</source>
+        <translation>Criar</translation>
+    </message>
+</context>
+<context>
     <name>EditAddressDialog</name>
     <message>
         <source>Edit Address</source>
@@ -970,12 +1096,16 @@
         <translation>Editar endereço de envio</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Vkax address.</source>
+        <source>The entered address "%1" is not a valid Dash address.</source>
         <translation>O endereço digitado "%1" não é um endereço válido.</translation>
     </message>
     <message>
-        <source>The entered address "%1" is already in the address book.</source>
-        <translation>O endereço digitado "%1" já se encontra no catálogo de endereços.</translation>
+        <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
+        <translation>O endereço "%1" já existe como endereço de recebimento com o rótulo "%2" e, portanto, não pode ser adicionado como endereço de envio.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book with label "%2".</source>
+        <translation>O endereço inserido "%1" já está no catálogo de endereços com o rótulo "%2".</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -1010,14 +1140,37 @@
     </message>
 </context>
 <context>
+    <name>GovernanceList</name>
+    <message>
+        <source>Form</source>
+        <translation>Formulário</translation>
+    </message>
+    <message>
+        <source>Filter List:</source>
+        <translation>Filtrar Lista:</translation>
+    </message>
+    <message>
+        <source>Filter propsal list</source>
+        <translation>Filtrar lista de propostas</translation>
+    </message>
+    <message>
+        <source>Proposal Count:</source>
+        <translation>Contagem de Propostas:</translation>
+    </message>
+    <message>
+        <source>Filter by Title</source>
+        <translation>Filtrar por Título</translation>
+    </message>
+    <message>
+        <source>Proposal Info: %1</source>
+        <translation>Informações da proposta: %1</translation>
+    </message>
+</context>
+<context>
     <name>HelpMessageDialog</name>
     <message>
         <source>version</source>
         <translation>versão</translation>
-    </message>
-    <message>
-        <source>(%1-bit)</source>
-        <translation>(%1-bit)</translation>
     </message>
     <message>
         <source>About %1</source>
@@ -1032,8 +1185,8 @@
         <translation>%1 Informação</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Vkax in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 VKAX, 0.01 VKAX, 0.1 VKAX, 1 VKAX and 10 VKAX -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
-        <translation>&lt;h3&gt;O básico sobre %1&lt;/h3&gt;O %1 te dá verdadeira privacidade financeira ao obscurecer a origem dos seus fundos. Todos os vkaxs na sua carteira é composto de "inputs" diferentes que você pode pensar como sendo moedas separadas, discretas. &lt;br&gt;O %1 usa um processo inovador para misturas os inputs de duas pessoas diferentes, sem que suas moedas saiam de suas carteiras. Você mantém o controle de seu dinheiro o tempo todo.&lt;hr&gt;&lt;b&gt;O processo do %1 funciona assim: &lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;O %1 começa quebrando os inputs de suuas transações em denominações padrão. Essas denominações são 0.001 VKAX, 0.01 VKAX, 0.1 VKAX, 1 VKAX e 10 VKAX -- algo como o dinheiro de papel que você usa todo dia.&lt;/li&gt;&lt;li&gt;Sua carteira então envia uma requisição para um software especialmente configurado na rede, chamados de "masternodes." Esses masternodes são informados que você está interessado em misturar uma denominação específica. Nenhuma informação identificável é enviada aos masternodes, então eles nunca sabem "quem" você é.&lt;/li&gt;&lt;li&gt;Quando duas pessoas enviam mensagens similares, uma sessão de mistura tem início. O masternode mistura os inputs e instrui os três usuários da carteira para pagar o input agora transformado de volta a si mesmos. Sua carteira paga a denominação diretamente a si mesmo, mas em um endereço diferente (chamado de endereço mudado).&lt;/li&gt;&lt;li&gt;A fim de obscurecer plenamente seus fundos, sua carteira repete esse processo várias vezes com cada denominação. Cada vez que o processo é completado, se chama um "round". Cada round de %1 torna exponencialmente mais difícil determinar onde os fundos se originaram.&lt;/li&gt;&lt;li&gt;Esse processo de mistura acontece no background sem nenhuma intervenção da sua parte. Quando você deseja fazer uma transação, seus fundos jã estarão misturados. Nenhuma espera adicional é requerida.&lt;/li&gt;&lt;/ol&gt;&lt;hr&gt;&lt;b&gt;IMPORTANTE:&lt;/b&gt; Sua carteira só contém 1000 desses "mudar endereços." Cada vez que um evento de mistura acontece, 9 de seus endereços são usados. Isso indica que esses 1000 endereços duram por cerca de 100 eventos de mistura. Quando 900 desses endereços são usados, sua carteira deve criar mais endereços. Contudo, ela só é capaz de fazer isso se você tem o backup automático habilitado.&lt;br&gt;Consequentemente, usuários que têm seus backups desabilitados também terão o %1 desabilitado. &lt;hr&gt;Para mais informações, consulte a &lt;a style="%2" href="%3"&gt;documentação do %1&lt;/a&gt;.</translation>
+        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the Dash in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 DASH, 0.01 DASH, 0.1 DASH, 1 DASH and 10 DASH -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
+        <translation>&lt;h3&gt;O básico sobre %1&lt;/h3&gt;O %1 te dá verdadeira privacidade financeira ao obscurecer a origem dos seus fundos. Todos os dashs na sua carteira é composto de "inputs" diferentes que você pode pensar como sendo moedas separadas, discretas. &lt;br&gt;O %1 usa um processo inovador para misturas os inputs de duas pessoas diferentes, sem que suas moedas saiam de suas carteiras. Você mantém o controle de seu dinheiro o tempo todo.&lt;hr&gt;&lt;b&gt;O processo do %1 funciona assim: &lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;O %1 começa quebrando os inputs de suuas transações em denominações padrão. Essas denominações são 0.001 DASH, 0.01 DASH, 0.1 DASH, 1 DASH e 10 DASH -- algo como o dinheiro de papel que você usa todo dia.&lt;/li&gt;&lt;li&gt;Sua carteira então envia uma requisição para um software especialmente configurado na rede, chamados de "masternodes." Esses masternodes são informados que você está interessado em misturar uma denominação específica. Nenhuma informação identificável é enviada aos masternodes, então eles nunca sabem "quem" você é.&lt;/li&gt;&lt;li&gt;Quando duas pessoas enviam mensagens similares, uma sessão de mistura tem início. O masternode mistura os inputs e instrui os três usuários da carteira para pagar o input agora transformado de volta a si mesmos. Sua carteira paga a denominação diretamente a si mesmo, mas em um endereço diferente (chamado de endereço mudado).&lt;/li&gt;&lt;li&gt;A fim de obscurecer plenamente seus fundos, sua carteira repete esse processo várias vezes com cada denominação. Cada vez que o processo é completado, se chama um "round". Cada round de %1 torna exponencialmente mais difícil determinar onde os fundos se originaram.&lt;/li&gt;&lt;li&gt;Esse processo de mistura acontece no background sem nenhuma intervenção da sua parte. Quando você deseja fazer uma transação, seus fundos jã estarão misturados. Nenhuma espera adicional é requerida.&lt;/li&gt;&lt;/ol&gt;&lt;hr&gt;&lt;b&gt;IMPORTANTE:&lt;/b&gt; Sua carteira só contém 1000 desses "mudar endereços." Cada vez que um evento de mistura acontece, 9 de seus endereços são usados. Isso indica que esses 1000 endereços duram por cerca de 100 eventos de mistura. Quando 900 desses endereços são usados, sua carteira deve criar mais endereços. Contudo, ela só é capaz de fazer isso se você tem o backup automático habilitado.&lt;br&gt;Consequentemente, usuários que têm seus backups desabilitados também terão o %1 desabilitado. &lt;hr&gt;Para mais informações, consulte a &lt;a style="%2" href="%3"&gt;documentação do %1&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1060,7 +1213,7 @@
     </message>
     <message>
         <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
-        <translation>Se escolheu limitar o armazenamento da cadeia de blocos (poda), a data histórica ainda tem de ser descarregada e processada, mas irá ser apagada no final para manter uma utilização baixa do espaço de disco.</translation>
+        <translation>Se escolheu limitar o armazenamento da cadeia de blocos (modo pruning), a data histórica ainda tem de ser descarregada e processada, mas irá ser apagada no final para manter uma utilização baixa do espaço de disco.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1079,8 +1232,8 @@
         <translation>Aproximadamente %1 GB de dados irão ser guardados nesta pasta. </translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Vkax block chain.</source>
-        <translation>%1 irá descarregar e armazenar uma cópia da cadeia de blocos da Vkax.</translation>
+        <source>%1 will download and store a copy of the Dash block chain.</source>
+        <translation>%1 irá descarregar e armazenar uma cópia da cadeia de blocos da Dash.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1112,10 +1265,6 @@
     <message>
         <source>Status</source>
         <translation>Status</translation>
-    </message>
-    <message>
-        <source>0</source>
-        <translation>0</translation>
     </message>
     <message>
         <source>Filter List:</source>
@@ -1237,12 +1386,12 @@
         <translation>Forma</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Vkax network, as detailed below.</source>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Dash network, as detailed below.</source>
         <translation>Transações recentes podem não estar visíveis ainda, portanto o seu saldo pode estar incorreto. Esta informação será corrigida assim que sua carteira for sincronizada com a rede, como detalhado abaixo.</translation>
     </message>
     <message>
-        <source>Attempting to spend Vkax that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>A tentativa de gastar o Vkax que é afetado por transações ainda não exibidas não será aceita pela rede.</translation>
+        <source>Attempting to spend Dash that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>A tentativa de gastar o Dash que é afetado por transações ainda não exibidas não será aceita pela rede.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1277,8 +1426,8 @@
         <translation>Esconder</translation>
     </message>
     <message>
-        <source>Unknown. Syncing Headers (%1)...</source>
-        <translation>Desconhecido. Sincronizando cabeçalhos (%1)...</translation>
+        <source>Unknown. Syncing Headers (%1, %2%)...</source>
+        <translation>Desconhecido. Sincronizando cabeçalhos (%1, %2%)...</translation>
     </message>
 </context>
 <context>
@@ -1305,6 +1454,25 @@
     </message>
 </context>
 <context>
+    <name>OpenWalletActivity</name>
+    <message>
+        <source>Open wallet failed</source>
+        <translation>Falha ao abrir carteira</translation>
+    </message>
+    <message>
+        <source>Open wallet warning</source>
+        <translation>Aviso de carteira aberta</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>carteira padrão</translation>
+    </message>
+    <message>
+        <source>Opening Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation>Abrindo Carteira&lt;b&gt;%1&lt;/b&gt;...</translation>
+    </message>
+</context>
+<context>
     <name>OptionsDialog</name>
     <message>
         <source>Options</source>
@@ -1317,10 +1485,6 @@
     <message>
         <source>Size of &amp;database cache</source>
         <translation>Tamanho do banco de &amp;dados do cache</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
     </message>
     <message>
         <source>Number of script &amp;verification threads</source>
@@ -1339,12 +1503,36 @@
         <translation>&amp;Aparência</translation>
     </message>
     <message>
+        <source>Prune &amp;block storage to</source>
+        <translation>Podar e bloquear o armazenamento para</translation>
+    </message>
+    <message>
+        <source>GB</source>
+        <translation>GB</translation>
+    </message>
+    <message>
+        <source>Reverting this setting requires re-downloading the entire blockchain.</source>
+        <translation>Reverter essa configuração requer realizar o download novamente de todo o blockchain.</translation>
+    </message>
+    <message>
+        <source>MiB</source>
+        <translation>MiB</translation>
+    </message>
+    <message>
         <source>Show additional tab listing all your masternodes in first sub-tab&lt;br/&gt;and all masternodes on the network in second sub-tab.</source>
         <translation>Mostre uma guia adicional listando todos os seus masternodes na primeira subposição &lt;br/&gt; e todos os masternodes na rede na segunda sub-guia.</translation>
     </message>
     <message>
         <source>Show Masternodes Tab</source>
         <translation>Mostrar a aba Masternodes</translation>
+    </message>
+    <message>
+        <source>Show additional tab listing governance proposals.</source>
+        <translation>Mostrar guia adicional com listagem das propostas de governança. </translation>
+    </message>
+    <message>
+        <source>Show Governance Tab</source>
+        <translation>Mostrar Guia de Governança</translation>
     </message>
     <message>
         <source>If you disable the spending of unconfirmed change, the change from a transaction&lt;br/&gt;cannot be used until that transaction has at least one confirmation.&lt;br/&gt;This also affects how your balance is computed.</source>
@@ -1399,8 +1587,16 @@
         <translation>Escolher saldo</translation>
     </message>
     <message>
-        <source>Automatically open the Vkax Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Abre automaticamente a porta para o cliente Vkax Core no roteador. Essa função apenas funciona se o seu roteador oferece suporte a UPnP e a opção estiver habilitada.</translation>
+        <source>Automatically open the Dash Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Abre automaticamente a porta para o cliente Dash Core no roteador. Essa função apenas funciona se o seu roteador oferece suporte a UPnP e a opção estiver habilitada.</translation>
+    </message>
+    <message>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
+        <translation>Abra automaticamente a porta do cliente Bitcoin no roteador. Isso só funciona quando seu roteador suporta NAT-PMP e está habilitado. A porta externa pode ser aleatória.</translation>
+    </message>
+    <message>
+        <source>Map port using NA&amp;T-PMP</source>
+        <translation>Mapear porta usando NA&amp;T-PMP</translation>
     </message>
     <message>
         <source>Accept connections from outside.</source>
@@ -1411,8 +1607,8 @@
         <translation>Permitir conexões de entrada</translation>
     </message>
     <message>
-        <source>Connect to the Vkax network through a SOCKS5 proxy.</source>
-        <translation>Conecta à rede Vkax através de um proxy SOCKS5.</translation>
+        <source>Connect to the Dash network through a SOCKS5 proxy.</source>
+        <translation>Conecta à rede Dash através de um proxy SOCKS5.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1425,6 +1621,10 @@
     <message>
         <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</source>
         <translation>Use um SOCKS&amp;5 proxy para conectar com nodes através do Tor</translation>
+    </message>
+    <message>
+        <source>Options set in this dialog are overridden by the command line or in the configuration file:</source>
+        <translation>As opções definidas nesta caixa de diálogo são substituídas pela linha de comando ou no arquivo de configuração:</translation>
     </message>
     <message>
         <source>Hide the icon from the system tray.</source>
@@ -1475,6 +1675,10 @@
         <translation>Rede</translation>
     </message>
     <message>
+        <source>Enabling pruning significantly reduces the disk space required to store transactions. All blocks are still fully validated. Reverting this setting requires re-downloading the entire blockchain.</source>
+        <translation>A ativação do modo pruning reduz significativamente o espaço em disco necessário para armazenar transações. Todos os blocos ainda estão totalmente validados. Reverter essa configuração requer o download novamente de todo o blockchain.</translation>
+    </message>
+    <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Mapear porta usando &amp;UPnP</translation>
     </message>
@@ -1511,8 +1715,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Vkax network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Conecte-se à rede Vkax através de um proxy SOCKS5 separado para serviços ocultos Tor</translation>
+        <source>Connect to the Dash network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Conecte-se à rede Dash através de um proxy SOCKS5 separado para serviços ocultos Tor</translation>
     </message>
     <message>
         <source>Show only a tray icon after minimizing the window.</source>
@@ -1555,10 +1759,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Decimal digits</source>
         <translation>Dígitos decimais</translation>
-    </message>
-    <message>
-        <source>Active command-line options that override above options:</source>
-        <translation>Ativa as opções de linha de comando que sobrescreve as opções acima:</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -1612,8 +1812,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Formulário</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Vkax network after a connection is established, but this process has not completed yet.</source>
-        <translation>A informação exibida pode estar desatualizada. Sua wallet é sincronizada automaticamente com a rede Vkax tão logo uma conexão se estabeleça, entrtanto esse processo ainda não está completo.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Dash network after a connection is established, but this process has not completed yet.</source>
+        <translation>A informação exibida pode estar desatualizada. Sua wallet é sincronizada automaticamente com a rede Dash tão logo uma conexão se estabeleça, entrtanto esse processo ainda não está completo.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -1692,8 +1892,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Quantia e Rodadas:</translation>
     </message>
     <message>
-        <source>0 VKAX / 0 Rounds</source>
-        <translation>0 VKAX / 0 Rodadas</translation>
+        <source>0 DASH / 0 Rounds</source>
+        <translation>0 DASH / 0 Rodadas</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -1836,7 +2036,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
     </message>
     <message>
         <source>Cannot start vkax: click-to-pay handler</source>
-        <translation>Não foi possível iniciar Vkax: manipulador click-to-pay</translation>
+        <translation>Não foi possível iniciar Dash: manipulador click-to-pay</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -1851,11 +2051,15 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>URL de cobrança é inválida: %1</translation>
     </message>
     <message>
+        <source>Cannot process payment request because BIP70 support was not compiled in.</source>
+        <translation>Não é possível processar a solicitação de pagamento porque o suporte BIP70 não foi compilado.</translation>
+    </message>
+    <message>
         <source>Invalid payment address %1</source>
         <translation>Endereço de pagamento inválido %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid Vkax address or malformed URI parameters.</source>
+        <source>URI cannot be parsed! This can be caused by an invalid Dash address or malformed URI parameters.</source>
         <translation>A URI não pode ser analisada! Isto pode ser causado por um endereço inválido ou um parâmetro URI malformado.</translation>
     </message>
     <message>
@@ -1951,6 +2155,56 @@ https://www.transifex.com/projects/p/vkax/</translation>
     </message>
 </context>
 <context>
+    <name>Proposal</name>
+    <message>
+        <source>Passing +%1</source>
+        <translation>Passando +%1</translation>
+    </message>
+    <message>
+        <source>Needs additional %1 votes</source>
+        <translation>Precisa de %1 votos adicionais</translation>
+    </message>
+</context>
+<context>
+    <name>ProposalModel</name>
+    <message>
+        <source>Yes</source>
+        <translation>Sim</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Não</translation>
+    </message>
+    <message>
+        <source>Hash</source>
+        <translation>Hash</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation>Título</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation>Início</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation>Fim</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Quantidade</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>Ativo</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <source>Choose data directory on startup (default: %u)</source>
@@ -1993,6 +2247,46 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Exibir tela de abertura na inicialização (padrão: %u)</translation>
     </message>
     <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>Erro: o diretório de dados especificado "%1" não existe.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1.</source>
+        <translation>Erro: Não é possível analisar o arquivo de configuração: %1.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>Erro: %1</translation>
+    </message>
+    <message>
+        <source>Error: Failed to load application fonts.</source>
+        <translation>Erro: Falha ao carregar as fontes do aplicativo.</translation>
+    </message>
+    <message>
+        <source>Error: Specified font-family invalid. Valid values: %1.</source>
+        <translation>Erro: Família de fontes especificada é inválida. Valores válidos: %1.</translation>
+    </message>
+    <message>
+        <source>Error: Specified font-weight-normal invalid. Valid range %1 to %2.</source>
+        <translation>Erro: Peso da fonte especificado é inválido. Intervalo válido %1 to %2.</translation>
+    </message>
+    <message>
+        <source>Error: Specified font-weight-bold invalid. Valid range %1 to %2.</source>
+        <translation>Erro: Peso especificado da fonte negrito é inválido. Intervalo válido %1 a %2.</translation>
+    </message>
+    <message>
+        <source>Error: Specified font-scale invalid. Valid range %1 to %2.</source>
+        <translation>Erro: Escala especificada da fonte é inválida. Intervalo válido %1 a %2.</translation>
+    </message>
+    <message>
+        <source>Error: Invalid -custom-css-dir path.</source>
+        <translation>Erro: Caminho -custom-css-dir inválido.</translation>
+    </message>
+    <message>
+        <source>Error: %1 CSS file(s) missing in -custom-css-dir path.</source>
+        <translation>Erro: %1 arquivo(s) CSS ausente(s) no caminho -custom-css-dir.</translation>
+    </message>
+    <message>
         <source>%1 didn't yet exit safely...</source>
         <translation>%1 ainda não terminou com segurança...</translation>
     </message>
@@ -2001,8 +2295,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Quantia</translation>
     </message>
     <message>
-        <source>Enter a Vkax address (e.g. %1)</source>
-        <translation>Informe um endereço Vkax (ex: %1)</translation>
+        <source>Enter a Dash address (e.g. %1)</source>
+        <translation>Informe um endereço Dash (ex: %1)</translation>
     </message>
     <message>
         <source>Appearance Setup</source>
@@ -2094,49 +2388,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
     </message>
 </context>
 <context>
-    <name>QObject::QObject</name>
-    <message>
-        <source>Error: Specified data directory "%1" does not exist.</source>
-        <translation>Erro: Diretório de dados especificado "%1" não existe.</translation>
-    </message>
-    <message>
-        <source>Error: Cannot parse configuration file: %1. Only use key=value syntax.</source>
-        <translation>Erro: Não foi possível interpretar arquivo de configuração: %1. Utilize apenas a sintaxe chave=valor.</translation>
-    </message>
-    <message>
-        <source>Error: %1</source>
-        <translation>Erro: %1</translation>
-    </message>
-    <message>
-        <source>Error: Failed to load application fonts.</source>
-        <translation>Erro: Falha ao carregar as fontes do aplicativo.</translation>
-    </message>
-    <message>
-        <source>Error: Specified font-family invalid. Valid values: %1.</source>
-        <translation>Erro: Família de fontes especificada inválida. Valores válidos: %1.</translation>
-    </message>
-    <message>
-        <source>Error: Specified font-weight-normal invalid. Valid range %1 to %2.</source>
-        <translation>Erro: Peso normal da fonte especificado inválido. Intervalo válido de %1 a %2.</translation>
-    </message>
-    <message>
-        <source>Error: Specified font-weight-bold invalid. Valid range %1 to %2.</source>
-        <translation>Erro: Peso negrito da fonte especificado inválido. Intervalo válido de %1 a %2.</translation>
-    </message>
-    <message>
-        <source>Error: Specified font-scale invalid. Valid range %1 to %2.</source>
-        <translation>Erro: Escala da fonte especificada inválida. Intervalo válido de %1 a %2.</translation>
-    </message>
-    <message>
-        <source>Error: Invalid -custom-css-dir path.</source>
-        <translation>Erro: Caminho -custom-css-dir inválido.</translation>
-    </message>
-    <message>
-        <source>Error: %1 CSS file(s) missing in -custom-css-dir path.</source>
-        <translation>Erro: %1 arquivo(s) CSS ausente(s) no caminho -custom-css-dir.</translation>
-    </message>
-</context>
-<context>
     <name>QRDialog</name>
     <message>
         <source>QR-Code Title</source>
@@ -2183,6 +2434,18 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>&amp;Copy Image</source>
         <translation>&amp;Copiar imagem</translation>
+    </message>
+    <message>
+        <source>Resulting URI too long, try to reduce the text for label / message.</source>
+        <translation>URI resultante é muito longo, tente reduzir o texto do rótulo / mensagem.</translation>
+    </message>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>Erro ao codificar URI no QR Code.</translation>
+    </message>
+    <message>
+        <source>QR code support not available.</source>
+        <translation>Suporte a QR code não disponível.</translation>
     </message>
     <message>
         <source>Save QR Code</source>
@@ -2240,16 +2503,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Arquivo de log de Depuração</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
-        <translation>Quantidade atual de blocos</translation>
-    </message>
-    <message>
         <source>Client version</source>
         <translation>Versão do cliente</translation>
-    </message>
-    <message>
-        <source>Using BerkeleyDB version</source>
-        <translation>Usando BerkeleyDB versão</translation>
     </message>
     <message>
         <source>Block chain</source>
@@ -2340,6 +2595,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Reescanear o blockchain 2</translation>
     </message>
     <message>
+        <source>The buttons below will restart the wallet with command-line options to repair the wallet, fix issues with corrupt blockchain files or missing/obsolete transactions.</source>
+        <translation>Os botões abaixo reiniciarão a carteira com opções de linha de comando para reparar a carteira, corrigir problemas com arquivos blockchain corrompidos ou transações ausentes/obsoletas.</translation>
+    </message>
+    <message>
         <source>-rescan=1: Rescan the block chain for missing wallet transactions starting from wallet creation time.</source>
         <translation>-rescan=1: Verificar novamente o block chain para encontrar transações inexistentes na carteira, iniciando desde a criação da carteira.</translation>
     </message>
@@ -2360,8 +2619,32 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Datadir</translation>
     </message>
     <message>
+        <source>To specify a non-default location of the data directory use the '%1' option.</source>
+        <translation>Para especificar um local fora do padrão do diretório de dados, use a opção '%1'.</translation>
+    </message>
+    <message>
+        <source>Blocksdir</source>
+        <translation>Blocksdir</translation>
+    </message>
+    <message>
+        <source>To specify a non-default location of the blocks directory use the '%1' option.</source>
+        <translation>Para especificar um local fora do padrão do diretório de blocos, use a opção '%1'.</translation>
+    </message>
+    <message>
+        <source>Current block height</source>
+        <translation>Altura do bloco atual</translation>
+    </message>
+    <message>
         <source>Last block hash</source>
         <translation>Último bloco hash</translation>
+    </message>
+    <message>
+        <source>Latest ChainLocked block hash</source>
+        <translation>Hash do bloco ChainLocked mais recente</translation>
+    </message>
+    <message>
+        <source>Latest ChainLocked block height</source>
+        <translation>Altura do bloco ChainLocked mais recente</translation>
     </message>
     <message>
         <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
@@ -2440,10 +2723,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>&amp;Reparar carteira</translation>
     </message>
     <message>
-        <source>Salvage wallet</source>
-        <translation>Salvar wallet</translation>
-    </message>
-    <message>
         <source>Recover transactions 1</source>
         <translation>Recuperar transações 1</translation>
     </message>
@@ -2454,14 +2733,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Upgrade wallet format</source>
         <translation>Atualizar formato da carteira</translation>
-    </message>
-    <message>
-        <source>The buttons below will restart the wallet with command-line options to repair the wallet, fix issues with corrupt blockhain files or missing/obsolete transactions.</source>
-        <translation>Os botões abaixo reiniciarão a carteira com opções de linha de comando para reparar a carteira, corrigir problemas com arquivos blockhain corrompidos ou transações ausentes/obsoletas.</translation>
-    </message>
-    <message>
-        <source>-salvagewallet: Attempt to recover private keys from a corrupt wallet.dat.</source>
-        <translation>-salvagewallet: tenta recuperar chaves privadas de um wallet.dat corrompido.</translation>
     </message>
     <message>
         <source>-zapwallettxes=1: Recover transactions from blockchain (keep meta-data, e.g. account owner).</source>
@@ -2607,8 +2878,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
 <context>
     <name>ReceiveCoinsDialog</name>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Vkax network.</source>
-        <translation>Uma mensagem opcional que será anexada na cobrança e será mostrada quando ela for aberta. Nota: A mensagem não será enviada com o pagamento pela rede Vkax.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Dash network.</source>
+        <translation>Uma mensagem opcional que será anexada na cobrança e será mostrada quando ela for aberta. Nota: A mensagem não será enviada com o pagamento pela rede Dash.</translation>
     </message>
     <message>
         <source>&amp;Message:</source>
@@ -2619,8 +2890,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Um marcador opcional para associar ao novo endereço de recebimento.</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Vkax network.</source>
-        <translation>Uma mensagem opcional para anexar à solicitação de pagamento, que será exibida quando a solicitação for aberta. &lt;br&gt;Observação: a mensagem não será enviada com o pagamento pela rede do Vkax.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Dash network.</source>
+        <translation>Uma mensagem opcional para anexar à solicitação de pagamento, que será exibida quando a solicitação for aberta. &lt;br&gt;Observação: a mensagem não será enviada com o pagamento pela rede do Dash.</translation>
     </message>
     <message>
         <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
@@ -2639,8 +2910,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Qu&amp;antia:</translation>
     </message>
     <message>
-        <source>&amp;Request payment</source>
-        <translation>&amp;Requisitar Pagamento</translation>
+        <source>&amp;Create new receiving address</source>
+        <translation>&amp;Criar novo endereço de recebimento</translation>
     </message>
     <message>
         <source>Clear all fields of the form.</source>
@@ -2681,6 +2952,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Copy URI</source>
         <translation>Copiar URI</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Copiar endereço</translation>
     </message>
     <message>
         <source>Copy label</source>
@@ -2744,14 +3019,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Wallet</source>
         <translation>Carteira</translation>
-    </message>
-    <message>
-        <source>Resulting URI too long, try to reduce the text for label / message.</source>
-        <translation>URI resultante muito longa. Tente reduzir o texto do rótulo ou da mensagem.</translation>
-    </message>
-    <message>
-        <source>Error encoding URI into QR Code.</source>
-        <translation>Erro ao codigicar o URI em código QR</translation>
     </message>
 </context>
 <context>
@@ -2852,10 +3119,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Escolha...</translation>
     </message>
     <message>
-        <source>collapse fee-settings</source>
-        <translation>Ocultar painel</translation>
-    </message>
-    <message>
         <source>Confirmation time target:</source>
         <translation>Tempo alvo de confirmação:</translation>
     </message>
@@ -2878,6 +3141,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Note: Not enough data for fee estimation, using the fallback fee instead.</source>
         <translation>Nota: Não há dados suficientes para estimativa da taxa, usando a taxa de fallback como alternativa.</translation>
+    </message>
+    <message>
+        <source>Hide transaction fee settings</source>
+        <translation>Ocultar configurações da taxa de transação</translation>
     </message>
     <message>
         <source>Hide</source>
@@ -2976,14 +3243,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Você tem certeza que deseja enviar?</translation>
     </message>
     <message>
-        <source>are added as transaction fee</source>
-        <translation>são adicionadas como taxas de transação</translation>
-    </message>
-    <message>
-        <source>Total Amount = &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;= %2</source>
-        <translation>Quantidade Total = &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;= %2</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;(%1 of %2 entries displayed)&lt;/b&gt;</source>
         <translation>&lt;b&gt;(%1 de %2 entradas exibidas)&lt;/b&gt;</translation>
     </message>
@@ -3004,6 +3263,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>quaisquer fundos disponíveis</translation>
     </message>
     <message>
+        <source>Transaction fee</source>
+        <translation>Taxa de transação</translation>
+    </message>
+    <message>
         <source>(%1 transactions have higher fees usually due to no change output being allowed)</source>
         <translation>(transações %1  têm taxas mais altas geralmente devido ao fato de que saídas de trocos não são permitidas)</translation>
     </message>
@@ -3022,6 +3285,18 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Warning: Using %1 with %2 or more inputs can harm your privacy and is not recommended</source>
         <translation>Aviso: Usar %1 com %2 ou mais inputs pode prejudicar sua privacidade e não é recomendado</translation>
+    </message>
+    <message>
+        <source>Click to learn more</source>
+        <translation>Clique para saber mais</translation>
+    </message>
+    <message>
+        <source>Total Amount</source>
+        <translation>Quantidade Total</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>ou</translation>
     </message>
     <message>
         <source>Confirm send coins</source>
@@ -3052,10 +3327,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Criação de transação falha</translation>
     </message>
     <message>
-        <source>The transaction was rejected with the following reason: %1</source>
-        <translation>A transação foi rejeitada com a seguinte razão: %1</translation>
-    </message>
-    <message>
         <source>A fee higher than %1 is considered an absurdly high fee.</source>
         <translation>Uma taxa maior que %1 é considerada uma taxa absurdamente alta.</translation>
     </message>
@@ -3072,8 +3343,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation><numerusform>Estimativa para iniciar a confirmação em %n blocos.</numerusform><numerusform>Estimativa para iniciar a confirmação em %n blocos.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid Vkax address</source>
-        <translation>Aviso: Endereço Vkax inválido</translation>
+        <source>Warning: Invalid Dash address</source>
+        <translation>Aviso: Endereço Dash inválido</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -3095,16 +3366,12 @@ https://www.transifex.com/projects/p/vkax/</translation>
 <context>
     <name>SendCoinsEntry</name>
     <message>
-        <source>This is a normal payment.</source>
-        <translation>Este é um pagamento normal.</translation>
-    </message>
-    <message>
         <source>Pay &amp;To:</source>
         <translation>Pagar &amp;Para:</translation>
     </message>
     <message>
-        <source>The Vkax address to send the payment to</source>
-        <translation>O endereço Vkax para enviar o pagamento a</translation>
+        <source>The Dash address to send the payment to</source>
+        <translation>O endereço Dash para enviar o pagamento a</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -3139,8 +3406,12 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Q&amp;uantidade:</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Vkax than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>A taxa será deduzida do valor enviado. O destinatário receberá uma quantidade menor de Vkax do que você insere no campo de valor. Se vários destinatários forem selecionados, a taxa será dividida igualmente.</translation>
+        <source>The amount to send in the selected unit</source>
+        <translation>Valor a ser enviado na unidade selecionada</translation>
+    </message>
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Dash than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>A taxa será deduzida do valor enviado. O destinatário receberá uma quantidade menor de Dash do que você insere no campo de valor. Se vários destinatários forem selecionados, a taxa será dividida igualmente.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -3155,8 +3426,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Mensagem:</translation>
     </message>
     <message>
-        <source>A message that was attached to the vkax: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Vkax network.</source>
-        <translation>A mensagem que foi anexada ao Vkax: URI na qual será gravada na transação para sua referência. Nota: Essa mensagem não será gravada publicamente na rede Vkax.</translation>
+        <source>A message that was attached to the vkax: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Dash network.</source>
+        <translation>A mensagem que foi anexada ao Dash: URI na qual será gravada na transação para sua referência. Nota: Essa mensagem não será gravada publicamente na rede Dash.</translation>
     </message>
     <message>
         <source>This is an unauthenticated payment request.</source>
@@ -3182,8 +3453,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
 <context>
     <name>SendConfirmationDialog</name>
     <message>
-        <source>Yes</source>
-        <translation>Sim</translation>
+        <source>Send</source>
+        <translation>Enviar</translation>
     </message>
 </context>
 <context>
@@ -3208,12 +3479,12 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>&amp;Assinar Mensagem</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive Vkax sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Você pode assinar mensagens/acordos com seus endereços para provar que pode receber o Vkax enviado para eles. Tenha cuidado para não assinar nada vago ou aleatório, pois os ataques de phishing podem tentar convencê-lo a assinar sua identidade para eles. Assine apenas declarações totalmente detalhadas com as quais você concorda.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Dash sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Você pode assinar mensagens/acordos com seus endereços para provar que pode receber o Dash enviado para eles. Tenha cuidado para não assinar nada vago ou aleatório, pois os ataques de phishing podem tentar convencê-lo a assinar sua identidade para eles. Assine apenas declarações totalmente detalhadas com as quais você concorda.</translation>
     </message>
     <message>
-        <source>The Vkax address to sign the message with</source>
-        <translation>O endereço Vkax que assinará a mensagem</translation>
+        <source>The Dash address to sign the message with</source>
+        <translation>O endereço Dash que assinará a mensagem</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -3244,8 +3515,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Copiar a assinatura para a área de transferência do sistema</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Vkax address</source>
-        <translation>Assinar mensagem para provar que você é dono deste endereço Vkax</translation>
+        <source>Sign the message to prove you own this Dash address</source>
+        <translation>Assinar mensagem para provar que você é dono deste endereço Dash</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -3268,12 +3539,20 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Coloque o endereço do autor, a mensagem (certifique-se de copiar toda a mensagem, incluindo quebras de linha, espaços, tabulações, etc.) e a assinatura embaixo para verificar a mensagem. Cuidado para não ler mais da assinatura do que está assinado na mensagem, para evitar ser enganado pelo ataque man-in-the-middle. Note que isso somente prova a propriedade de um endereço, e não o remetende de qualquer transação.</translation>
     </message>
     <message>
-        <source>The Vkax address the message was signed with</source>
-        <translation>O endereço Vkax que foi usado para assinar a mensagem</translation>
+        <source>The Dash address the message was signed with</source>
+        <translation>O endereço Dash que foi usado para assinar a mensagem</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Vkax address</source>
-        <translation>Verifique a mensagem para se assegurar de que foi assinada pelo endereço Vkax específicado</translation>
+        <source>The signed message to verify</source>
+        <translation>Mensagem assinada para verificação</translation>
+    </message>
+    <message>
+        <source>The signature given when the message was signed</source>
+        <translation>Assinatura dada quando a mensagem foi assinada</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Dash address</source>
+        <translation>Verifique a mensagem para se assegurar de que foi assinada pelo endereço Dash específicado</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -3511,6 +3790,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Transaction total size</source>
         <translation>Tamanho transacional total</translation>
+    </message>
+    <message>
+        <source> (Certificate was not verified)</source>
+        <translation>(O certificado não foi verificado)</translation>
     </message>
     <message>
         <source>Merchant</source>
@@ -3806,8 +4089,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Copiar dados completos da transação</translation>
     </message>
     <message>
-        <source>Edit label</source>
-        <translation>Editar rótulo</translation>
+        <source>Edit address label</source>
+        <translation>Editar etiqueta de endereço</translation>
     </message>
     <message>
         <source>Show transaction details</source>
@@ -3890,6 +4173,21 @@ https://www.transifex.com/projects/p/vkax/</translation>
     </message>
 </context>
 <context>
+    <name>WalletController</name>
+    <message>
+        <source>Close wallet</source>
+        <translation>Fechar carteira</translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to close the wallet &lt;i&gt;%1&lt;/i&gt;?</source>
+        <translation>Tem certeza de que deseja fechar a carteira &lt;i&gt;%1&lt;/i&gt;?</translation>
+    </message>
+    <message>
+        <source>Closing the wallet for too long can result in having to resync the entire chain if pruning is enabled.</source>
+        <translation>Fechar a carteira por muito tempo pode resultar em ter que sincronizar novamente toda a cadeia se o modo pruning estiver habilitado.</translation>
+    </message>
+</context>
+<context>
     <name>WalletFrame</name>
     <message>
         <source>No wallet has been loaded.</source>
@@ -3901,6 +4199,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Send Coins</source>
         <translation>Enviar moedas</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>carteira padrão</translation>
     </message>
 </context>
 <context>
@@ -3951,6 +4253,14 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>Erro: Aceitar conexões de entrada falhou (retornou erro %s)</translation>
+    </message>
+    <message>
+        <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>
+        <translation>Falha na estimativa de taxa. A taxa de retorno está desabilitada. Aguarde alguns blocos ou habilite -fallbackfee.</translation>
+    </message>
+    <message>
+        <source>This error could occur if this wallet was not shutdown cleanly and was last loaded using a build with a newer version of Berkeley DB. If so, please use the software that last loaded this wallet</source>
+        <translation>Este erro pode ocorrer se esta carteira não foi encerrada corretamente e foi carregada pela última vez usando uma compilação com uma versão mais recente do Berkeley DB. Em caso afirmativo, por favor, use o software que carregou esta carteira pela última vez</translation>
     </message>
     <message>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
@@ -4013,14 +4323,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Erro ao ler o banco de dados. Finalizando.</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Erro</translation>
-    </message>
-    <message>
-        <source>Error: Disk space is low!</source>
-        <translation>Erro: Pouco espaço em disco!</translation>
-    </message>
-    <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
         <translation>Falha ao escutar em qualquer porta. Use -listen=0 se você quiser isso.</translation>
     </message>
@@ -4057,18 +4359,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Entrada excede o tamanho máximo.</translation>
     </message>
     <message>
-        <source>Failed to load fulfilled requests cache from</source>
-        <translation>Falha ao carregar o cache de solicitações preenchidas de</translation>
-    </message>
-    <message>
-        <source>Failed to load governance cache from</source>
-        <translation>Falha ao carregar o cache de governança de</translation>
-    </message>
-    <message>
-        <source>Failed to load masternode cache from</source>
-        <translation>Falha ao carregar o cache masternode de</translation>
-    </message>
-    <message>
         <source>Found enough users, signing ( waiting %s )</source>
         <translation>Encontrou usuários suficientes, assinando ( esperando %s )</translation>
     </message>
@@ -4091,10 +4381,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
         <translation>Bloco gênese incorreto ou não encontrado. Datadir errado para a rede?</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation>Informação</translation>
     </message>
     <message>
         <source>Input is not valid.</source>
@@ -4177,18 +4463,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Resposta desconhecida.</translation>
     </message>
     <message>
-        <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
-        <translation>Argument -benchmark não suportado e ignorado, use -debug=bench.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
-        <translation>Argument -debugnet não suportado e ignorado, use -debug=net.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -tor found, use -onion.</source>
-        <translation>O argumento -tor não é suportado, use -onion.</translation>
-    </message>
-    <message>
         <source>User Agent comment (%s) contains unsafe characters.</source>
         <translation>Comentário User Agent (%s) contém caracteres inseguros.</translation>
     </message>
@@ -4213,10 +4487,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>%s está inactivo.</translation>
     </message>
     <message>
-        <source>%s request incomplete: %s</source>
-        <translation>%s solicitação incompleta: %s</translation>
-    </message>
-    <message>
         <source>Can't mix while sync in progress.</source>
         <translation>Não é possível misturar enquanto a sincronização está em progresso.</translation>
     </message>
@@ -4231,10 +4501,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>%s file contains all private keys from this wallet. Do not share it with anyone!</source>
         <translation>%s arquivo contém todas as chaves privadas desta carteira. Não compartilhe com ninguém!</translation>
-    </message>
-    <message>
-        <source>-masternode option is deprecated and ignored, specifying -masternodeblsprivkey is enough to start this node as a masternode.</source>
-        <translation>a opção -masternode está deprecada e ignorada, especificar -masternodeblsprivkey é suficiente para iniciar um nó como masternode.</translation>
     </message>
     <message>
         <source>Failed to create backup, file already exists! This could happen if you restarted wallet in less than 60 seconds. You can continue if you are ok with this.</source>
@@ -4269,24 +4535,12 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>O tamanho total da string de versão da rede (%i) excede o tamanho máximo (%i). Reduza o numero ou tamanho de uacomments.</translation>
     </message>
     <message>
-        <source>Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
-        <translation>Argumento inválido -socks encontrado. Definir a versão do SOCKS não é mais possível, somente proxys SOCK5 são suportados.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay.</source>
-        <translation>Argumento não suportado -whitelistalwaysrelay foi ignorado, utilize -whitelistrelay e/ou -whitelistforcerelay.</translation>
-    </message>
-    <message>
         <source>WARNING! Failed to replenish keypool, please unlock your wallet to do so.</source>
         <translation>ATENÇÃO! Falha ao repor o keypool, desbloqueie sua carteira para fazer isso.</translation>
     </message>
     <message>
         <source>Wallet is locked, can't replenish keypool! Automatic backups and mixing are disabled, please unlock your wallet to replenish keypool.</source>
         <translation>Carteira travada, impossível reabastecer o keypool. Backups e misturas automáticas estão desabilitadas, por favor, destrave sua carteira para reabastecer o keypool. </translation>
-    </message>
-    <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
-        <translation>Alerta: Versões de blocos desconhecidas mineradas! É possível que regras desconhecidas estejam ativas</translation>
     </message>
     <message>
         <source>You need to rebuild the database using -reindex to change -timestampindex</source>
@@ -4297,8 +4551,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Você precisa reconstruir o banco de dados usando -reindex para sair do modo prune. Isso irá rebaixar todo o blockchain.</translation>
     </message>
     <message>
-        <source>-litemode is deprecated.</source>
-        <translation>-litemode não é mais suportado.</translation>
+        <source>%s failed</source>
+        <translation>%s falhou</translation>
     </message>
     <message>
         <source>-maxmempool must be at least %d MB</source>
@@ -4309,8 +4563,28 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Backup automáticos desabilitados.</translation>
     </message>
     <message>
+        <source>Cannot set -peerblockfilters without -blockfilterindex.</source>
+        <translation>Não é possível definir -peerblockfilters sem -blockfilterindex.</translation>
+    </message>
+    <message>
+        <source>Config setting for %s only applied on %s network when in [%s] section.</source>
+        <translation>A configuração para %s só é aplicada na rede %s quando está na seção [%s].</translation>
+    </message>
+    <message>
+        <source>Could not find asmap file %s</source>
+        <translation>Não foi possível encontrar arquivo asmap %s</translation>
+    </message>
+    <message>
+        <source>Could not parse asmap file %s</source>
+        <translation>Não foi possível analisar arquivo asmap %s</translation>
+    </message>
+    <message>
         <source>ERROR! Failed to create automatic backup</source>
         <translation>ERRO! Falha ao criar o backup automático</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Private keys can only be disabled during creation</source>
+        <translation>Erro ao carregar %s: As chaves privadas só podem ser desativadas durante a criação</translation>
     </message>
     <message>
         <source>Error upgrading evo database</source>
@@ -4321,24 +4595,16 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Erro: Um erro interno fatal ocorreu, veja debug.log para detalhes</translation>
     </message>
     <message>
+        <source>Error: Disk space is low for %s</source>
+        <translation>Erro: Espaço em disco está pequeno para %s</translation>
+    </message>
+    <message>
         <source>Error: failed to add socket to epollfd (epoll_ctl returned error %s)</source>
         <translation>Erro: falha ao adicionar socket ao epollfd (epoll_ctl retornou erro %s)</translation>
     </message>
     <message>
         <source>Exceeded max tries.</source>
         <translation>Tentativas máximas excedidas.</translation>
-    </message>
-    <message>
-        <source>Failed to clear fulfilled requests cache at</source>
-        <translation>Falha ao limpar cache de requisições completas em</translation>
-    </message>
-    <message>
-        <source>Failed to clear governance cache at</source>
-        <translation>Falha ao limpar o cache de governança em</translation>
-    </message>
-    <message>
-        <source>Failed to clear masternode cache at</source>
-        <translation>Falha ao limpar cache de masternode em</translation>
     </message>
     <message>
         <source>Failed to commit EvoDB</source>
@@ -4357,12 +4623,12 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Falha ao apagar backup, erro: %s</translation>
     </message>
     <message>
-        <source>Failed to load sporks cache from</source>
-        <translation>Falha ao carregar o cache de sporks de</translation>
-    </message>
-    <message>
         <source>Failed to rescan the wallet during initialization</source>
         <translation>Falha ao verificar novamente a carteira durante a inicialização</translation>
+    </message>
+    <message>
+        <source>Invalid P2P permission: '%s'</source>
+        <translation>Permissão P2P inválida: '%s'</translation>
     </message>
     <message>
         <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
@@ -4371,14 +4637,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Invalid masternodeblsprivkey. Please see documentation.</source>
         <translation>Masternodeblsprivkey invalido. Por favor, veja a documentação.</translation>
-    </message>
-    <message>
-        <source>It has been replaced by -disablegovernance.</source>
-        <translation>Foi substituído por -disablegovernance.</translation>
-    </message>
-    <message>
-        <source>Its replacement -disablegovernance has been forced instead.</source>
-        <translation>Sua substituição -disablegovernance foi forçada em seu lugar.</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -4433,6 +4691,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>O modo prune não pode ser configurado com um valor negativo.</translation>
     </message>
     <message>
+        <source>Prune mode is incompatible with -blockfilterindex.</source>
+        <translation>O modo prune é incompatível com -blockfilterindex.</translation>
+    </message>
+    <message>
         <source>Prune mode is incompatible with -disablegovernance=false.</source>
         <translation>O modo prune é incompatível com -disablegovernance=false.</translation>
     </message>
@@ -4442,7 +4704,11 @@ https://www.transifex.com/projects/p/vkax/</translation>
     </message>
     <message>
         <source>Pruning blockstore...</source>
-        <translation>Prunando os blocos existentes...</translation>
+        <translation>Podando (pruning) os blocos existentes...</translation>
+    </message>
+    <message>
+        <source>Section [%s] is not recognized.</source>
+        <translation>A seção [%s] não é reconhecida.</translation>
     </message>
     <message>
         <source>Specified -walletdir "%s" does not exist</source>
@@ -4466,7 +4732,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
     </message>
     <message>
         <source>This is expected because you are running a pruned node.</source>
-        <translation>Isso é esperado porque você está executando um nó comprimido.</translation>
+        <translation>Isso é esperado porque você está executando um nó podado.</translation>
     </message>
     <message>
         <source>This is the minimum transaction fee you pay on every transaction.</source>
@@ -4501,16 +4767,20 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Impossível vincular a %s neste computador. O %s provavelmente já está rodando.</translation>
     </message>
     <message>
+        <source>Unable to create the PID file '%s': %s</source>
+        <translation>Não foi possível criar o arquivo PID '%s': %s</translation>
+    </message>
+    <message>
         <source>Unable to generate initial keys</source>
         <translation>Incapaz de gerar chaves iniciais</translation>
     </message>
     <message>
-        <source>Upgrading UTXO database</source>
-        <translation>Atualizando banco de dados UTXO</translation>
+        <source>Unknown -blockfilterindex value %s.</source>
+        <translation>Valor desconhecido -blockfilterindex %s.</translation>
     </message>
     <message>
-        <source>Wallet %s resides outside wallet directory %s</source>
-        <translation>A carteira %s encontra-se fora do diretório da carteira %s</translation>
+        <source>Upgrading UTXO database</source>
+        <translation>Atualizando banco de dados UTXO</translation>
     </message>
     <message>
         <source>Wallet needed to be rewritten: restart %s to complete</source>
@@ -4537,20 +4807,12 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Você precisa reconstruir o banco de dados usando -reindex para alterar -spentindex</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to change -txindex</source>
-        <translation>Você precisa reconstruir o banco de dados usando -reindex para alterar -txindex</translation>
-    </message>
-    <message>
         <source>no mixing available.</source>
         <translation>mixing não disponível.</translation>
     </message>
     <message>
         <source>see debug.log for details.</source>
         <translation>Consulte debug.log para obter detalhes.</translation>
-    </message>
-    <message>
-        <source>Vkax Core</source>
-        <translation>Vkax Core</translation>
     </message>
     <message>
         <source>The %s developers</source>
@@ -4605,24 +4867,28 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Não foi possível reproduzir os blocos. Você precisará reconstruir o banco de dados usando -reindex-chainstate.</translation>
     </message>
     <message>
-        <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
-        <translation>Atenção: Arquivo da carteira corrompido, dados recuperados! Original %s salvo como %s em %s; se seu saldo ou transações estiverem incorretos, você deve restaurar o backup.</translation>
+        <source>Warning: Private keys detected in wallet {%s} with disabled private keys</source>
+        <translation>Aviso: Chaves privadas detectadas na carteira {%s} com chaves privadas desativadas</translation>
     </message>
     <message>
         <source>%d of last 100 blocks have unexpected version</source>
         <translation>%d dos últimos 100 blocos têm versão inesperada</translation>
     </message>
     <message>
-        <source>%s corrupt, salvage failed</source>
-        <translation>%s corrompido, recuperação falhou</translation>
-    </message>
-    <message>
         <source>%s is not a valid backup folder!</source>
         <translation>%s não é uma pasta de backup válida!</translation>
     </message>
     <message>
+        <source>%s is only allowed with a single wallet file</source>
+        <translation>%s só é permitido com um único arquivo de carteira</translation>
+    </message>
+    <message>
         <source>%s is set very high!</source>
         <translation>%s está muito alto!</translation>
+    </message>
+    <message>
+        <source>%s request incomplete:</source>
+        <translation>%s solicitação incompleta:</translation>
     </message>
     <message>
         <source>-devnet can only be specified once</source>
@@ -4635,6 +4901,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>-rpcport must be specified when -devnet and -server are specified</source>
         <translation>-rpcport deve ser especificado quando -devnet e -server são especificados</translation>
+    </message>
+    <message>
+        <source>A fatal internal error occurred, see debug.log for details</source>
+        <translation>Ocorreu um erro interno fatal, veja o debug.log para mais detalhes</translation>
     </message>
     <message>
         <source>Cannot resolve -%s address: '%s'</source>
@@ -4651,6 +4921,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Copyright (C)</source>
         <translation>Copyright</translation>
+    </message>
+    <message>
+        <source>Disk space is too low!</source>
+        <translation>O espaço em disco está muito pequeno!</translation>
     </message>
     <message>
         <source>Error loading %s</source>
@@ -4681,8 +4955,36 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Erro: falha ao adicionar socket ao kqueuefd (kevent retornou erro %s)</translation>
     </message>
     <message>
+        <source>Failed to clear fulfilled requests cache at %s</source>
+        <translation>Falha ao limpar o cache de solicitações atendidas em %s</translation>
+    </message>
+    <message>
+        <source>Failed to clear governance cache at %s</source>
+        <translation>Falha ao limpar o cache de governança em %s</translation>
+    </message>
+    <message>
+        <source>Failed to clear masternode cache at %s</source>
+        <translation>Falha ao limpar o cache do masternode em %s</translation>
+    </message>
+    <message>
         <source>Failed to find mixing queue to join</source>
         <translation>Não foi possível encontrar a fila de mistura para participar</translation>
+    </message>
+    <message>
+        <source>Failed to load fulfilled requests cache from %s</source>
+        <translation>Falha ao carregar o cache de solicitações atendidas de %s</translation>
+    </message>
+    <message>
+        <source>Failed to load governance cache from %s</source>
+        <translation>Falha ao carregar o cache de governança de %s</translation>
+    </message>
+    <message>
+        <source>Failed to load masternode cache from %s</source>
+        <translation>Falha ao carregar o cache do masternode de %s</translation>
+    </message>
+    <message>
+        <source>Failed to load sporks cache from %s</source>
+        <translation>Falha ao carregar o cache do sporks de %s</translation>
     </message>
     <message>
         <source>Failed to start a new mixing queue</source>
@@ -4753,6 +5055,14 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>A última fila foi criada muito recentemente.</translation>
     </message>
     <message>
+        <source>%s corrupt. Try using the wallet tool vkax-wallet to salvage or restoring a backup.</source>
+        <translation>%s corrompido. Tente usar a ferramenta da carteira vkax-wallet para salvar ou restaurar um backup.</translation>
+    </message>
+    <message>
+        <source>Can't generate a change-address key. No keys in the internal keypool and can't generate any keys.</source>
+        <translation>Não é possível gerar uma chave de alteração de endereço. Não há nenhuma chave no conjunto de chaves interno e não se pode gerar nenhuma chave.</translation>
+    </message>
+    <message>
         <source>Last successful action was too recent.</source>
         <translation>A última acção é muito recente.</translation>
     </message>
@@ -4793,10 +5103,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Transação inválida.</translation>
     </message>
     <message>
-        <source>Transaction too large for fee policy</source>
-        <translation>Transação muito grande para a política de tarifas</translation>
-    </message>
-    <message>
         <source>Unable to bind to %s on this computer (bind returned error %s)</source>
         <translation>Impossível abrir %s neste computador (bind retornou o erro %s)</translation>
     </message>
@@ -4825,6 +5131,10 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Categoria de log não suportada %s=%s.</translation>
     </message>
     <message>
+        <source>Upgrading txindex database</source>
+        <translation>Atualizando o banco de dados txindex</translation>
+    </message>
+    <message>
         <source>Verifying blocks...</source>
         <translation>Verificando blocos...</translation>
     </message>
@@ -4835,14 +5145,6 @@ https://www.transifex.com/projects/p/vkax/</translation>
     <message>
         <source>Wallet is locked.</source>
         <translation>Carteira está bloqueada.</translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation>Atenção</translation>
-    </message>
-    <message>
-        <source>Warning: %s is deprecated, please use %s instead</source>
-        <translation>Aviso: %s está obsoleto, use %s em seu lugar</translation>
     </message>
     <message>
         <source>Warning: can't use %s and %s together, will prefer %s</source>

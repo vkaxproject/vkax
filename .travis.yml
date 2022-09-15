@@ -2,8 +2,7 @@
 # - sudo/dist/group are set so as to get Blue Box VMs, necessary for [loopback]
 #   IPv6 support
 
-sudo: required
-dist: bionic
+dist: xenial
 
 os: linux
 language: minimal
@@ -14,8 +13,7 @@ services:
 cache:
   ccache: true
   directories:
-    - $HOME/cache
-
+    - $TRAVIS_BUILD_DIR/ci/scratch/.ccache
 env:
   global:
     # DOCKER_HUB_USER
@@ -33,20 +31,20 @@ stages:
 builddepends: &builddepends
   stage: build depends
   script:
-    - $DOCKER_RUN_IN_BUILDER ./ci/build_depends.sh
+    - $DOCKER_RUN_IN_BUILDER ./ci/vkax/build_depends.sh
 
 buildsrc: &buildsrc
   stage: build src
   script:
-    - $DOCKER_RUN_IN_BUILDER ./ci/build_depends.sh
-    - $DOCKER_RUN_IN_BUILDER ./ci/build_src.sh
+    - $DOCKER_RUN_IN_BUILDER ./ci/vkax/build_depends.sh
+    - $DOCKER_RUN_IN_BUILDER ./ci/vkax/build_src.sh
 
 runtests: &runtests
   stage: run tests
   script:
-    - $DOCKER_RUN_IN_BUILDER ./ci/build_depends.sh
-    - $DOCKER_RUN_IN_BUILDER ./ci/build_src.sh
-    - $DOCKER_RUN_IN_BUILDER ./ci/test_unittests.sh
+    - $DOCKER_RUN_IN_BUILDER ./ci/vkax/build_depends.sh
+    - $DOCKER_RUN_IN_BUILDER ./ci/vkax/build_src.sh
+    - $DOCKER_RUN_IN_BUILDER ./ci/vkax/test_unittests.sh
     - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then extended="--extended --exclude feature_pruning,feature_dbcrash"; fi
     - $DOCKER_RUN_IN_BUILDER ./ci/test_integrationtests.sh --quiet --jobs=3 ${extended}
 
@@ -54,17 +52,25 @@ builddocker: &builddocker
   stage: build docker
   script:
     # no need to run tests again here
-    - if [ "$DOCKER_BUILD" = "true" ]; then $DOCKER_RUN_IN_BUILDER ./ci/build_depends.sh && $DOCKER_RUN_IN_BUILDER ./ci/build_src.sh && BUILD_DIR=build-ci/vkaxcore-$BUILD_TARGET ./docker/build-docker.sh; fi
-
+    - if [ "$DOCKER_BUILD" = "true" ]; then $DOCKER_RUN_IN_BUILDER ./ci/vkax/build_depends.sh && $DOCKER_RUN_IN_BUILDER ./ci/vkax/build_src.sh && BUILD_DIR=build-ci/vkaxcore-$BUILD_TARGET ./ci/vkax/build-docker.sh; fi
+    - CI_RETRY_EXE="travis_retry"
+before_install:
+  - set -o errexit; source ./ci/test/00_setup_env.sh
+  - set -o errexit; source ./ci/test/03_before_install.sh
+install:
+  - set -o errexit; source ./ci/test/04_install.sh
+before_script:
+  - set -o errexit; source ./ci/test/05_before_script.sh
+script:
+  - if [ $SECONDS -gt 1200 ]; then set +o errexit; echo "Travis early exit to cache current state"; false; else set -o errexit; source .travis/test_06_script.sh; fi
+after_script:
+  - echo $TRAVIS_COMMIT_RANGE
 jobs:
   include:
     # build depends
     - <<: *builddepends
       name: depends-arm-linux
       env: BUILD_TARGET=arm-linux
-    - <<: *builddepends
-      name: depends-win32
-      env: BUILD_TARGET=win32
     - <<: *builddepends
       name: depends-win64
       env: BUILD_TARGET=win64
@@ -90,9 +96,6 @@ jobs:
       name: src-arm-linux
       env: BUILD_TARGET=arm-linux
     - <<: *buildsrc
-      name: src-win32
-      env: BUILD_TARGET=win32
-    - <<: *buildsrc
       name: src-win64
       env: BUILD_TARGET=win64
     - <<: *buildsrc
@@ -113,9 +116,6 @@ jobs:
       name: src-mac
       env: BUILD_TARGET=mac
     # run tests (no tests for arm-linux and mac)
-    - <<: *runtests
-      name: tests-win32
-      env: BUILD_TARGET=win32
     - <<: *runtests
       name: tests-win64
       env: BUILD_TARGET=win64
@@ -161,7 +161,7 @@ install:
     # Load cached builder image
     - if [ -f $HOST_CACHE_DIR/docker/vkax-builder-$BUILD_TARGET.tar.gz ]; then zcat $HOST_CACHE_DIR/docker/vkax-builder-$BUILD_TARGET.tar.gz | docker load || true; fi
     - travis_retry docker pull ubuntu:bionic
-    - travis_retry docker build -t $BUILDER_IMAGE_NAME --build-arg=USER_ID=$UID --build-arg=GROUP_ID=$UID --build-arg=BUILD_TARGET=$BUILD_TARGET -f ci/Dockerfile.builder ci
+    - travis_retry docker build -t $BUILDER_IMAGE_NAME --build-arg=USER_ID=$UID --build-arg=GROUP_ID=$UID --build-arg=BUILD_TARGET=$BUILD_TARGET -f contrib/containers/ci/Dockerfile ci
 before_script:
     # Make sure stdout is in blocking mode. Otherwise builds will fail due to large writes to stdout
     # See https://github.com/travis-ci/travis-ci/issues/4704. If this gets fixed, this line can also be removed.
@@ -170,9 +170,111 @@ before_script:
     - if [ "$TRAVIS_REPO_SLUG" != "vkaxproject/vkax" -o "$TRAVIS_BRANCH" != "develop" -o "$TRAVIS_PULL_REQUEST" != "false" ]; then export DOCKER_BUILD="false"; echo DOCKER_BUILD=$DOCKER_BUILD; fi
     # TODO: Check keys and signed commits
     #- if [ "$TRAVIS_REPO_SLUG" = "vkaxproject/vkax" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then while read LINE; do travis_retry gpg --keyserver hkp://subset.pool.sks-keyservers.net --recv-keys $LINE; done < contrib/verify-commits/trusted-keys; fi
-    #- if [ "$TRAVIS_REPO_SLUG" = "vkaxproject/vkax" -a "$TRAVIS_EVENT_TYPE" = "cron" ]; then travis_wait 30 contrib/verify-commits/verify-commits.sh; fi
+    #- if [ "$TRAVIS_REPO_SLUG" = "vkaxproject/vkax" -a "$TRAVIS_EVENT_TYPE" = "cron" ]; then travis_wait 30 contrib/verify-commits/verify-commits.py; fi
 after_script:
     - echo $TRAVIS_COMMIT_RANGE
     - echo $TRAVIS_COMMIT_LOG
 after_success:
-    - if [ "$DOCKER_BUILD" = "true" ]; then docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD && ./docker/push-docker.sh; fi
+    - if [ "$DOCKER_BUILD" = "true" ]; then docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD && ./ci/vkax/push-docker.sh; fi
+    - stage: lint
+      name: 'lint'
+      env:
+      cache: false
+      language: python
+      python: '3.5' # Oldest supported version according to doc/dependencies.md
+      install:
+        - set -o errexit; source ./ci/lint/04_install.sh
+      before_script:
+        - set -o errexit; source ./ci/lint/05_before_script.sh
+      script:
+        - set -o errexit; source ./ci/lint/06_script.sh
+
+    - stage: extended-lint
+      name: 'extended lint [runtime >= 60 seconds]'
+      env:
+      cache: false
+      language: python
+      python: '3.5'
+      install:
+        - set -o errexit; source ./ci/extended_lint/04_install.sh
+      before_script:
+        - set -o errexit; source ./ci/lint/05_before_script.sh
+      script:
+        - set -o errexit; source ./ci/extended_lint/06_script.sh
+
+    - stage: extended-lint
+      name: 'lint macOS 10.12 (compat)'
+      os: osx
+      # Use the earliest macOS that can build our lint dependencies:
+      # Xcode 8.3.3, macOS 10.12, JDK 1.8.0_112-b16
+      # https://docs.travis-ci.com/user/reference/osx/#OS-X-Version
+      osx_image: xcode8.3
+      # TODO: if you're updating osx_image, try using "rvm:" to supply the
+      # version of ruby required by homebrew. Despite this "rvm:" declaration,
+      # brew update installs ruby 2.3.7 as its first action.
+      language: ruby
+      rvm:
+        - 2.3.7
+      env:
+      cache: false
+      install:
+        - set -o errexit; source ./ci/lint/04_install.sh
+      before_script:
+        - set -o errexit; source ./ci/lint/05_before_script.sh
+      script:
+        - set -o errexit; source ./ci/lint/06_script.sh
+
+    - stage: test
+      name: 'ARM  [GOAL: install]  [unit tests, no functional tests]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_arm.sh"
+
+    - stage: test
+      name: 'S390x  [GOAL: install]  [unit tests, functional tests]'
+      arch: s390x
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_s390x.sh"
+
+    - stage: test
+      name: 'Win64  [GOAL: deploy]  [unit tests, no gui, no functional tests]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_win64.sh"
+
+    - stage: test
+      name: '32-bit + vkax  [GOAL: install] [GUI: no BIP70]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_i686.sh"
+
+    - stage: test
+      name: 'x86_64 Linux  [GOAL: install]  [bionic]  [uses qt5 dev package instead of depends Qt to speed up build and avoid timeout] [unsigned char]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_amd64_qt5.sh"
+
+    - stage: test
+      name: 'x86_64 Linux  [GOAL: install]  [trusty]  [no functional tests, no depends, only system libs]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_amd64_trusty.sh"
+
+    - stage: test
+      name: 'x86_64 Linux  [GOAL: install]  [xenial]  [no depends, only system libs, sanitizers: thread (TSan), no wallet]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_amd64_tsan.sh"
+
+    - stage: test
+      name: 'x86_64 Linux  [GOAL: install]  [bionic]  [no depends, only system libs, sanitizers: address/leak (ASan + LSan) + undefined (UBSan) + integer]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_amd64_asan.sh"
+
+    - stage: test
+      name: 'x86_64 Linux  [GOAL: install]  [bionic]  [no wallet]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_amd64_fuzz.sh"
+
+    - stage: test
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_amd64_nowallet.sh"
+
+    - stage: test
+      name: 'macOS 10.12  [GOAL: deploy] [no functional tests]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_mac.sh"

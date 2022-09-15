@@ -1,5 +1,5 @@
 // Copyright (c) 2014 The Bitcoin Core developers
-// Copyright (c) 2014-2020 The Dash Core developers
+// Copyright (c) 2014-2021 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,7 +10,7 @@
 
 #include <chainparams.h>
 #include <tinyformat.h>
-#include <util.h>
+#include <util/system.h>
 
 #include <QApplication>
 
@@ -42,9 +42,8 @@ void NetworkStyle::rotateColor(QColor& col, const int iconColorHueShift, const i
     col.setHsl(h,s,l,a);
 }
 
-void NetworkStyle::rotateColors(QImage& img, const int iconColorHueShift, const int iconColorSaturationReduction) {
-    int h,s,l,a;
-
+void NetworkStyle::rotateColors(QImage& img, const int iconColorHueShift, const int iconColorSaturationReduction)
+{
     // traverse though lines
     for(int y=0;y<img.height();y++)
     {
@@ -65,7 +64,7 @@ void NetworkStyle::rotateColors(QImage& img, const int iconColorHueShift, const 
 NetworkStyle::NetworkStyle(const QString &_appName, const int iconColorHueShift, const int iconColorSaturationReduction, const char *_titleAddText):
     appName(_appName),
     titleAddText(qApp->translate("SplashScreen", _titleAddText)),
-    badgeColor(QColor(0, 141, 228)) // default badge color is the original Dash's blue, regardless of the current theme
+    badgeColor(QColor(0, 141, 228)) // default badge color is the original Vkax's blue, regardless of the current theme
 {
     // Allow for separate UI settings for testnets
     QApplication::setApplicationName(appName);
@@ -109,5 +108,5 @@ const NetworkStyle *NetworkStyle::instantiate(const QString &networkId)
                     titleAddText.c_str());
         }
     }
-    return 0;
+    return nullptr;
 }

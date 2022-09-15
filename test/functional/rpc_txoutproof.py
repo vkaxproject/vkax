@@ -4,10 +4,11 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test gettxoutproof and verifytxoutproof RPCs."""
 
+from decimal import Decimal
+
+from test_framework.messages import CMerkleBlock, FromHex, ToHex
 from test_framework.test_framework import BitcoinTestFramework
-from test_framework.util import *
-from test_framework.mininode import FromHex, ToHex
-from test_framework.messages import CMerkleBlock
+from test_framework.util import assert_equal, assert_raises_rpc_error, connect_nodes
 
 class MerkleBlockTest(BitcoinTestFramework):
     def set_test_params(self):
@@ -15,6 +16,9 @@ class MerkleBlockTest(BitcoinTestFramework):
         self.setup_clean_chain = True
         # Nodes 0/1 are "wallet" nodes, Nodes 2/3 are used for testing
         self.extra_args = [[], [], [], ["-txindex"]]
+
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
 
     def setup_network(self):
         self.setup_nodes()
@@ -66,7 +70,7 @@ class MerkleBlockTest(BitcoinTestFramework):
         txid_unspent = txid1 if txin_spent["txid"] != txid1 else txid2
 
         # We can't find the block from a fully-spent tx
-        # Doesn't apply to Dash Core - we have txindex always on
+        # Doesn't apply to Vkax Core - we have txindex always on
         # assert_raises_rpc_error(-5, "Transaction not yet in block", self.nodes[2].gettxoutproof, [txid_spent])
         # We can get the proof if we specify the block
         assert_equal(self.nodes[2].verifytxoutproof(self.nodes[2].gettxoutproof([txid_spent], blockhash)), [txid_spent])

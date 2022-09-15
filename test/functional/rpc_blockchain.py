@@ -21,7 +21,6 @@ Tests correspond to code in rpc/blockchain.cpp.
 from decimal import Decimal
 import http.client
 import subprocess
-import sys
 
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
@@ -38,28 +37,22 @@ from test_framework.blocktools import (
     create_coinbase,
 )
 from test_framework.messages import (
+    CBlockHeader,
+    FromHex,
     msg_block,
 )
 from test_framework.mininode import (
     P2PInterface,
-    network_thread_start,
 )
 
 
 class BlockchainTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
-        self.setup_clean_chain = True
-        self.stderr = sys.stdout
-        self.extra_args = [['-stopatheight=207', '-prune=1', '-txindex=0']]
 
     def run_test(self):
-        # Have to prepare the chain manually here.
-        # txindex=1 by default in Dash which is incompatible with pruning.
-        self.set_genesis_mocktime()
-        for i in range(200):
-            self.bump_mocktime(156)
-            self.nodes[0].generate(1)
+        self.restart_node(0, extra_args=['-stopatheight=207', '-prune=1', '-txindex=0'])  # Set extra args with pruning after rescan is complete
+
         # Actual tests
         self._test_getblockchaininfo()
         self._test_getchaintxstats()
@@ -105,7 +98,7 @@ class BlockchainTest(BitcoinTestFramework):
         assert res['pruned']
         assert not res['automatic_pruning']
 
-        self.restart_node(0, ['-stopatheight=207', '-txindex=0'])
+        self.restart_node(0, ['-stopatheight=207', '-txindex=0'], expected_stderr='Warning: You are starting with governance validation disabled. This is expected because you are running a pruned node.')
         res = self.nodes[0].getblockchaininfo()
         # should have exact keys
         assert_equal(sorted(res.keys()), keys)
@@ -141,7 +134,7 @@ class BlockchainTest(BitcoinTestFramework):
         assert_raises_rpc_error(-8, "Block is not in main chain", self.nodes[0].getchaintxstats, blockhash=blockhash)
         self.nodes[0].reconsiderblock(blockhash)
 
-        chaintxstats = self.nodes[0].getchaintxstats(1)
+        chaintxstats = self.nodes[0].getchaintxstats(nblocks=1)
         # 200 txs plus genesis tx
         assert_equal(chaintxstats['txcount'], 201)
         # tx rate should be 1 per ~2.6 minutes (156 seconds), or 1/156
@@ -158,6 +151,7 @@ class BlockchainTest(BitcoinTestFramework):
         assert_equal(chaintxstats['time'], b200['time'])
         assert_equal(chaintxstats['txcount'], 201)
         assert_equal(chaintxstats['window_final_block_hash'], b200_hash)
+        assert_equal(chaintxstats['window_final_block_height'], 200)
         assert_equal(chaintxstats['window_block_count'], 199)
         assert_equal(chaintxstats['window_tx_count'], 199)
         assert_equal(chaintxstats['window_interval'], time_diff)
@@ -167,10 +161,11 @@ class BlockchainTest(BitcoinTestFramework):
         assert_equal(chaintxstats['time'], b1['time'])
         assert_equal(chaintxstats['txcount'], 2)
         assert_equal(chaintxstats['window_final_block_hash'], b1_hash)
+        assert_equal(chaintxstats['window_final_block_height'], 1)
         assert_equal(chaintxstats['window_block_count'], 0)
-        assert('window_tx_count' not in chaintxstats)
-        assert('window_interval' not in chaintxstats)
-        assert('txrate' not in chaintxstats)
+        assert 'window_tx_count' not in chaintxstats
+        assert 'window_interval' not in chaintxstats
+        assert 'txrate' not in chaintxstats
 
     def _test_gettxoutsetinfo(self):
         node = self.nodes[0]
@@ -180,7 +175,7 @@ class BlockchainTest(BitcoinTestFramework):
         assert_equal(res['transactions'], 200)
         assert_equal(res['height'], 200)
         assert_equal(res['txouts'], 200)
-        assert_equal(res['bogosize'], 17000),
+        assert_equal(res['bogosize'], 15000),
         size = res['disk_size']
         assert size > 6400
         assert size < 64000
@@ -216,7 +211,7 @@ class BlockchainTest(BitcoinTestFramework):
 
         besthash = node.getbestblockhash()
         secondbesthash = node.getblockhash(199)
-        header = node.getblockheader(besthash)
+        header = node.getblockheader(blockhash=besthash)
 
         assert_equal(header['hash'], besthash)
         assert_equal(header['height'], 200)
@@ -235,6 +230,14 @@ class BlockchainTest(BitcoinTestFramework):
         assert isinstance(int(header['versionHex'], 16), int)
         assert isinstance(header['difficulty'], Decimal)
 
+        # Test with verbose=False, which should return the header as hex.
+        header_hex = node.getblockheader(blockhash=besthash, verbose=False)
+        assert_is_hex_string(header_hex)
+
+        header = FromHex(CBlockHeader(), header_hex)
+        header.calc_sha256()
+        assert_equal(header.hash, besthash)
+
     def _test_getdifficulty(self):
         difficulty = self.nodes[0].getdifficulty()
         # 1 hash in 2 should be valid, so difficulty should be 1/2**31
@@ -248,12 +251,12 @@ class BlockchainTest(BitcoinTestFramework):
 
     def _test_stopatheight(self):
         assert_equal(self.nodes[0].getblockcount(), 200)
-        self.nodes[0].generate(6)
+        self.nodes[0].generatetoaddress(6, self.nodes[0].get_deterministic_priv_key().address)
         assert_equal(self.nodes[0].getblockcount(), 206)
         self.log.debug('Node should not stop at this height')
         assert_raises(subprocess.TimeoutExpired, lambda: self.nodes[0].process.wait(timeout=3))
         try:
-            self.nodes[0].generate(1)
+            self.nodes[0].generatetoaddress(1, self.nodes[0].get_deterministic_priv_key().address)
         except (ConnectionError, http.client.BadStatusLine):
             pass  # The node already shut down before response
         self.log.debug('Node should stop at this height...')
@@ -263,13 +266,8 @@ class BlockchainTest(BitcoinTestFramework):
 
     def _test_waitforblockheight(self):
         self.log.info("Test waitforblockheight")
-
         node = self.nodes[0]
-
-        # Start a P2P connection since we'll need to create some blocks.
         node.add_p2p_connection(P2PInterface())
-        network_thread_start()
-        node.p2p.wait_for_verack()
 
         current_height = node.getblock(node.getbestblockhash())['height']
 
@@ -297,7 +295,7 @@ class BlockchainTest(BitcoinTestFramework):
 
         def assert_waitforheight(height, timeout=2):
             assert_equal(
-                node.waitforblockheight(height, timeout)['height'],
+                node.waitforblockheight(height=height, timeout=timeout)['height'],
                 current_height)
 
         assert_waitforheight(0)

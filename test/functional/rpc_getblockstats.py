@@ -26,7 +26,7 @@ class GetblockstatsTest(BitcoinTestFramework):
         'maxfee',
         'maxfeerate',
         'medianfee',
-        'medianfeerate',
+        'feerate_percentiles',
         'minfee',
         'minfeerate',
         'totalfee',
@@ -34,13 +34,13 @@ class GetblockstatsTest(BitcoinTestFramework):
     ]
 
     def add_options(self, parser):
-        parser.add_option('--gen-test-data', dest='gen_test_data',
-                          default=False, action='store_true',
-                          help='Generate test data')
-        parser.add_option('--test-data', dest='test_data',
-                          default='data/rpc_getblockstats.json',
-                          action='store', metavar='FILE',
-                          help='Test data file')
+        parser.add_argument('--gen-test-data', dest='gen_test_data',
+                            default=False, action='store_true',
+                            help='Generate test data')
+        parser.add_argument('--test-data', dest='test_data',
+                            default='data/rpc_getblockstats.json',
+                            action='store', metavar='FILE',
+                            help='Test data file')
 
     # def set_test_params(self):
     def set_test_params(self):
@@ -169,11 +169,18 @@ class GetblockstatsTest(BitcoinTestFramework):
                                 self.nodes[0].getblockstats, hash_or_height=1, stats=['minfee' , 'aaa%s' % inv_sel_stat])
 
         assert_raises_rpc_error(-8, 'One or more of the selected stats requires -txindex enabled',
+                                self.nodes[1].getblockstats, hash_or_height=1)
+        assert_raises_rpc_error(-8, 'One or more of the selected stats requires -txindex enabled',
                                 self.nodes[1].getblockstats, hash_or_height=self.start_height + self.max_stat_pos)
 
         # Mainchain's genesis block shouldn't be found on regtest
         assert_raises_rpc_error(-5, 'Block not found', self.nodes[0].getblockstats,
                                 hash_or_height='000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f')
+
+        # Invalid number of args
+        assert_raises_rpc_error(-1, 'getblockstats hash_or_height ( stats )', self.nodes[0].getblockstats, '00', 1, 2)
+        assert_raises_rpc_error(-1, 'getblockstats hash_or_height ( stats )', self.nodes[0].getblockstats)
+
 
 if __name__ == '__main__':
     GetblockstatsTest().main()

@@ -9,7 +9,6 @@
 #include <serialize.h>
 #include <support/allocators/secure.h>
 
-#include <atomic>
 
 const unsigned int WALLET_CRYPTO_KEY_SIZE = 32;
 const unsigned int WALLET_CRYPTO_SALT_SIZE = 8;
@@ -44,15 +43,9 @@ public:
     //! such as the various parameters to scrypt
     std::vector<unsigned char> vchOtherDerivationParameters;
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(vchCryptedKey);
-        READWRITE(vchSalt);
-        READWRITE(nDerivationMethod);
-        READWRITE(nDeriveIterations);
-        READWRITE(vchOtherDerivationParameters);
+    SERIALIZE_METHODS(CMasterKey, obj)
+    {
+        READWRITE(obj.vchCryptedKey, obj.vchSalt, obj.nDerivationMethod, obj.nDeriveIterations, obj.vchOtherDerivationParameters);
     }
 
     CMasterKey()
@@ -146,7 +139,7 @@ protected:
     bool SetHDChain(const CHDChain& chain);
     bool SetCryptedHDChain(const CHDChain& chain);
 
-    bool Unlock(const CKeyingMaterial& vMasterKeyIn, bool fForMixingOnly = false);
+    bool Unlock(const CKeyingMaterial& vMasterKeyIn, bool fForMixingOnly = false, bool accept_no_keys = false);
     CryptedKeyMap mapCryptedKeys GUARDED_BY(cs_KeyStore);
 
 public:

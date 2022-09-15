@@ -5,14 +5,26 @@
 """Test the listsincelast RPC."""
 
 from test_framework.test_framework import BitcoinTestFramework
-from test_framework.util import assert_equal, assert_array_result, assert_raises_rpc_error
+from test_framework.util import (
+    assert_array_result,
+    assert_equal,
+    assert_raises_rpc_error,
+    connect_nodes,
+)
 
-class ListSinceBlockTest (BitcoinTestFramework):
+
+class ListSinceBlockTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
 
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
+
     def run_test(self):
+        # All nodes are in IBD from genesis, so they'll need the miner (node2) to be an outbound connection, or have
+        # only one connection. (See fPreferredDownload in net_processing)
+        connect_nodes(self.nodes[1], 2)
         self.nodes[2].generate(101)
         self.sync_all()
 
@@ -150,26 +162,26 @@ class ListSinceBlockTest (BitcoinTestFramework):
 
         # send from nodes[1] using utxo to nodes[0]
         change = '%.8f' % (float(utxo['amount']) - 1.0003)
-        recipientDict = {
+        recipient_dict = {
             self.nodes[0].getnewaddress(): 1,
             self.nodes[1].getnewaddress(): change,
         }
-        utxoDicts = [{
+        utxo_dicts = [{
             'txid': utxo['txid'],
             'vout': utxo['vout'],
         }]
         txid1 = self.nodes[1].sendrawtransaction(
             self.nodes[1].signrawtransactionwithwallet(
-                self.nodes[1].createrawtransaction(utxoDicts, recipientDict))['hex'])
+                self.nodes[1].createrawtransaction(utxo_dicts, recipient_dict))['hex'])
 
         # send from nodes[2] using utxo to nodes[3]
-        recipientDict2 = {
+        recipient_dict2 = {
             self.nodes[3].getnewaddress(): 1,
             self.nodes[2].getnewaddress(): change,
         }
         self.nodes[2].sendrawtransaction(
             self.nodes[2].signrawtransactionwithwallet(
-                self.nodes[2].createrawtransaction(utxoDicts, recipientDict2))['hex'])
+                self.nodes[2].createrawtransaction(utxo_dicts, recipient_dict2))['hex'])
 
         # generate on both sides
         lastblockhash = self.nodes[1].generate(3)[2]
@@ -225,16 +237,16 @@ class ListSinceBlockTest (BitcoinTestFramework):
         utxos = self.nodes[2].listunspent()
         utxo = utxos[0]
         change = '%.8f' % (float(utxo['amount']) - 1.0003)
-        recipientDict = {
+        recipient_dict = {
             self.nodes[0].getnewaddress(): 1,
             self.nodes[2].getnewaddress(): change,
         }
-        utxoDicts = [{
+        utxo_dicts = [{
             'txid': utxo['txid'],
             'vout': utxo['vout'],
         }]
         signedtxres = self.nodes[2].signrawtransactionwithwallet(
-                self.nodes[2].createrawtransaction(utxoDicts, recipientDict))
+            self.nodes[2].createrawtransaction(utxo_dicts, recipient_dict))
         assert signedtxres['complete']
 
         signedtx = signedtxres['hex']

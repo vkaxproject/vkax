@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the zapwallettxes functionality.
 
-- start two dashd nodes
+- start two Vkaxd nodes
 - create two transactions on node 0 - one is confirmed and one is unconfirmed.
 - restart node 0 and verify that both the confirmed and the unconfirmed
   transactions are still available.
@@ -25,6 +25,9 @@ class ZapWalletTXesTest (BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
+
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
 
     def run_test(self):
         self.log.info("Mining blocks...")

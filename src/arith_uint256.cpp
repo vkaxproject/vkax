@@ -1,17 +1,13 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Dash Core developers
+// Copyright (c) 2009-2014 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <arith_uint256.h>
 
 #include <uint256.h>
-#include <utilstrencodings.h>
 #include <crypto/common.h>
 
-#include <stdio.h>
-#include <string.h>
 
 template <unsigned int BITS>
 base_uint<BITS>::base_uint(const std::string& str)
@@ -155,6 +151,7 @@ template <unsigned int BITS>
 uint32_t base_uint<BITS>::GET_PN(int index) const {
 	return this->pn[index];
 }
+
 template <unsigned int BITS>
 std::string base_uint<BITS>::GetHex() const
 {	if(BITS <= 256) {
@@ -200,7 +197,7 @@ unsigned int base_uint<BITS>::bits() const
     for (int pos = WIDTH - 1; pos >= 0; pos--) {
         if (pn[pos]) {
             for (int nbits = 31; nbits > 0; nbits--) {
-                if (pn[pos] & 1 << nbits)
+                if (pn[pos] & 1U << nbits)
                     return 32 * pos + nbits + 1;
             }
             return 32 * pos + 1;

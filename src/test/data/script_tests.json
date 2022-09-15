@@ -676,7 +676,7 @@
 ["0 0x02 0x0000 0", "CHECKMULTISIGVERIFY 1", "", "OK"],
 
 ["While not really correctly DER encoded, the empty signature is allowed by"],
-["STRICTENC to provide a compact way to provide a delibrately invalid signature."],
+["STRICTENC to provide a compact way to provide a deliberately invalid signature."],
 ["0", "0x21 0x02865c40293a680cb9c020e7b1e106d8c1916d3cef99aa431a56d253e69256dac0 CHECKSIG NOT", "STRICTENC", "OK"],
 ["0 0", "1 0x21 0x02865c40293a680cb9c020e7b1e106d8c1916d3cef99aa431a56d253e69256dac0 1 CHECKMULTISIG NOT", "STRICTENC", "OK"],
 
@@ -827,6 +827,9 @@
 ["NOP", "2SWAP 1", "P2SH,STRICTENC", "INVALID_STACK_OPERATION"],
 ["1", "2 3 2SWAP 1", "P2SH,STRICTENC", "INVALID_STACK_OPERATION"],
 
+["NOP", "SIZE 1", "P2SH,STRICTENC", "INVALID_STACK_OPERATION"],
+
+["TEST DISABLED OP CODES (CVE-2010-5137)"],
 ["'a' 'bc'", "CAT", "P2SH,STRICTENC", "DISABLED_OPCODE"],
 ["'abc' 'a' 'bc'", "CAT EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK"],
 ["'' '' ''", "CAT EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK"],
@@ -909,9 +912,6 @@
 ["0x05 0x0100800080", "BIN2NUM -8388609 EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK", "Ensure significant zero bytes are retained"],
 ["0x05 0x01000f0000", "BIN2NUM 983041 EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK", "Ensure significant zero bytes are retained"],
 ["0x05 0x01000f0080", "BIN2NUM -983041 EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK", "Ensure significant zero bytes are retained"],
-
-["NOP", "SIZE 1", "P2SH,STRICTENC", "INVALID_STACK_OPERATION"],
-
 ["Disabled opcodes"],
 ["'abc'", "IF INVERT ELSE 1 ENDIF", "P2SH,STRICTENC", "DISABLED_OPCODE", "INVERT disabled"],
 ["2 0 IF 2MUL ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "DISABLED_OPCODE", "2MUL disabled"],
@@ -1208,7 +1208,7 @@
 	"0x09 0x300702010102020001 0",
 	"0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 CHECKDATASIG",
 	"P2SH,STRICTENC,NULLFAIL,DIP0020_OPCODES",
-	"SIG_DER", "Non cannonical DER encoding"
+	"SIG_DER", "Non canonical DER encoding"
 ],
 
 ["CHECKDATASIGVERIFY"],
@@ -1244,7 +1244,7 @@
 	"0x09 0x300702010102020001 0",
 	"0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 CHECKDATASIGVERIFY 1",
 	"P2SH,STRICTENC,NULLFAIL,DIP0020_OPCODES",
-	"SIG_DER", "Non cannonical DER encoding"
+	"SIG_DER", "Non canonical DER encoding"
 ],
 
 ["ADD"],

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 The Dash Core developers
+// Copyright (c) 2018-2021 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -36,8 +36,8 @@ public:
 private:
     CDBWrapper db;
 
-    typedef CDBTransaction<CDBWrapper, CDBBatch> RootTransaction;
-    typedef CDBTransaction<RootTransaction, RootTransaction> CurTransaction;
+    using RootTransaction = CDBTransaction<CDBWrapper, CDBBatch>;
+    using CurTransaction = CDBTransaction<RootTransaction, RootTransaction>;
 
     CDBBatch rootBatch;
     RootTransaction rootDBTransaction;
@@ -91,7 +91,7 @@ public:
         return db;
     }
 
-    size_t GetMemoryUsage()
+    size_t GetMemoryUsage() const
     {
         return rootDBTransaction.GetMemoryUsage();
     }
