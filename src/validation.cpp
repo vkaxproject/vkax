@@ -361,8 +361,8 @@ int GetUTXOConfirmations(const COutPoint& outpoint)
 bool ContextualCheckTransaction(const CTransaction& tx, CValidationState &state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
 {
     int nHeight = pindexPrev == nullptr ? 0 : pindexPrev->nHeight + 1;
-    bool fDIP0001Active_context = consensusParams.DIP0001Height;
-    bool fDIP0003Active_context = consensusParams.DIP0003Height;
+    bool fDIP0001Active_context = nHeight >= consensusParams.DIP0001Height;
+    bool fDIP0003Active_context = nHeight >= consensusParams.DIP0003Height;
 
     if (fDIP0003Active_context) {
         // check version 3 transaction types
@@ -1109,18 +1109,18 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int nReallocActiva
         100, // Period 5:  65%
         100, // Period 6:  68%
         100, // Period 7:  70%
-        100, // Period 8:  72%
-        100, // Period 9:  74%
-        100, // Period 10: 76%
-        100, // Period 11: 78%
-        100, // Period 12: 79%
-        100, // Period 13: 85%
-        100, // Period 14: 88%
-        100, // Period 15: 61%
-        100, // Period 16: 64%
-        100, // Period 17: 67%
-        100, // Period 18: 89%
-        100  // Period 19: 60%
+        72, // Period 8:  72%
+        74, // Period 9:  74%
+        76, // Period 10: 76%
+        78, // Period 11: 78%
+        79, // Period 12: 79%
+        85, // Period 13: 85%
+        88, // Period 14: 88%
+        61, // Period 15: 61%
+        64, // Period 16: 64%
+        67, // Period 17: 67%
+        89, // Period 18: 89%
+        60  // Period 19: 60%
     };
 
     int nReallocCycle = nSuperblockCycle * 3;
@@ -3863,8 +3863,8 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
                               ? pindexPrev->GetMedianTimePast()
                               : block.GetBlockTime();
 
-    bool fDIP0001Active_context = consensusParams.DIP0001Height;
-    bool fDIP0003Active_context = consensusParams.DIP0003Height;
+    bool fDIP0001Active_context = nHeight >= consensusParams.DIP0001Height;
+    bool fDIP0003Active_context = nHeight >= consensusParams.DIP0003Height;
 
     // Size limits
     unsigned int nMaxBlockSize = MaxBlockSize(fDIP0001Active_context);
@@ -3891,7 +3891,7 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
     // Enforce rule that the coinbase starts with serialized block height
     // After DIP3/DIP4 activation, we don't enforce the height in the input script anymore.
     // The CbTx special transaction payload will then contain the height, which is checked in CheckCbTx
-    if (consensusParams.BIP34Height && !fDIP0003Active_context)
+    if (nHeight >= consensusParams.BIP34Height && !fDIP0003Active_context)
     {
         CScript expect = CScript() << nHeight;
         if (block.vtx[0]->vin[0].scriptSig.size() < expect.size() ||

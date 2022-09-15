@@ -534,7 +534,7 @@ bool CDeterministicMNManager::ProcessBlock(const CBlock& block, const CBlockInde
     AssertLockHeld(cs_main);
 
     const auto& consensusParams = Params().GetConsensus();
-    bool fDIP0003Active = consensusParams.DIP0003Height;
+    bool fDIP0003Active = pindex->nHeight >= consensusParams.DIP0003Height;
     if (!fDIP0003Active) {
         return true;
     }
@@ -586,6 +586,15 @@ bool CDeterministicMNManager::ProcessBlock(const CBlock& block, const CBlockInde
         uiInterface.NotifyMasternodeListChanged(newList);
     }
 
+    if (nHeight == consensusParams.DIP0003EnforcementHeight) {
+        if (!consensusParams.DIP0003EnforcementHash.IsNull() && consensusParams.DIP0003EnforcementHash != pindex->GetBlockHash()) {
+            LogPrintf("CDeterministicMNManager::%s -- DIP3 enforcement block has wrong hash: hash=%s, expected=%s, nHeight=%d\n", __func__,
+                    pindex->GetBlockHash().ToString(), consensusParams.DIP0003EnforcementHash.ToString(), nHeight);
+            return _state.DoS(100, false, REJECT_INVALID, "bad-dip3-enf-block");
+        }
+        LogPrintf("CDeterministicMNManager::%s -- DIP3 is enforced now. nHeight=%d\n", __func__, nHeight);
+    }
+
     if (nHeight > to_cleanup) to_cleanup = nHeight;
 
     return true;
@@ -620,6 +629,9 @@ bool CDeterministicMNManager::UndoBlock(const CBlock& block, const CBlockIndex* 
     }
 
     const auto& consensusParams = Params().GetConsensus();
+    if (nHeight == consensusParams.DIP0003EnforcementHeight) {
+        LogPrintf("CDeterministicMNManager::%s -- DIP3 is not enforced anymore. nHeight=%d\n", __func__, nHeight);
+    }
 
     return true;
 }
@@ -1015,7 +1027,7 @@ bool CDeterministicMNManager::IsDIP3Enforced(int nHeight)
         }
     }
 
-    return Params().GetConsensus().DIP0003EnforcementHeight;
+     return nHeight >= Params().GetConsensus().DIP0003EnforcementHeight;
 }
 
 void CDeterministicMNManager::CleanupCache(int nHeight)
@@ -1129,7 +1141,7 @@ bool CDeterministicMNManager::UpgradeDBIfNeeded()
     }
     evoDb.GetRawDB().Erase(std::string("b_b"));
 
-    if (Params().GetConsensus().DIP0003Height) {
+    if (::ChainActive().Height() < Params().GetConsensus().DIP0003Height) {
         // not reached DIP3 height yet, so no upgrade needed
         auto dbTx = evoDb.BeginTransaction();
         evoDb.WriteBestBlock(::ChainActive().Tip()->GetBlockHash());

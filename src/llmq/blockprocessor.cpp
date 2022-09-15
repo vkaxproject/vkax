@@ -127,7 +127,7 @@ bool CQuorumBlockProcessor::ProcessBlock(const CBlock& block, const CBlockIndex*
 {
     AssertLockHeld(cs_main);
 
-    bool fDIP0003Active = Params().GetConsensus().DIP0003Height;
+    bool fDIP0003Active = pindex->nHeight >= Params().GetConsensus().DIP0003Height;
     if (!fDIP0003Active) {
         evoDb.Write(DB_BEST_BLOCK_UPGRADE, block.GetHash());
         return true;
@@ -339,10 +339,8 @@ bool CQuorumBlockProcessor::UpgradeDB()
 
     LogPrintf("CQuorumBlockProcessor::%s -- Upgrading DB...\n", __func__);
 
-   // if (::ChainActive().Height() >= Params().GetConsensus().DIP0003EnforcementHeight) {
-   //     auto pindex = ::ChainActive()[Params().GetConsensus().DIP0003EnforcementHeight];
-    if (::ChainActive().Height() >= 1) {
-           auto pindex = ::ChainActive()[1];
+    if (::ChainActive().Height() >= Params().GetConsensus().DIP0003EnforcementHeight) {
+        auto pindex = ::ChainActive()[Params().GetConsensus().DIP0003EnforcementHeight];
         while (pindex) {
             if (fPruneMode && !(pindex->nStatus & BLOCK_HAVE_DATA)) {
                 // Too late, we already pruned blocks we needed to reprocess commitments
