@@ -171,8 +171,8 @@ public:
         consensus.BIP66Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
         consensus.DIP0001Height = 1;
         consensus.DIP0003Height = 1;
-        consensus.DIP0003EnforcementHeight = 1;
-        consensus.DIP0003EnforcementHash = uint256S("776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8");
+        consensus.DIP0003EnforcementHeight = 2;
+        consensus.DIP0003EnforcementHash = uint256S("a8cbec020744ef33ad355e9e0c246a93a49734b9d813c8bc38f47d59067c3184");
         consensus.DIP0008Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
         consensus.BRRHeight = 1374912; // not needed
         consensus.MinBIP9WarningHeight = 1090656; // dip8 activation height + miner confirmation window
@@ -290,7 +290,15 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-	    vSeeds.emplace_back("dnsseed.vkax.xyz");
+        vSeeds.emplace_back("dnsseed.vkax.xyz");
+        vSeeds.emplace_back("no.mining4people.com");
+        vSeeds.emplace_back("fr.mining4people.com");
+        vSeeds.emplace_back("gb.mining4people.com");
+        vSeeds.emplace_back("us.mining4people.com");
+        vSeeds.emplace_back("in.mining4people.com");
+        vSeeds.emplace_back("br.mining4people.com");
+        vSeeds.emplace_back("au.mining4people.com");
+        vSeeds.emplace_back("sg.mining4people.com");
         vSeeds.emplace_back("147.182.144.51");
         vSeeds.emplace_back("174.138.27.60");
         vSeeds.emplace_back("dnsseed-02.vkax.xyz");
