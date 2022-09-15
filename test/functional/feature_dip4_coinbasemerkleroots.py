@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2021 The Dash Core developers
+# Copyright (c) 2015-2022 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-from test_framework.mininode import *
-from test_framework.test_framework import DashTestFramework
-from test_framework.util import assert_equal
 
 '''
 feature_dip4_coinbasemerkleroots.py
@@ -12,6 +9,14 @@ feature_dip4_coinbasemerkleroots.py
 Checks DIP4 merkle roots in coinbases
 
 '''
+
+from io import BytesIO
+
+from test_framework.messages import CBlock, CBlockHeader, CCbTx, CMerkleBlock, FromHex, hash256, msg_getmnlistd, QuorumId, ser_uint256
+from test_framework.mininode import P2PInterface
+from test_framework.test_framework import DashTestFramework
+from test_framework.util import assert_equal, wait_until
+
 
 class TestP2PConn(P2PInterface):
     def __init__(self):
@@ -36,12 +41,11 @@ class TestP2PConn(P2PInterface):
 
 class LLMQCoinbaseCommitmentsTest(DashTestFramework):
     def set_test_params(self):
-        self.set_dash_test_params(4, 3, fast_dip3_enforcement=True)
+        extra_args = [["-vbparams=dip0024:999999999999:999999999999"]] * 4 # disable dip0024
+        self.set_dash_test_params(4, 3, extra_args=extra_args, fast_dip3_enforcement=True)
 
     def run_test(self):
         self.test_node = self.nodes[0].add_p2p_connection(TestP2PConn())
-        network_thread_start()
-        self.nodes[0].p2p.wait_for_verack()
 
         self.confirm_mns()
 
@@ -61,11 +65,11 @@ class LLMQCoinbaseCommitmentsTest(DashTestFramework):
         expectedDeleted = []
         expectedUpdated = [new_mn.proTxHash]
         mnList = self.test_getmnlistdiff(baseBlockHash, self.nodes[0].getbestblockhash(), mnList, expectedDeleted, expectedUpdated)
-        assert(mnList[new_mn.proTxHash].confirmedHash == 0)
+        assert mnList[new_mn.proTxHash].confirmedHash == 0
         # Now let the MN get enough confirmations and verify that the MNLISTDIFF now has confirmedHash != 0
         self.confirm_mns()
         mnList = self.test_getmnlistdiff(baseBlockHash, self.nodes[0].getbestblockhash(), mnList, expectedDeleted, expectedUpdated)
-        assert(mnList[new_mn.proTxHash].confirmedHash != 0)
+        assert mnList[new_mn.proTxHash].confirmedHash != 0
 
         # Spend the collateral of the previously added MN and test if it appears in "deletedMNs"
         expectedDeleted = [new_mn.proTxHash]
@@ -99,7 +103,7 @@ class LLMQCoinbaseCommitmentsTest(DashTestFramework):
 
         # Verify that the first quorum appears in MNLISTDIFF
         expectedDeleted = []
-        expectedNew = [QuorumId(100, int(first_quorum, 16))]
+        expectedNew = [QuorumId(100, int(first_quorum, 16)), QuorumId(104, int(first_quorum, 16))]
         quorumList = self.test_getmnlistdiff_quorums(null_hash, self.nodes[0].getbestblockhash(), {}, expectedDeleted, expectedNew)
         baseBlockHash = self.nodes[0].getbestblockhash()
 
@@ -107,20 +111,20 @@ class LLMQCoinbaseCommitmentsTest(DashTestFramework):
 
         # Verify that the second quorum appears in MNLISTDIFF
         expectedDeleted = []
-        expectedNew = [QuorumId(100, int(second_quorum, 16))]
+        expectedNew = [QuorumId(100, int(second_quorum, 16)), QuorumId(104, int(second_quorum, 16))]
         quorums_before_third = self.test_getmnlistdiff_quorums(baseBlockHash, self.nodes[0].getbestblockhash(), quorumList, expectedDeleted, expectedNew)
         block_before_third = self.nodes[0].getbestblockhash()
 
         third_quorum = self.mine_quorum()
 
         # Verify that the first quorum is deleted and the third quorum is added in MNLISTDIFF (the first got inactive)
-        expectedDeleted = [QuorumId(100, int(first_quorum, 16))]
-        expectedNew = [QuorumId(100, int(third_quorum, 16))]
+        expectedDeleted = [QuorumId(100, int(first_quorum, 16)), QuorumId(104, int(first_quorum, 16))]
+        expectedNew = [QuorumId(100, int(third_quorum, 16)), QuorumId(104, int(third_quorum, 16))]
         self.test_getmnlistdiff_quorums(block_before_third, self.nodes[0].getbestblockhash(), quorums_before_third, expectedDeleted, expectedNew)
 
         # Verify that the diff between genesis and best block is the current active set (second and third quorum)
         expectedDeleted = []
-        expectedNew = [QuorumId(100, int(second_quorum, 16)), QuorumId(100, int(third_quorum, 16))]
+        expectedNew = [QuorumId(100, int(second_quorum, 16)), QuorumId(104, int(second_quorum, 16)), QuorumId(100, int(third_quorum, 16)), QuorumId(104, int(third_quorum, 16))]
         self.test_getmnlistdiff_quorums(null_hash, self.nodes[0].getbestblockhash(), {}, expectedDeleted, expectedNew)
 
         # Now verify that diffs are correct around the block that mined the third quorum.
@@ -137,8 +141,8 @@ class LLMQCoinbaseCommitmentsTest(DashTestFramework):
         self.test_getmnlistdiff_quorums(block_before_third, prev_block2, quorums_before_third, expectedDeleted, expectedNew)
         self.test_getmnlistdiff_quorums(block_before_third, prev_block, quorums_before_third, expectedDeleted, expectedNew)
         # The block in which the quorum was mined and the 2 after that should all give the same diff
-        expectedDeleted = [QuorumId(100, int(first_quorum, 16))]
-        expectedNew = [QuorumId(100, int(third_quorum, 16))]
+        expectedDeleted = [QuorumId(100, int(first_quorum, 16)), QuorumId(104, int(first_quorum, 16))]
+        expectedNew = [QuorumId(100, int(third_quorum, 16)), QuorumId(104, int(third_quorum, 16))]
         quorums_with_third = self.test_getmnlistdiff_quorums(block_before_third, mined_in_block, quorums_before_third, expectedDeleted, expectedNew)
         self.test_getmnlistdiff_quorums(block_before_third, next_block, quorums_before_third, expectedDeleted, expectedNew)
         self.test_getmnlistdiff_quorums(block_before_third, next_block2, quorums_before_third, expectedDeleted, expectedNew)
@@ -249,18 +253,18 @@ class LLMQCoinbaseCommitmentsTest(DashTestFramework):
         self.wait_for_sporks_same()
 
         cbtx = self.nodes[0].getblock(self.nodes[0].getbestblockhash(), 2)["tx"][0]
-        assert(cbtx["cbTx"]["version"] == 1)
+        assert cbtx["cbTx"]["version"] == 1
 
         self.activate_dip8(slow_mode)
 
         # Assert that merkleRootQuorums is present and 0 (we have no quorums yet)
         cbtx = self.nodes[0].getblock(self.nodes[0].getbestblockhash(), 2)["tx"][0]
         assert_equal(cbtx["cbTx"]["version"], 2)
-        assert("merkleRootQuorums" in cbtx["cbTx"])
+        assert "merkleRootQuorums" in cbtx["cbTx"]
         merkleRootQuorums = int(cbtx["cbTx"]["merkleRootQuorums"], 16)
 
         if with_initial_quorum:
-            assert(merkleRootQuorums != 0)
+            assert merkleRootQuorums != 0
         else:
             assert_equal(merkleRootQuorums, 0)
 
@@ -271,7 +275,7 @@ class LLMQCoinbaseCommitmentsTest(DashTestFramework):
         # Mine quorum and verify that merkleRootQuorums has changed
         quorum = self.mine_quorum()
         cbtx = self.nodes[0].getblock(self.nodes[0].getbestblockhash(), 2)["tx"][0]
-        assert(int(cbtx["cbTx"]["merkleRootQuorums"], 16) != merkleRootQuorums)
+        assert int(cbtx["cbTx"]["merkleRootQuorums"], 16) != merkleRootQuorums
 
         return quorum
 

@@ -30,7 +30,7 @@ class ProxyAddressValidator : public QValidator
 public:
     explicit ProxyAddressValidator(QObject *parent);
 
-    State validate(QString &input, int &pos) const;
+    State validate(QString &input, int &pos) const override;
 };
 
 /** Preferences dialog. */
@@ -56,6 +56,7 @@ private Q_SLOTS:
 
     void on_hideTrayIcon_stateChanged(int fState);
 
+    void togglePruneWarning(bool enabled);
     void showRestartWarning(bool fPersistent = false);
     void clearStatusLabel();
     void updateProxyValidationState();

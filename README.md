@@ -1,11 +1,11 @@
-Vkax Core staging tree 0.17
+Vkax Core staging tree 18.0
 ===========================
 
 |CI|master|develop|
 |-|-|-|
 |Gitlab|[![Build Status](https://gitlab.com/dashpay/dash/badges/master/pipeline.svg)](https://gitlab.com/dashpay/dash/-/tree/master)|[![Build Status](https://gitlab.com/dashpay/dash/badges/develop/pipeline.svg)](https://gitlab.com/dashpay/dash/-/tree/develop)|
 
-https://www.vkax.tech
+https://www.vkax.xyz
 
 
 What is Vkax?
@@ -17,14 +17,16 @@ to operate with no central authority: managing transactions and issuing money
 are carried out collectively by the network. Vkax Core is the name of the open
 source software which enables the use of this currency.
 
-For more information, as well as an immediately useable, binary version of
-the Vkax Core software, see https://www.vkax.tech/get-vkax/.
+Pre-Built Binary
+----------------
 
+For more information, as well as an immediately usable, binary version of
+the Vkax Core software, see https://www.vkax.xyz/downloads/.
 
 License
 -------
 
-Vkax Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+Dash Core and Vkax project core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see https://opensource.org/licenses/MIT.
 
 Development Process
@@ -34,7 +36,8 @@ The `master` branch is meant to be stable. Development is normally done in separ
 [Tags](https://github.com/vkaxproject/vkax/tags) are created to indicate new official,
 stable release versions of Vkax Core.
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
+The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
+and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
 
 Testing
 -------
@@ -55,7 +58,7 @@ There are also [regression and integration tests](/test), written
 in Python, that are run automatically on the build server.
 These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
 
-The Travis CI system makes sure that every pull request is built for Windows, Linux, and OS X, and that unit/sanity tests are run automatically.
+The Travis CI system makes sure that every pull request is built for Windows, Linux, and macOS, and that unit/sanity tests are run automatically.
 
 ### Manual Quality Assurance (QA) Testing
 
@@ -76,3 +79,4 @@ Translations are periodically pulled from Transifex and merged into the git repo
 **Important**: We do not accept translation changes as GitHub pull requests because the next
 pull from Transifex would automatically overwrite them again.
 
+Translators should also follow the [forum](https://www.dash.org/forum/topic/dash-worldwide-collaboration.88/).

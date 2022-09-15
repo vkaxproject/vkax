@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
-// Copyright (c) 2014-2020 The Dash Core developers
+// Copyright (c) 2014-2022 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,12 +10,11 @@
 #include <qt/guiutil.h>
 #include <qt/walletmodel.h>
 
-#include <init.h>
 #include <key_io.h>
-#include <utilstrencodings.h>
-#include <validation.h> // For strMessageMagic
+#include <util/strencodings.h>
+#include <util/validation.h> // For strMessageMagic
+#include <validation.h>
 
-#include <string>
 #include <vector>
 
 #include <QButtonGroup>
@@ -24,15 +23,15 @@
 SignVerifyMessageDialog::SignVerifyMessageDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::SignVerifyMessageDialog),
-    model(0),
-    pageButtons(0)
+    model(nullptr),
+    pageButtons(nullptr)
 {
     ui->setupUi(this);
 
     pageButtons = new QButtonGroup(this);
     pageButtons->addButton(ui->btnSignMessage, pageButtons->buttons().size());
     pageButtons->addButton(ui->btnVerifyMessage, pageButtons->buttons().size());
-    connect(pageButtons, SIGNAL(buttonClicked(int)), this, SLOT(showPage(int)));
+    connect(pageButtons, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &SignVerifyMessageDialog::showPage);
 
     ui->messageIn_SM->setPlaceholderText(tr("Enter a message to be signed"));
     ui->signatureOut_SM->setPlaceholderText(tr("Click \"Sign Message\" to generate signature"));
@@ -191,7 +190,7 @@ void SignVerifyMessageDialog::on_signMessageButton_SM_clicked()
     ui->statusLabel_SM->setStyleSheet(GUIUtil::getThemedStyleQString(GUIUtil::ThemedStyle::TS_SUCCESS));
     ui->statusLabel_SM->setText(QString("<nobr>") + tr("Message signed.") + QString("</nobr>"));
 
-    ui->signatureOut_SM->setText(QString::fromStdString(EncodeBase64(vchSig.data(), vchSig.size())));
+    ui->signatureOut_SM->setText(QString::fromStdString(EncodeBase64(vchSig)));
 }
 
 void SignVerifyMessageDialog::on_copySignatureButton_SM_clicked()

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+#
 # Copyright (c) 2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,14 +9,14 @@ export LC_ALL=C
 IF="eth0"
 #limit of the network interface in question
 LINKCEIL="1gbit"
-#limit outbound Vkax protocol traffic to this rate
+#limit outbound Dash protocol traffic to this rate
 LIMIT="160kbit"
 #defines the IPv4 address space for which you wish to disable rate limiting
 LOCALNET_V4="192.168.0.0/16"
 #defines the IPv6 address space for which you wish to disable rate limiting
 LOCALNET_V6="fe80::/10"
 
-#delete existing rules
+#delete existing rules ('Error: Cannot delete qdisc with handle of zero.' means there weren't any.)
 tc qdisc del dev ${IF} root
 
 #add root class
@@ -45,16 +47,16 @@ fi
 #	ret=$?
 #done
 
-#limit outgoing traffic to and from port 11110. but not when dealing with a host on the local network
+#limit outgoing traffic to and from port 9999. but not when dealing with a host on the local network
 #	(defined by $LOCALNET_V4 and $LOCALNET_V6)
 #	--set-mark marks packages matching these criteria with the number "2" (v4)
 #	--set-mark marks packages matching these criteria with the number "4" (v6)
 #	these packets are filtered by the tc filter with "handle 2"
 #	this filter sends the packages into the 1:11 class, and this class is limited to ${LIMIT}
-iptables -t mangle -A OUTPUT -p tcp -m tcp --dport 11110 ! -d ${LOCALNET_V4} -j MARK --set-mark 0x2
-iptables -t mangle -A OUTPUT -p tcp -m tcp --sport 11110 ! -d ${LOCALNET_V4} -j MARK --set-mark 0x2
+iptables -t mangle -A OUTPUT -p tcp -m tcp --dport 9999 ! -d ${LOCALNET_V4} -j MARK --set-mark 0x2
+iptables -t mangle -A OUTPUT -p tcp -m tcp --sport 9999 ! -d ${LOCALNET_V4} -j MARK --set-mark 0x2
 
 if [ -n "${LOCALNET_V6}" ] ; then
-	ip6tables -t mangle -A OUTPUT -p tcp -m tcp --dport 11110 ! -d ${LOCALNET_V6} -j MARK --set-mark 0x4
-	ip6tables -t mangle -A OUTPUT -p tcp -m tcp --sport 11110 ! -d ${LOCALNET_V6} -j MARK --set-mark 0x4
+	ip6tables -t mangle -A OUTPUT -p tcp -m tcp --dport 9999 ! -d ${LOCALNET_V6} -j MARK --set-mark 0x4
+	ip6tables -t mangle -A OUTPUT -p tcp -m tcp --sport 9999 ! -d ${LOCALNET_V6} -j MARK --set-mark 0x4
 fi

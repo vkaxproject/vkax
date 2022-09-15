@@ -3,10 +3,6 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.mininode import *
-from test_framework.test_framework import DashTestFramework
-from test_framework.util import set_node_times, isolate_node, reconnect_isolated_node
-
 '''
 feature_llmq_is_retroactive.py
 
@@ -16,6 +12,12 @@ We have 6 nodes where node 0 is the control node, nodes 1-5 are masternodes.
 Mempool inconsistencies are simulated via disconnecting/reconnecting node 3
 and by having a higher relay fee on nodes 4 and 5.
 '''
+
+import time
+
+from test_framework.test_framework import DashTestFramework
+from test_framework.util import set_node_times, isolate_node, reconnect_isolated_node
+
 
 class LLMQ_IS_RetroactiveSigning(DashTestFramework):
     def set_test_params(self):
@@ -114,7 +116,7 @@ class LLMQ_IS_RetroactiveSigning(DashTestFramework):
         # Make node0 consider the TX as safe
         self.bump_mocktime(10 * 60 + 1)
         block = self.nodes[0].generate(1)[0]
-        assert(txid in self.nodes[0].getblock(block, 1)['tx'])
+        assert txid in self.nodes[0].getblock(block, 1)['tx']
         self.wait_for_chainlocked_block_all_nodes(block)
 
         self.log.info("testing retroactive signing with partially known TX and all nodes session timeout")
@@ -160,7 +162,7 @@ class LLMQ_IS_RetroactiveSigning(DashTestFramework):
         # Make node 0 consider the TX as safe
         self.bump_mocktime(10 * 60 + 1)
         block = self.nodes[0].generate(1)[0]
-        assert(txid in self.nodes[0].getblock(block, 1)['tx'])
+        assert txid in self.nodes[0].getblock(block, 1)['tx']
         self.wait_for_chainlocked_block_all_nodes(block)
 
     def test_single_node_session_timeout(self, do_cycle_llmqs):
@@ -192,7 +194,7 @@ class LLMQ_IS_RetroactiveSigning(DashTestFramework):
         # Make node 0 consider the TX as safe
         self.bump_mocktime(10 * 60 + 1)
         block = self.nodes[0].generate(1)[0]
-        assert(txid in self.nodes[0].getblock(block, 1)['tx'])
+        assert txid in self.nodes[0].getblock(block, 1)['tx']
         self.wait_for_chainlocked_block_all_nodes(block)
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2021 The Dash Core developers
+// Copyright (c) 2018-2022 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,7 +8,8 @@
 #include <hash.h>
 #include <serialize.h>
 #include <uint256.h>
-#include <utilstrencodings.h>
+#include <util/strencodings.h>
+#include <util/ranges.h>
 
 // bls-dash uses relic, which may define DEBUG and ERROR, which leads to many warnings in some build setups
 #undef ERROR
@@ -19,18 +20,19 @@
 #include <bls-dash/schemes.hpp>
 #include <bls-dash/threshold.hpp>
 #undef DOUBLE
+#undef SEED
 
 #include <array>
 #include <mutex>
 #include <unistd.h>
 
-static const bool fLegacyDefault{true};
+static constexpr bool fLegacyDefault{true};
 
 // reversed BLS12-381
-#define BLS_CURVE_ID_SIZE 32
-#define BLS_CURVE_SECKEY_SIZE 32
-#define BLS_CURVE_PUBKEY_SIZE 48
-#define BLS_CURVE_SIG_SIZE 96
+constexpr int BLS_CURVE_ID_SIZE{32};
+constexpr int BLS_CURVE_SECKEY_SIZE{32};
+constexpr int BLS_CURVE_PUBKEY_SIZE{48};
+constexpr int BLS_CURVE_SIG_SIZE{96};
 
 class CBLSSignature;
 class CBLSPublicKey;
@@ -42,7 +44,7 @@ class CBLSWrapper
     friend class CBLSPublicKey;
     friend class CBLSSignature;
 
-    bool fLegacy;
+    bool fLegacy{true};
 
 protected:
     ImplType impl;
@@ -52,26 +54,26 @@ protected:
     inline constexpr size_t GetSerSize() const { return SerSize; }
 
 public:
-    static const size_t SerSize = _SerSize;
+    static constexpr size_t SerSize = _SerSize;
 
-    CBLSWrapper(const bool fLegacyIn = fLegacyDefault) : fLegacy(fLegacyIn)
+    explicit CBLSWrapper(const bool fLegacyIn = fLegacyDefault) : fLegacy(fLegacyIn)
     {
     }
-    CBLSWrapper(const std::vector<unsigned char>& vecBytes, const bool fLegacyIn = fLegacyDefault) : CBLSWrapper<ImplType, _SerSize, C>(fLegacyIn)
+    explicit CBLSWrapper(const std::vector<unsigned char>& vecBytes, const bool fLegacyIn = fLegacyDefault) : CBLSWrapper<ImplType, _SerSize, C>(fLegacyIn)
     {
         SetByteVector(vecBytes);
     }
 
     CBLSWrapper(const CBLSWrapper& ref) = default;
     CBLSWrapper& operator=(const CBLSWrapper& ref) = default;
-    CBLSWrapper(CBLSWrapper&& ref)
+    CBLSWrapper(CBLSWrapper&& ref) noexcept
     {
         std::swap(impl, ref.impl);
         std::swap(fValid, ref.fValid);
         std::swap(cachedHash, ref.cachedHash);
         std::swap(fLegacy, ref.fLegacy);
     }
-    CBLSWrapper& operator=(CBLSWrapper&& ref)
+    CBLSWrapper& operator=(CBLSWrapper&& ref) noexcept
     {
         std::swap(impl, ref.impl);
         std::swap(fValid, ref.fValid);
@@ -79,6 +81,8 @@ public:
         std::swap(fLegacy, ref.fLegacy);
         return *this;
     }
+
+    virtual ~CBLSWrapper() = default;
 
     bool operator==(const C& r) const
     {
@@ -96,7 +100,7 @@ public:
 
     void Reset()
     {
-        *((C*)this) = C(fLegacy);
+        *(static_cast<C*>(this)) = C(fLegacy);
     }
 
     void SetByteVector(const std::vector<uint8_t>& vecBytes)
@@ -106,7 +110,7 @@ public:
             return;
         }
 
-        if (std::all_of(vecBytes.begin(), vecBytes.end(), [](uint8_t c) { return c == 0; })) {
+        if (ranges::all_of(vecBytes, [](uint8_t c) { return c == 0; })) {
             Reset();
         } else {
             try {
@@ -187,13 +191,13 @@ public:
     inline std::string ToString() const
     {
         std::vector<uint8_t> buf = ToByteVector();
-        return HexStr(buf.begin(), buf.end());
+        return HexStr(buf);
     }
 };
 
 struct CBLSIdImplicit : public uint256
 {
-    CBLSIdImplicit() {}
+    CBLSIdImplicit() = default;
     CBLSIdImplicit(const uint256& id)
     {
         memcpy(begin(), id.begin(), sizeof(uint256));
@@ -218,8 +222,8 @@ public:
     using CBLSWrapper::operator!=;
     using CBLSWrapper::CBLSWrapper;
 
-    CBLSId() {}
-    CBLSId(const uint256& nHash);
+    CBLSId() = default;
+    explicit CBLSId(const uint256& nHash);
 };
 
 class CBLSSecretKey : public CBLSWrapper<bls::PrivateKey, BLS_CURVE_SECKEY_SIZE, CBLSSecretKey>
@@ -230,7 +234,9 @@ public:
     using CBLSWrapper::operator!=;
     using CBLSWrapper::CBLSWrapper;
 
-    CBLSSecretKey() {}
+    CBLSSecretKey() = default;
+    CBLSSecretKey(const CBLSSecretKey&) = default;
+    CBLSSecretKey& operator=(const CBLSSecretKey&) = default;
 
     void AggregateInsecure(const CBLSSecretKey& o);
     static CBLSSecretKey AggregateInsecure(const std::vector<CBLSSecretKey>& sks);
@@ -255,7 +261,7 @@ public:
     using CBLSWrapper::operator!=;
     using CBLSWrapper::CBLSWrapper;
 
-    CBLSPublicKey() {}
+    CBLSPublicKey() = default;
 
     void AggregateInsecure(const CBLSPublicKey& o);
     static CBLSPublicKey AggregateInsecure(const std::vector<CBLSPublicKey>& pks, bool fLegacy = fLegacyDefault);
@@ -274,7 +280,7 @@ public:
     using CBLSWrapper::operator!=;
     using CBLSWrapper::CBLSWrapper;
 
-    CBLSSignature() {}
+    CBLSSignature() = default;
     CBLSSignature(const CBLSSignature&) = default;
     CBLSSignature& operator=(const CBLSSignature&) = default;
 
@@ -315,10 +321,11 @@ public:
         bufValid = true;
     }
 
-    CBLSLazyWrapper(const CBLSLazyWrapper& r)
+    explicit CBLSLazyWrapper(const CBLSLazyWrapper& r)
     {
         *this = r;
     }
+    virtual ~CBLSLazyWrapper() = default;
 
     CBLSLazyWrapper& operator=(const CBLSLazyWrapper& r)
     {
@@ -429,22 +436,22 @@ public:
         return hash;
     }
 };
-typedef CBLSLazyWrapper<CBLSSignature> CBLSLazySignature;
-typedef CBLSLazyWrapper<CBLSPublicKey> CBLSLazyPublicKey;
-typedef CBLSLazyWrapper<CBLSSecretKey> CBLSLazySecretKey;
+using CBLSLazySignature = CBLSLazyWrapper<CBLSSignature>;
+using CBLSLazyPublicKey = CBLSLazyWrapper<CBLSPublicKey>;
+using CBLSLazySecretKey = CBLSLazyWrapper<CBLSSecretKey>;
 #endif
 
-typedef std::vector<CBLSId> BLSIdVector;
-typedef std::vector<CBLSPublicKey> BLSVerificationVector;
-typedef std::vector<CBLSPublicKey> BLSPublicKeyVector;
-typedef std::vector<CBLSSecretKey> BLSSecretKeyVector;
-typedef std::vector<CBLSSignature> BLSSignatureVector;
+using BLSIdVector = std::vector<CBLSId>;
+using BLSVerificationVector = std::vector<CBLSPublicKey>;
+using BLSPublicKeyVector = std::vector<CBLSPublicKey>;
+using BLSSecretKeyVector = std::vector<CBLSSecretKey>;
+using BLSSignatureVector = std::vector<CBLSSignature>;
 
-typedef std::shared_ptr<BLSIdVector> BLSIdVectorPtr;
-typedef std::shared_ptr<BLSVerificationVector> BLSVerificationVectorPtr;
-typedef std::shared_ptr<BLSPublicKeyVector> BLSPublicKeyVectorPtr;
-typedef std::shared_ptr<BLSSecretKeyVector> BLSSecretKeyVectorPtr;
-typedef std::shared_ptr<BLSSignatureVector> BLSSignatureVectorPtr;
+using BLSIdVectorPtr = std::shared_ptr<BLSIdVector>;
+using BLSVerificationVectorPtr = std::shared_ptr<BLSVerificationVector>;
+using BLSPublicKeyVectorPtr = std::shared_ptr<BLSPublicKeyVector>;
+using BLSSecretKeyVectorPtr = std::shared_ptr<BLSSecretKeyVector>;
+using BLSSignatureVectorPtr = std::shared_ptr<BLSSignatureVector>;
 
 bool BLSInit();
 

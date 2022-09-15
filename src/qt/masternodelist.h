@@ -3,9 +3,7 @@
 
 #include <primitives/transaction.h>
 #include <sync.h>
-#include <util.h>
-
-#include <evo/deterministicmns.h>
+#include <util/system.h>
 
 #include <QMenu>
 #include <QTimer>
@@ -18,6 +16,9 @@ namespace Ui
 {
 class MasternodeList;
 }
+
+class CDeterministicMN;
+using CDeterministicMNCPtr = std::shared_ptr<const CDeterministicMN>;
 
 class ClientModel;
 class WalletModel;
@@ -55,21 +56,21 @@ public:
 
 private:
     QMenu* contextMenuDIP3;
-    int64_t nTimeFilterUpdatedDIP3;
-    int64_t nTimeUpdatedDIP3;
-    bool fFilterUpdatedDIP3;
+    int64_t nTimeFilterUpdatedDIP3{0};
+    int64_t nTimeUpdatedDIP3{0};
+    bool fFilterUpdatedDIP3{true};
 
     QTimer* timer;
     Ui::MasternodeList* ui;
-    ClientModel* clientModel;
-    WalletModel* walletModel;
+    ClientModel* clientModel{nullptr};
+    WalletModel* walletModel{nullptr};
 
     // Protects tableWidgetMasternodesDIP3
     CCriticalSection cs_dip3list;
 
     QString strCurrentFilterDIP3;
 
-    bool mnListChanged;
+    bool mnListChanged{true};
 
     CDeterministicMNCPtr GetSelectedDIP3MN();
 

@@ -5,17 +5,15 @@
 #include <httprpc.h>
 
 #include <chainparams.h>
+#include <crypto/hmac_sha256.h>
 #include <httpserver.h>
-#include <key_io.h>
 #include <rpc/protocol.h>
 #include <rpc/server.h>
-#include <random.h>
-#include <sync.h>
-#include <util.h>
-#include <utilstrencodings.h>
 #include <ui_interface.h>
-#include <crypto/hmac_sha256.h>
-#include <stdio.h>
+#include <util/strencodings.h>
+#include <util/system.h>
+#include <util/translation.h>
+#include <walletinitinterface.h>
 
 #include <memory>
 
@@ -30,7 +28,7 @@ static const char* WWW_AUTH_HEADER_DATA = "Basic realm=\"jsonrpc\"";
 class HTTPRPCTimer : public RPCTimerBase
 {
 public:
-    HTTPRPCTimer(struct event_base* eventBase, std::function<void(void)>& func, int64_t millis) :
+    HTTPRPCTimer(struct event_base* eventBase, std::function<void()>& func, int64_t millis) :
         ev(eventBase, false, func)
     {
         struct timeval tv;
@@ -52,7 +50,7 @@ public:
     {
         return "HTTP";
     }
-    RPCTimerBase* NewTimer(std::function<void(void)>& func, int64_t millis) override
+    RPCTimerBase* NewTimer(std::function<void()>& func, int64_t millis) override
     {
         return new HTTPRPCTimer(base, func, millis);
     }
@@ -116,7 +114,7 @@ static bool multiUserAuthorized(std::string strUserPass)
         static const unsigned int KEY_SIZE = 32;
         unsigned char out[KEY_SIZE];
 
-        CHMAC_SHA256(reinterpret_cast<const unsigned char*>(strSalt.c_str()), strSalt.size()).Write(reinterpret_cast<const unsigned char*>(strPass.c_str()), strPass.size()).Finalize(out);
+        CHMAC_SHA256(reinterpret_cast<const unsigned char*>(strSalt.data()), strSalt.size()).Write(reinterpret_cast<const unsigned char*>(strPass.data()), strPass.size()).Finalize(out);
         std::vector<unsigned char> hexvec(out, out+KEY_SIZE);
         std::string strHashFromPass = HexStr(hexvec);
 
@@ -170,7 +168,7 @@ static bool HTTPReq_JSONRPC(HTTPRequest* req, const std::string &)
         /* Deter brute-forcing
            If this results in a DoS the user really
            shouldn't have their RPC port exposed. */
-        MilliSleep(250);
+        UninterruptibleSleep(std::chrono::milliseconds{250});
 
         req->WriteHeader("WWW-Authenticate", WWW_AUTH_HEADER_DATA);
         req->WriteReply(HTTP_UNAUTHORIZED);
@@ -218,7 +216,7 @@ static bool InitRPCAuthentication()
 {
     if (gArgs.GetArg("-rpcpassword", "") == "")
     {
-        LogPrintf("No rpcpassword set - using random cookie authentication.\n");
+        LogPrintf("Using random cookie authentication.\n");
         if (!GenerateAuthCookie(&strRPCUserColonPass)) {
             uiInterface.ThreadSafeMessageBox(
                 _("Error: A fatal internal error occurred, see debug.log for details"), // Same message as AbortNode
@@ -243,12 +241,12 @@ bool StartHTTPRPC()
         return false;
 
     RegisterHTTPHandler("/", true, HTTPReq_JSONRPC);
-#ifdef ENABLE_WALLET
-    // ifdef can be removed once we switch to better endpoint support and API versioning
-    RegisterHTTPHandler("/wallet/", false, HTTPReq_JSONRPC);
-#endif
-    assert(EventBase());
-    httpRPCTimerInterface = MakeUnique<HTTPRPCTimerInterface>(EventBase());
+    if (g_wallet_init_interface.HasWalletSupport()) {
+        RegisterHTTPHandler("/wallet/", false, HTTPReq_JSONRPC);
+    }
+    struct event_base* eventBase = EventBase();
+    assert(eventBase);
+    httpRPCTimerInterface = MakeUnique<HTTPRPCTimerInterface>(eventBase);
     RPCSetTimerInterface(httpRPCTimerInterface.get());
     return true;
 }
@@ -262,9 +260,9 @@ void StopHTTPRPC()
 {
     LogPrint(BCLog::RPC, "Stopping HTTP RPC server\n");
     UnregisterHTTPHandler("/", true);
-#ifdef ENABLE_WALLET
-    UnregisterHTTPHandler("/wallet/", false);
-#endif
+    if (g_wallet_init_interface.HasWalletSupport()) {
+        UnregisterHTTPHandler("/wallet/", false);
+    }
     if (httpRPCTimerInterface) {
         RPCUnsetTimerInterface(httpRPCTimerInterface.get());
         httpRPCTimerInterface.reset();

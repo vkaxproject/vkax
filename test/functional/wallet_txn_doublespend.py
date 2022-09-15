@@ -3,17 +3,26 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet accounts properly when there is a double-spend conflict."""
+from decimal import Decimal
 
 from test_framework.test_framework import BitcoinTestFramework
-from test_framework.util import *
+from test_framework.util import (
+    assert_equal,
+    connect_nodes,
+    disconnect_nodes,
+    find_output,
+)
 
 class TxnMallTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
 
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
+
     def add_options(self, parser):
-        parser.add_option("--mineblock", dest="mine_block", default=False, action="store_true",
-                          help="Test double-spend of 1-confirmed transaction")
+        parser.add_argument("--mineblock", dest="mine_block", default=False, action="store_true",
+                            help="Test double-spend of 1-confirmed transaction")
 
     def setup_network(self):
         # Start with split network:

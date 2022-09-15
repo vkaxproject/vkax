@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
-// Copyright (c) 2014-2021 The Dash Core developers
+// Copyright (c) 2014-2022 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,16 +10,18 @@
 #include <qt/optionsmodel.h>
 
 #include <qt/bitcoinunits.h>
+#include <qt/guiconstants.h>
 #include <qt/guiutil.h>
 
 #include <interfaces/node.h>
-#include <validation.h> // For DEFAULT_SCRIPTCHECK_THREADS
+#include <mapport.h>
 #include <net.h>
 #include <netbase.h>
-#include <txdb.h> // for -dbcache defaults
+#include <txdb.h>       // for -dbcache defaults
+#include <validation.h> // For DEFAULT_SCRIPTCHECK_THREADS
 
 #ifdef ENABLE_WALLET
-#include <coinjoin/coinjoin-client-options.h>
+#include <coinjoin/options.h>
 #endif
 
 #include <QNetworkProxy>
@@ -175,6 +177,28 @@ void OptionsModel::Init(bool resetSettings)
     // by command-line and show this in the UI.
 
     // Main
+    if (!settings.contains("bPrune"))
+        settings.setValue("bPrune", false);
+    if (!settings.contains("nPruneSize"))
+        settings.setValue("nPruneSize", 2);
+    // Convert prune size from GB to MiB:
+    const uint64_t nPruneSizeMiB = (settings.value("nPruneSize").toInt() * GB_BYTES) >> 20;
+    if (!m_node.softSetArg("-prune", settings.value("bPrune").toBool() ? std::to_string(nPruneSizeMiB) : "0")) {
+        addOverriddenOption("-prune");
+    }
+
+    // If GUI is setting prune, then we also must set disablegovernance and txindex
+    if (settings.value("bPrune").toBool()) {
+        if (gArgs.SoftSetBoolArg("-disablegovernance", true)) {
+            LogPrintf("%s: parameter interaction: -prune=true -> setting -disablegovernance=true\n", __func__);
+            addOverriddenOption("-disablegovernance");
+        }
+        if (gArgs.SoftSetBoolArg("-txindex", false)) {
+            LogPrintf("%s: parameter interaction: -prune=true -> setting -txindex=false\n", __func__);
+            addOverriddenOption("-txindex");
+        }
+    }
+
     if (!settings.contains("nDatabaseCache"))
         settings.setValue("nDatabaseCache", (qint64)nDefaultDbCache);
     if (!m_node.softSetArg("-dbcache", settings.value("nDatabaseCache").toString().toStdString()))
@@ -184,6 +208,9 @@ void OptionsModel::Init(bool resetSettings)
         settings.setValue("nThreadsScriptVerif", DEFAULT_SCRIPTCHECK_THREADS);
     if (!m_node.softSetArg("-par", settings.value("nThreadsScriptVerif").toString().toStdString()))
         addOverriddenOption("-par");
+
+    if (!settings.contains("strDataDir"))
+        settings.setValue("strDataDir", GUIUtil::getDefaultDataDirectory());
 
     // Wallet
 #ifdef ENABLE_WALLET
@@ -201,10 +228,10 @@ void OptionsModel::Init(bool resetSettings)
 
     if (!settings.contains("nCoinJoinAmount")) {
         // for migration from old settings
-        if (!settings.contains("nAnonymizeVkaxAmount"))
+        if (!settings.contains("nAnonymizeDashAmount"))
             settings.setValue("nCoinJoinAmount", DEFAULT_COINJOIN_AMOUNT);
         else
-            settings.setValue("nCoinJoinAmount", settings.value("nAnonymizeVkaxAmount").toInt());
+            settings.setValue("nCoinJoinAmount", settings.value("nAnonymizeDashAmount").toInt());
     }
     if (!m_node.softSetArg("-coinjoinamount", settings.value("nCoinJoinAmount").toString().toStdString()))
         addOverriddenOption("-coinjoinamount");
@@ -222,6 +249,13 @@ void OptionsModel::Init(bool resetSettings)
         settings.setValue("fUseUPnP", DEFAULT_UPNP);
     if (!m_node.softSetBoolArg("-upnp", settings.value("fUseUPnP").toBool()))
         addOverriddenOption("-upnp");
+
+    if (!settings.contains("fUseNatpmp")) {
+        settings.setValue("fUseNatpmp", DEFAULT_NATPMP);
+    }
+    if (!gArgs.SoftSetBoolArg("-natpmp", settings.value("fUseNatpmp").toBool())) {
+        addOverriddenOption("-natpmp");
+    }
 
     if (!settings.contains("fListen"))
         settings.setValue("fListen", DEFAULT_LISTEN);
@@ -270,7 +304,7 @@ static void CopySettings(QSettings& dst, const QSettings& src)
 /** Back up a QSettings to an ini-formatted file. */
 static void BackupSettings(const fs::path& filename, const QSettings& src)
 {
-    qWarning() << "Backing up GUI settings to" << GUIUtil::boostPathToQString(filename);
+    qInfo() << "Backing up GUI settings to" << GUIUtil::boostPathToQString(filename);
     QSettings dst(GUIUtil::boostPathToQString(filename), QSettings::IniFormat);
     dst.clear();
     CopySettings(dst, src);
@@ -283,8 +317,18 @@ void OptionsModel::Reset()
     // Backup old settings to chain-specific datadir for troubleshooting
     BackupSettings(GetDataDir(true) / "guisettings.ini.bak", settings);
 
+    // Save the strDataDir setting
+    QString dataDir = GUIUtil::getDefaultDataDirectory();
+    dataDir = settings.value("strDataDir", dataDir).toString();
+
     // Remove all entries from our QSettings object
     settings.clear();
+
+    // Set strDataDir
+    settings.setValue("strDataDir", dataDir);
+
+    // Set that this was reset
+    settings.setValue("fReset", true);
 
     // default setting for OptionsModel::StartAtStartup - disabled
     if (GUIUtil::GetStartOnSystemStartup())
@@ -347,7 +391,13 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return settings.value("fUseUPnP");
 #else
             return false;
-#endif
+#endif // USE_UPNP
+        case MapPortNatpmp:
+#ifdef USE_NATPMP
+            return settings.value("fUseNatpmp");
+#else
+            return false;
+#endif // USE_NATPMP
         case MinimizeOnClose:
             return fMinimizeOnClose;
 
@@ -372,6 +422,8 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return settings.value("bSpendZeroConfChange");
         case ShowMasternodesTab:
             return settings.value("fShowMasternodesTab");
+        case ShowGovernanceTab:
+            return settings.value("fShowGovernanceTab");
         case CoinJoinEnabled:
             return settings.value("fCoinJoinEnabled");
         case ShowAdvancedCJUI:
@@ -421,6 +473,10 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
         case CoinControlFeatures:
             return fCoinControlFeatures;
 #endif // ENABLE_WALLET
+        case Prune:
+            return settings.value("bPrune");
+        case PruneSize:
+            return settings.value("nPruneSize");
         case DatabaseCache:
             return settings.value("nDatabaseCache");
         case ThreadsScriptVerif:
@@ -457,7 +513,9 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             break;
         case MapPortUPnP: // core option - can be changed on-the-fly
             settings.setValue("fUseUPnP", value.toBool());
-            m_node.mapPort(value.toBool());
+            break;
+        case MapPortNatpmp: // core option - can be changed on-the-fly
+            settings.setValue("fUseNatpmp", value.toBool());
             break;
         case MinimizeOnClose:
             fMinimizeOnClose = value.toBool();
@@ -526,6 +584,12 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
         case ShowMasternodesTab:
             if (settings.value("fShowMasternodesTab") != value) {
                 settings.setValue("fShowMasternodesTab", value);
+                setRestartRequired(true);
+            }
+            break;
+        case ShowGovernanceTab:
+            if (settings.value("fShowGovernanceTab") != value) {
+                settings.setValue("fShowGovernanceTab", value);
                 setRestartRequired(true);
             }
             break;
@@ -629,6 +693,18 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             fCoinControlFeatures = value.toBool();
             settings.setValue("fCoinControlFeatures", fCoinControlFeatures);
             Q_EMIT coinControlFeaturesChanged(fCoinControlFeatures);
+            break;
+        case Prune:
+            if (settings.value("bPrune") != value) {
+                settings.setValue("bPrune", value);
+                setRestartRequired(true);
+            }
+            break;
+        case PruneSize:
+            if (settings.value("nPruneSize") != value) {
+                settings.setValue("nPruneSize", value);
+                setRestartRequired(true);
+            }
             break;
 #endif // ENABLE_WALLET
         case DatabaseCache:

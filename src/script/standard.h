@@ -11,7 +11,6 @@
 
 #include <boost/variant.hpp>
 
-#include <stdint.h>
 
 static const bool DEFAULT_ACCEPT_DATACARRIER = true;
 
@@ -23,7 +22,7 @@ class CScriptID : public uint160
 {
 public:
     CScriptID() : uint160() {}
-    CScriptID(const CScript& in);
+    explicit CScriptID(const CScript& in);
     CScriptID(const uint160& in) : uint160(in) {}
 };
 
@@ -45,8 +44,7 @@ extern unsigned nMaxDatacarrierBytes;
 /**
  * Mandatory script verification flags that all new blocks must comply with for
  * them to be valid. (but old blocks may not comply with) Currently just P2SH,
- * but in the future other flags may be added, such as a soft-fork to enforce
- * strict DER encoding.
+ * but in the future other flags may be added.
  *
  * Failing one of these tests may trigger a DoS ban - see CheckInputs() for
  * details.
@@ -92,11 +90,10 @@ const char* GetTxnOutputType(txnouttype t);
  * script hash, for P2PKH it will contain the key hash, etc.
  *
  * @param[in]   scriptPubKey   Script to parse
- * @param[out]  typeRet        The script type
  * @param[out]  vSolutionsRet  Vector of parsed pubkeys and hashes
- * @return                     True if script matches standard template
+ * @return                     The script type. TX_NONSTANDARD represents a failed solve.
  */
-bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, std::vector<std::vector<unsigned char> >& vSolutionsRet);
+txnouttype Solver(const CScript& scriptPubKey, std::vector<std::vector<unsigned char>>& vSolutionsRet);
 
 /**
  * Parse a standard scriptPubKey for the destination address. Assigns result to

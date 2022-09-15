@@ -4,13 +4,18 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet keypool and interaction with wallet encryption/locking."""
 
+import time
+
 from test_framework.test_framework import BitcoinTestFramework
-from test_framework.util import *
+from test_framework.util import assert_equal, assert_raises_rpc_error
 
 class KeyPoolTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [['-usehd=0']]
+
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
 
     def run_test(self):
         nodes = self.nodes
@@ -33,7 +38,7 @@ class KeyPoolTest(BitcoinTestFramework):
         addr.add(nodes[0].getrawchangeaddress())
         addr.add(nodes[0].getrawchangeaddress())
         # assert that three unique addresses were returned
-        assert(len(addr) == 3)
+        assert len(addr) == 3
         # the next one should fail
         assert_raises_rpc_error(-12, "Keypool ran out", nodes[0].getrawchangeaddress)
 

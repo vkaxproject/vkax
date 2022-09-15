@@ -6,12 +6,11 @@
 #define BITCOIN_WALLET_COINCONTROL_H
 
 #include <key.h>
+#include <optional.h>
 #include <policy/feerate.h>
 #include <policy/fees.h>
 #include <primitives/transaction.h>
 #include <script/standard.h>
-
-#include <boost/optional.hpp>
 
 enum class CoinType
 {
@@ -35,18 +34,22 @@ public:
     bool fAllowOtherInputs;
     //! If false, only include as many inputs as necessary to fulfill a coin selection request. Only usable together with fAllowOtherInputs
     bool fRequireAllInputs;
-    //! Includes watch only addresses which match the ISMINE_WATCH_SOLVABLE criteria
+    //! Includes watch only addresses which are solvable
     bool fAllowWatchOnly;
     //! Override automatic min/max checks on fee, m_feerate must be set if true
     bool fOverrideFeeRate;
-    //! Override the default payTxFee if set
-    boost::optional<CFeeRate> m_feerate;
+    //! Override the wallet's m_pay_tx_fee if set
+    Optional<CFeeRate> m_feerate;
     //! Override the discard feerate estimation with m_discard_feerate in CreateTransaction if set
-    boost::optional<CFeeRate> m_discard_feerate;
+    Optional<CFeeRate> m_discard_feerate;
     //! Override the default confirmation target if set
-    boost::optional<unsigned int> m_confirm_target;
+    Optional<unsigned int> m_confirm_target;
+    //! Avoid partial use of funds sent to a given address
+    bool m_avoid_partial_spends;
     //! Fee estimation mode to control arguments to estimateSmartFee
     FeeEstimateMode m_fee_mode;
+    //! Minimum chain depth value for coin availability
+    int m_min_depth{0};
     //! Controls which types of coins are allowed to be used (default: ALL_COINS)
     CoinType nCoinType;
 
@@ -55,22 +58,7 @@ public:
         SetNull();
     }
 
-    void SetNull(bool fResetCoinType = true)
-    {
-        destChange = CNoDestination();
-        fAllowOtherInputs = false;
-        fRequireAllInputs = true;
-        fAllowWatchOnly = false;
-        setSelected.clear();
-        m_feerate.reset();
-        m_discard_feerate.reset();
-        fOverrideFeeRate = false;
-        m_confirm_target.reset();
-        m_fee_mode = FeeEstimateMode::UNSET;
-        if (fResetCoinType) {
-            nCoinType = CoinType::ALL_COINS;
-        }
-    }
+    void SetNull(bool fResetCoinType = true);
 
     bool HasSelected() const
     {

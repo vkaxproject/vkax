@@ -1,18 +1,19 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
-// Copyright (c) 2014-2021 The Dash Core developers
+// Copyright (c) 2014-2022 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/transactionrecord.h>
 
-#include <consensus/consensus.h>
+#include <chain.h>
 #include <interfaces/wallet.h>
 #include <interfaces/node.h>
-#include <timedata.h>
-#include <validation.h>
+
+#include <wallet/ismine.h>
 
 #include <stdint.h>
 
+#include <QDateTime>
 
 /* Return positive answer if transaction should be shown in list.
  */
@@ -82,14 +83,14 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(interfaces::Wal
     {
         bool involvesWatchAddress = false;
         isminetype fAllFromMe = ISMINE_SPENDABLE;
-        for (isminetype mine : wtx.txin_is_mine)
+        for (const isminetype mine : wtx.txin_is_mine)
         {
             if(mine & ISMINE_WATCH_ONLY) involvesWatchAddress = true;
             if(fAllFromMe > mine) fAllFromMe = mine;
         }
 
         isminetype fAllToMe = ISMINE_SPENDABLE;
-        for (isminetype mine : wtx.txout_is_mine)
+        for (const isminetype mine : wtx.txout_is_mine)
         {
             if(mine & ISMINE_WATCH_ONLY) involvesWatchAddress = true;
             if(fAllToMe > mine) fAllToMe = mine;
@@ -252,7 +253,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(interfaces::Wal
     return parts;
 }
 
-void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int numBlocks, int64_t adjustedTime, int chainLockHeight)
+void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int numBlocks, int chainLockHeight, int64_t block_time)
 {
     // Determine transaction status
 
@@ -269,10 +270,9 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int 
     status.lockedByChainLocks = wtx.is_chainlocked;
     status.lockedByInstantSend = wtx.is_islocked;
 
-    if (!wtx.is_final)
-    {
-        if (wtx.lock_time < LOCKTIME_THRESHOLD)
-        {
+    const bool up_to_date = ((int64_t)QDateTime::currentMSecsSinceEpoch() / 1000 - block_time < MAX_BLOCK_TIME_GAP);
+    if (up_to_date && !wtx.is_final) {
+        if (wtx.lock_time < LOCKTIME_THRESHOLD) {
             status.status = TransactionStatus::OpenUntilBlock;
             status.open_for = wtx.lock_time - numBlocks;
         }
@@ -337,7 +337,7 @@ void TransactionRecord::updateLabel(interfaces::Wallet& wallet)
 {
     if (IsValidDestination(txDest)) {
         std::string name;
-        if (wallet.getAddress(txDest, &name)) {
+        if (wallet.getAddress(txDest, &name, /* is_mine= */ nullptr, /* purpose= */ nullptr)) {
             label = QString::fromStdString(name);
         } else {
             label = "";

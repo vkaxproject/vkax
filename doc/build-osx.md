@@ -1,11 +1,11 @@
-Mac OS X Build Instructions and Notes
+macOS Build Instructions and Notes
 ====================================
 The commands in this guide should be executed in a Terminal application.
 The built-in one is located in `/Applications/Utilities/Terminal.app`.
 
 Preparation
 -----------
-Install the OS X command line tools:
+Install the macOS command line tools:
 
 `xcode-select --install`
 
@@ -17,10 +17,10 @@ Base build dependencies
 -----------------------
 
 ```bash
-brew install automake libtool pkg-config
+brew install automake libtool pkg-config libnatpmp
 ```
 
-If you want to build the disk image with `make deploy` (.dmg / optional), you need RSVG
+If you want to build the disk image with `make deploy` (.dmg / optional), you need RSVG:
 ```bash
 brew install librsvg
 ```
@@ -35,26 +35,39 @@ export PATH=$(echo "$PATH" | sed -e '/\\/!s/ /\\ /g') # fix whitespaces
 
 Next, follow the instructions in [build-generic](build-generic.md)
 
+Disable-wallet mode
+--------------------
+When the intention is to run only a P2P node without a wallet, Dash Core may be compiled in
+disable-wallet mode with:
+
+    ./configure --disable-wallet
+
+In this case there is no dependency on Berkeley DB 4.8.
+
+Mining is also possible in disable-wallet mode using the `getblocktemplate` RPC call.
+
 Running
 -------
 
-Vkax Core is now available at `./src/vkaxd`
+Dash Core is now available at `./src/dashd`
 
-Before running, it's recommended you create an RPC configuration file.
+Before running, you may create an empty configuration file:
 
-    echo -e "rpcuser=dashrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/VkaxCore/dash.conf"
+    mkdir -p "/Users/${USER}/Library/Application Support/DashCore"
 
-    chmod 600 "/Users/${USER}/Library/Application Support/VkaxCore/dash.conf"
+    touch "/Users/${USER}/Library/Application Support/DashCore/dash.conf"
 
-The first time you run vkaxd, it will start downloading the blockchain. This process could take several hours.
+    chmod 600 "/Users/${USER}/Library/Application Support/DashCore/dash.conf"
+
+The first time you run dashd, it will start downloading the blockchain. This process could take many hours, or even days on slower than average systems.
 
 You can monitor the download process by looking at the debug.log file:
 
-    tail -f $HOME/Library/Application\ Support/VkaxCore/debug.log
+    tail -f $HOME/Library/Application\ Support/DashCore/debug.log
 
 Other commands:
 -------
 
-    ./src/vkaxd -daemon # Starts the dash daemon.
+    ./src/dashd -daemon # Starts the dash daemon.
     ./src/dash-cli --help # Outputs a list of command-line options.
     ./src/dash-cli help # Outputs a list of RPC commands when the daemon is running.

@@ -1,17 +1,19 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_MINER_H
 #define BITCOIN_MINER_H
 
+#include <optional.h>
 #include <primitives/block.h>
 #include <txmempool.h>
 #include <validation.h>
 
-#include <stdint.h>
 #include <memory>
+#include <stdint.h>
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 
@@ -129,8 +131,6 @@ class BlockAssembler
 private:
     // The constructed block template
     std::unique_ptr<CBlockTemplate> pblocktemplate;
-    // A convenience pointer that always refers to the CBlock in pblocktemplate
-    CBlock* pblock;
 
     // Configuration parameters for the block size
     unsigned int nBlockMaxSize;
@@ -160,6 +160,9 @@ public:
 
     /** Construct a new block template with coinbase to scriptPubKeyIn */
     std::unique_ptr<CBlockTemplate> CreateNewBlock(const CScript& scriptPubKeyIn);
+
+    static Optional<int64_t> m_last_block_num_txs;
+    static Optional<int64_t> m_last_block_size;
 
 private:
     // utility functions
@@ -198,6 +201,7 @@ private:
 /** Modify the extranonce in a block */
 void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce);
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev);
+
 int GenerateBitcoins(bool fGenerate, int nThreads, const CChainParams& chainparams);
 
 #endif // BITCOIN_MINER_H

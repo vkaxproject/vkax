@@ -46,15 +46,15 @@ from decimal import Decimal
 from itertools import product
 from io import BytesIO
 
-from test_framework.blocktools import create_coinbase, create_block
-from test_framework.mininode import ToHex, CTransaction
-from test_framework.mininode import network_thread_start, P2PDataStore
+from test_framework.blocktools import create_coinbase, create_block, create_transaction, TIME_GENESIS_BLOCK
+from test_framework.messages import ToHex, CTransaction
+from test_framework.mininode import P2PDataStore
 from test_framework.script import (
     CScript,
     OP_CHECKSEQUENCEVERIFY,
     OP_DROP,
 )
-from test_framework.test_framework import (BitcoinTestFramework, GENESISTIME)
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     get_bip9_status,
@@ -84,15 +84,6 @@ def relative_locktime(sdf, srhb, stf, srlb):
 def all_rlt_txs(txs):
     return [tx['tx'] for tx in txs]
 
-def create_transaction(node, txid, to_address, amount):
-    inputs = [{"txid": txid, "vout": 0}]
-    outputs = {to_address: amount}
-    rawtx = node.createrawtransaction(inputs, outputs)
-    tx = CTransaction()
-    f = BytesIO(hex_str_to_bytes(rawtx))
-    tx.deserialize(f)
-    return tx
-
 def sign_transaction(node, unsignedtx):
     rawtx = ToHex(unsignedtx)
     signresult = node.signrawtransactionwithwallet(rawtx)
@@ -115,7 +106,7 @@ def send_generic_input_tx(node, coinbases, address):
 def create_bip68txs(node, bip68inputs, txversion, address, locktime_delta=0):
     """Returns a list of bip68 transactions with different bits set."""
     txs = []
-    assert(len(bip68inputs) >= 16)
+    assert len(bip68inputs) >= 16
     for i, (sdf, srhb, stf, srlb) in enumerate(product(*[[True, False]] * 4)):
         locktime = relative_locktime(sdf, srhb, stf, srlb)
         tx = create_transaction(node, bip68inputs[i], address, Decimal("499.98"))
@@ -130,7 +121,7 @@ def create_bip68txs(node, bip68inputs, txversion, address, locktime_delta=0):
 def create_bip112txs(node, bip112inputs, varyOP_CSV, txversion, address, locktime_delta=0):
     """Returns a list of bip68 transactions with different bits set."""
     txs = []
-    assert(len(bip112inputs) >= 16)
+    assert len(bip112inputs) >= 16
     for i, (sdf, srhb, stf, srlb) in enumerate(product(*[[True, False]] * 4)):
         locktime = relative_locktime(sdf, srhb, stf, srlb)
         tx = create_transaction(node, bip112inputs[i], address, Decimal("499.98"))
@@ -159,6 +150,9 @@ class BIP68_112_113Test(BitcoinTestFramework):
     def setup_network(self):
         self.setup_nodes()
 
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
+
     def generate_blocks(self, number, version, test_blocks=None):
         if test_blocks is None:
             test_blocks = []
@@ -179,24 +173,22 @@ class BIP68_112_113Test(BitcoinTestFramework):
         block.solve()
         return block
 
-    def send_blocks(self, blocks, success=True, reject_code=None, reject_reason=None, request_block=True):
+    def send_blocks(self, blocks, success=True):
         """Sends blocks to test node. Syncs and verifies that tip has advanced to most recent block.
 
         Call with success = False if the tip shouldn't advance to the most recent block."""
-        self.nodes[0].p2p.send_blocks_and_test(blocks, self.nodes[0], success=success, reject_code=reject_code, reject_reason=reject_reason, request_block=request_block)
+        self.nodes[0].p2p.send_blocks_and_test(blocks, self.nodes[0], success=success)
 
     def run_test(self):
         self.nodes[0].add_p2p_connection(P2PDataStore())
-        network_thread_start()
-        self.nodes[0].p2p.wait_for_verack()
 
         self.log.info("Generate blocks in the past for coinbase outputs.")
         self.coinbase_blocks = self.nodes[0].generate(1 + 16 + 2 * 32 + 1)  # 82 blocks generated for inputs
         # set time so that there was enough time to build up to 1000 blocks 10 minutes apart on top of the last one
         # without worrying about getting into the future
-        self.nodes[0].setmocktime(GENESISTIME + 600 * 1000 + 100)
+        self.nodes[0].setmocktime(TIME_GENESIS_BLOCK + 600 * 1000 + 100)
         self.tipheight = 82  # height of the next block to build
-        self.last_block_time = GENESISTIME
+        self.last_block_time = TIME_GENESIS_BLOCK
         self.tip = int(self.nodes[0].getbestblockhash(), 16)
         self.nodeaddress = self.nodes[0].getnewaddress()
 
@@ -269,7 +261,7 @@ class BIP68_112_113Test(BitcoinTestFramework):
 
         self.nodes[0].setmocktime(self.last_block_time + 600)
         inputblockhash = self.nodes[0].generate(1)[0]  # 1 block generated for inputs to be in chain at height 572
-        self.nodes[0].setmocktime(GENESISTIME + 600 * 1000 + 100)
+        self.nodes[0].setmocktime(TIME_GENESIS_BLOCK + 600 * 1000 + 100)
         self.tip = int(inputblockhash, 16)
         self.tipheight += 1
         self.last_block_time += 600
