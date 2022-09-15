@@ -192,8 +192,8 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1663254000; //September 15, 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1694790000;  // September 15, 2023
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1663264800; //September 15, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1694800800;  // September 15, 2023
 
         // Deployment of DIP0001
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
@@ -204,8 +204,8 @@ public:
 
         // Deployment of BIP147
         consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].bit = 2;
-        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nStartTime = 1663254000; //September 15, 2022 3:00 PM
-        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nTimeout = 1694790000;   // September 15, 2023 3:00 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nStartTime = 1663264800; //September 15, 2022 6:00 PM
+        consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nTimeout = 1694800800;   // September 15, 2023 6:00 PM
         consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nWindowSize = 2016;
         consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nThresholdStart = 1512; // 75% of 2016
 
