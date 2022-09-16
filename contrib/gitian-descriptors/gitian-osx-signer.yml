@@ -43,7 +43,7 @@ script: |
   cd ..
 
   UNSIGNED_TARBALL=dashcore-osx-unsigned.tar.gz
-  UNSIGNED_APP=dist/Dash-Qt.app
+  UNSIGNED_APP=dist/Vkax-Qt.app
   SIGNED=dashcore-osx-signed.dmg
 
   tar -xf ${UNSIGNED_TARBALL}
