@@ -11,6 +11,7 @@
 #include <crypto/sha3.h>
 #include <crypto/sha512.h>
 #include <crypto/siphash.h>
+#include <hash_selection.h>
 #include <hash.h>
 #include <random.h>
 #include <uint256.h>
@@ -74,12 +75,12 @@ static void HASH_1MB_SHA3_256(benchmark::Bench& bench)
     });
 }
 
-static void HASH_1MB_X11(benchmark::Bench& bench)
+static void HASH_1MB_MIKE(benchmark::Bench& bench)
 {
     uint256 hash;
     std::vector<uint8_t> in(BUFFER_SIZE,0);
     bench.batch(in.size()).unit("byte").minEpochIterations(10).run([&] {
-        hash = HashX11(in.begin(), in.end());
+        hash = Mike(in.begin(), in.end(), uint256());
     });
 }
 
@@ -139,59 +140,59 @@ static void HASH_DSHA256_2048b_single(benchmark::Bench& bench)
     });
 }
 
-/* Hash different number of bytes via X11 */
+/* Hash different number of bytes via MIKE */
 
-static void HASH_X11_0032b_single(benchmark::Bench& bench)
+static void HASH_MIKE_0032b_single(benchmark::Bench& bench)
 {
     uint256 hash;
     std::vector<uint8_t> in(32,0);
     bench.minEpochIterations(10000).run([&] {
-        hash = HashX11(in.begin(), in.end());
+        hash = Mike(in.begin(), in.end(), uint256());
     });
 }
 
-static void HASH_X11_0080b_single(benchmark::Bench& bench)
+static void HASH_MIKE_0080b_single(benchmark::Bench& bench)
 {
     uint256 hash;
     std::vector<uint8_t> in(80,0);
     bench.minEpochIterations(10000).run([&] {
-        hash = HashX11(in.begin(), in.end());
+        hash = Mike(in.begin(), in.end(), uint256());
     });
 }
 
-static void HASH_X11_0128b_single(benchmark::Bench& bench)
+static void HASH_MIKE_0128b_single(benchmark::Bench& bench)
 {
     uint256 hash;
     std::vector<uint8_t> in(128,0);
     bench.minEpochIterations(10000).run([&] {
-        hash = HashX11(in.begin(), in.end());
+        hash = Mike(in.begin(), in.end(), uint256());
     });
 }
 
-static void HASH_X11_0512b_single(benchmark::Bench& bench)
+static void HASH_MIKE_0512b_single(benchmark::Bench& bench)
 {
     uint256 hash;
     std::vector<uint8_t> in(512,0);
     bench.minEpochIterations(10000).run([&] {
-        hash = HashX11(in.begin(), in.end());
+        hash = Mike(in.begin(), in.end(), uint256());
     });
 }
 
-static void HASH_X11_1024b_single(benchmark::Bench& bench)
+static void HASH_MIKE_1024b_single(benchmark::Bench& bench)
 {
     uint256 hash;
     std::vector<uint8_t> in(1024,0);
     bench.minEpochIterations(10000).run([&] {
-        hash = HashX11(in.begin(), in.end());
+        hash = Mike(in.begin(), in.end(), uint256());
     });
 }
 
-static void HASH_X11_2048b_single(benchmark::Bench& bench)
+static void HASH_MIKE_2048b_single(benchmark::Bench& bench)
 {
     uint256 hash;
     std::vector<uint8_t> in(2048,0);
     bench.minEpochIterations(10000).run([&] {
-        hash = HashX11(in.begin(), in.end());
+        hash = Mike(in.begin(), in.end(), uint256());
     });
 }
 
@@ -244,13 +245,53 @@ static void FastRandom_1bit(benchmark::Bench& bench)
     });
 }
 
+static void HashCn(benchmark::Bench& bench, int hashSelection)
+{
+    uint512 hashIn;
+    uint512 hashOut;
+    bench.run([&] {
+        cnHash(&hashIn, &hashOut, 64, hashSelection);
+        hashIn = hashOut;
+    });
+}
+
+static void HASH_CN_cryptonight_dark_hash(benchmark::Bench& bench)
+{
+    HashCn(bench, 0);
+}
+
+static void HASH_CN_cryptonight_darklite_hash(benchmark::Bench& bench)
+{
+    HashCn(bench, 1);
+}
+
+static void HASH_CN_cryptonight_cnfast_hash(benchmark::Bench& bench)
+{
+    HashCn(bench, 2);
+}
+
+static void HASH_CN_cryptonight_cnlite_hash(benchmark::Bench& bench)
+{
+    HashCn(bench, 3);
+}
+
+static void HASH_CN_cryptonight_turtle_hash(benchmark::Bench& bench)
+{
+    HashCn(bench, 4);
+}
+
+static void HASH_CN_cryptonight_turtlelite_hash(benchmark::Bench& bench)
+{
+    HashCn(bench, 5);
+}
+
 BENCHMARK(HASH_1MB_DSHA256);
 BENCHMARK(HASH_1MB_RIPEMD160);
 BENCHMARK(HASH_1MB_SHA1);
 BENCHMARK(HASH_1MB_SHA256);
 BENCHMARK(HASH_1MB_SHA512);
 BENCHMARK(HASH_1MB_SHA3_256);
-BENCHMARK(HASH_1MB_X11);
+BENCHMARK(HASH_1MB_MIKE);
 
 BENCHMARK(HASH_DSHA256_0032b_single);
 BENCHMARK(HASH_DSHA256_0080b_single);
@@ -258,12 +299,12 @@ BENCHMARK(HASH_DSHA256_0128b_single);
 BENCHMARK(HASH_DSHA256_0512b_single);
 BENCHMARK(HASH_DSHA256_1024b_single);
 BENCHMARK(HASH_DSHA256_2048b_single);
-BENCHMARK(HASH_X11_0032b_single);
-BENCHMARK(HASH_X11_0080b_single);
-BENCHMARK(HASH_X11_0128b_single);
-BENCHMARK(HASH_X11_0512b_single);
-BENCHMARK(HASH_X11_1024b_single);
-BENCHMARK(HASH_X11_2048b_single);
+BENCHMARK(HASH_MIKE_0032b_single);
+BENCHMARK(HASH_MIKE_0080b_single);
+BENCHMARK(HASH_MIKE_0128b_single);
+BENCHMARK(HASH_MIKE_0512b_single);
+BENCHMARK(HASH_MIKE_1024b_single);
+BENCHMARK(HASH_MIKE_2048b_single);
 
 BENCHMARK(HASH_SHA256_32b);
 BENCHMARK(HASH_SipHash_32b);
@@ -272,3 +313,10 @@ BENCHMARK(HASH_SHA256D64_1024);
 
 BENCHMARK(FastRandom_32bit);
 BENCHMARK(FastRandom_1bit);
+
+BENCHMARK(HASH_CN_cryptonight_dark_hash);
+BENCHMARK(HASH_CN_cryptonight_darklite_hash);
+BENCHMARK(HASH_CN_cryptonight_cnfast_hash);
+BENCHMARK(HASH_CN_cryptonight_cnlite_hash);
+BENCHMARK(HASH_CN_cryptonight_turtle_hash);
+BENCHMARK(HASH_CN_cryptonight_turtlelite_hash);
