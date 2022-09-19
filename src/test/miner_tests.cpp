@@ -241,13 +241,13 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 
             // This will usually succeed in the first round as we take the nonce from blockinfo
             // It's however useful when adding new blocks with unknown nonces (you should add the found block to blockinfo)
-            while (!CheckProofOfWork(pblock->GetHash(), pblock->nBits, chainparams.GetConsensus())) {
+            while (!CheckProofOfWork(pblock->GetPOWHash(), pblock->nBits, chainparams.GetConsensus())) {
                 pblock->nNonce++;
             }
         }
         std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(*pblock);
         BOOST_CHECK(ProcessNewBlock(chainparams, shared_pblock, true, nullptr));
-        pblock->hashPrevBlock = pblock->GetHash();
+        pblock->hashPrevBlock = pblock->GetPOWHash();
     };
 
     for (unsigned int i = 0; i < sizeof(blockinfo)/sizeof(*blockinfo) - 1; ++i)
@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     // Just to make sure we can still make simple blocks
     BOOST_CHECK(pblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey));
 
-    const CAmount BLOCKSUBSIDY = 500*COIN;
+    const CAmount BLOCKSUBSIDY = 10000*COIN;
     const CAmount LOWFEE = CENT;
     const CAmount HIGHFEE = COIN;
     const CAmount HIGHERFEE = 4*COIN;

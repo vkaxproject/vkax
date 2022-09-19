@@ -66,7 +66,7 @@ std::shared_ptr<CBlock> FinalizeBlock(std::shared_ptr<CBlock> pblock)
 {
     pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
 
-    while (!CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus())) {
+    while (!CheckProofOfWork(pblock->GetPOWHash(), pblock->nBits, Params().GetConsensus())) {
         ++(pblock->nNonce);
     }
 
@@ -105,12 +105,12 @@ void BuildChain(const uint256& root, int height, const unsigned int invalid_rate
     const std::shared_ptr<const CBlock> pblock = gen_invalid ? BadBlock(root) : GoodBlock(root);
     blocks.push_back(pblock);
     if (!gen_invalid) {
-        BuildChain(pblock->GetHash(), height - 1, invalid_rate, branch_rate, max_size, blocks);
+        BuildChain(pblock->GetPOWHash(), height - 1, invalid_rate, branch_rate, max_size, blocks);
     }
 
     if (gen_fork) {
         blocks.push_back(GoodBlock(root));
-        BuildChain(blocks.back()->GetHash(), height - 1, invalid_rate, branch_rate, max_size, blocks);
+        BuildChain(blocks.back()->GetPOWHash(), height - 1, invalid_rate, branch_rate, max_size, blocks);
     }
 }
 
