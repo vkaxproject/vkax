@@ -48,7 +48,7 @@ bool CheckCbTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidatio
 }
 
 // This can only be done after the block has been fully processed, as otherwise we won't have the finished MN list
-bool CheckCbTxMerkleRoots(const CBlock& block, const CBlockIndex* pindex, CValidationState& state, const CCoinsViewCache& view)
+bool CheckCbTxMerkleRoots(const CBlock& block, const CBlockIndex* pindex, const llmq::CQuorumBlockProcessor& quorum_block_processor, CValidationState& state, const CCoinsViewCache& view)
 {
     if (block.vtx[0]->nType != TRANSACTION_COINBASE) {
         return true;
@@ -83,7 +83,7 @@ bool CheckCbTxMerkleRoots(const CBlock& block, const CBlockIndex* pindex, CValid
         LogPrint(BCLog::BENCHMARK, "          - CalcCbTxMerkleRootMNList: %.2fms [%.2fs]\n", 0.001 * (nTime3 - nTime2), nTimeMerkleMNL * 0.000001);
 
         if (cbTx.nVersion >= 2) {
-            if (!CalcCbTxMerkleRootQuorums(block, pindex->pprev, calculatedMerkleRoot, state)) {
+            if (!CalcCbTxMerkleRootQuorums(block, pindex->pprev, quorum_block_processor, calculatedMerkleRoot, state)) {
                 // pass the state returned by the function above
                 return false;
             }
@@ -158,7 +158,68 @@ bool CalcCbTxMerkleRootMNList(const CBlock& block, const CBlockIndex* pindexPrev
     }
 }
 
-bool CalcCbTxMerkleRootQuorums(const CBlock& block, const CBlockIndex* pindexPrev, uint256& merkleRootRet, CValidationState& state)
+using QcHashMap = std::map<Consensus::LLMQType, std::vector<uint256>>;
+using QcIndexedHashMap = std::map<Consensus::LLMQType, std::map<int16_t, uint256>>;
+
+/**
+ * Handles the calculation or caching of qcHashes and qcIndexedHashes
+ * @param pindexPrev The const CBlockIndex* (ie a block) of a block. Both the Quorum list and quorum rotation actiavtion status will be retrieved based on this block.
+ * @return nullopt if quorumCommitment was unable to be found, otherwise returns the qcHashes and qcIndexedHashes that were calculated or cached
+ */
+auto CachedGetQcHashesQcIndexedHashes(const CBlockIndex* pindexPrev, const llmq::CQuorumBlockProcessor& quorum_block_processor) ->
+        std::optional<std::pair<QcHashMap /*qcHashes*/, QcIndexedHashMap /*qcIndexedHashes*/>> {
+    auto quorums = quorum_block_processor.GetMinedAndActiveCommitmentsUntilBlock(pindexPrev);
+
+    static Mutex cs_cache;
+    static std::map<Consensus::LLMQType, std::vector<const CBlockIndex*>> quorums_cached GUARDED_BY(cs_cache);
+    static QcHashMap qcHashes_cached GUARDED_BY(cs_cache);
+    static QcIndexedHashMap qcIndexedHashes_cached GUARDED_BY(cs_cache);
+
+    LOCK(cs_cache);
+
+    if (quorums == quorums_cached) {
+        return std::make_pair(qcHashes_cached, qcIndexedHashes_cached);
+    }
+
+    // Quorums set is different, reset cached values
+    quorums_cached.clear();
+    qcHashes_cached.clear();
+    qcIndexedHashes_cached.clear();
+
+    for (const auto& [llmqType, vecBlockIndexes] : quorums) {
+        bool rotation_enabled = llmq::utils::IsQuorumRotationEnabled(llmqType, pindexPrev);
+        auto& vec_hashes = qcHashes_cached[llmqType];
+        vec_hashes.reserve(vecBlockIndexes.size());
+        auto& map_indexed_hashes = qcIndexedHashes_cached[llmqType];
+        for (const auto& blockIndex : vecBlockIndexes) {
+            uint256 dummyHash;
+            llmq::CFinalCommitmentPtr pqc = quorum_block_processor.GetMinedCommitment(llmqType, blockIndex->GetBlockHash(), dummyHash);
+            if (pqc == nullptr) {
+                // this should never happen
+                return std::nullopt;
+            }
+            auto qcHash = ::SerializeHash(*pqc);
+            if (rotation_enabled) {
+                map_indexed_hashes[pqc->quorumIndex] = qcHash;
+            } else {
+                vec_hashes.emplace_back(qcHash);
+            }
+        }
+    }
+    quorums_cached = quorums;
+    return std::make_pair(qcHashes_cached, qcIndexedHashes_cached);
+}
+
+auto CalcHashCountFromQCHashes(const QcHashMap& qcHashes)
+{
+    size_t hash_count{0};
+    for (const auto& [_, vec_hashes] : qcHashes) {
+        hash_count += vec_hashes.size();
+    }
+    return hash_count;
+}
+
+bool CalcCbTxMerkleRootQuorums(const CBlock& block, const CBlockIndex* pindexPrev, const llmq::CQuorumBlockProcessor& quorum_block_processor, uint256& merkleRootRet, CValidationState& state)
 {
     static int64_t nTimeMinedAndActive = 0;
     static int64_t nTimeMined = 0;
@@ -167,6 +228,10 @@ bool CalcCbTxMerkleRootQuorums(const CBlock& block, const CBlockIndex* pindexPre
 
     int64_t nTime1 = GetTimeMicros();
 
+    auto retVal = CachedGetQcHashesQcIndexedHashes(pindexPrev, quorum_block_processor);
+    if (retVal == std::nullopt) {
+        return state.Invalid(ValidationInvalidReason::CONSENSUS, false, REJECT_INVALID, "commitment-not-found");
+    }
     // The returned quorums are in reversed order, so the most recent one is at index 0
     auto quorums = llmq::quorumBlockProcessor->GetMinedAndActiveCommitmentsUntilBlock(pindexPrev);
     std::map<Consensus::LLMQType, std::vector<uint256>> qcHashes;

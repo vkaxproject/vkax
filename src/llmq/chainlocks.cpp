@@ -6,6 +6,7 @@
 #include <llmq/quorums.h>
 #include <llmq/instantsend.h>
 #include <llmq/utils.h>
+#include <llmq/signing_shares.h>
 
 #include <chain.h>
 #include <chainparams.h>
@@ -22,8 +23,9 @@ namespace llmq
 {
 CChainLocksHandler* chainLocksHandler;
 
-CChainLocksHandler::CChainLocksHandler() :
-    scheduler(std::make_unique<CScheduler>())
+CChainLocksHandler::CChainLocksHandler(CTxMemPool& _mempool, CConnman& _connman, CSporkManager& sporkManager, CSigningManager& _sigman, CSigSharesManager& _shareman) :
+    scheduler(std::make_unique<CScheduler>()), mempool(_mempool), connman(_connman), spork_manager(sporkManager), sigman(_sigman), shareman(_shareman),
+    scheduler_thread(std::make_unique<std::thread>([&] { TraceThread("cl-schdlr", [&] { scheduler->serviceQueue(); }); }))
 {
     CScheduler::Function serviceLoop = std::bind(&CScheduler::serviceQueue, scheduler.get());
     scheduler_thread = std::make_unique<std::thread>(std::bind(&TraceThread<CScheduler::Function>, "cl-schdlr", serviceLoop));
@@ -37,7 +39,7 @@ CChainLocksHandler::~CChainLocksHandler()
 
 void CChainLocksHandler::Start()
 {
-    quorumSigningManager->RegisterRecoveredSigsListener(this);
+    sigman.RegisterRecoveredSigsListener(this);
     scheduler->scheduleEvery([&]() {
         CheckActiveState();
         EnforceBestChainLock();
@@ -49,7 +51,7 @@ void CChainLocksHandler::Start()
 void CChainLocksHandler::Stop()
 {
     scheduler->stop();
-    quorumSigningManager->UnregisterRecoveredSigsListener(this);
+    sigman.UnregisterRecoveredSigsListener(this);
 }
 
 bool CChainLocksHandler::AlreadyHave(const CInv& inv) const
@@ -114,8 +116,8 @@ void CChainLocksHandler::ProcessNewChainLock(const NodeId from, const llmq::CCha
         }
     }
 
-    const uint256 requestId = ::SerializeHash(std::make_pair(CLSIG_REQUESTID_PREFIX, clsig.nHeight));
-    if (!llmq::CSigningManager::VerifyRecoveredSig(Params().GetConsensus().llmqTypeChainLocks, clsig.nHeight, requestId, clsig.blockHash, clsig.sig)) {
+    const uint256 requestId = ::SerializeHash(std::make_pair(CLSIG_REQUESTID_PREFIX, clsig.getHeight()));
+    if (!llmq::CSigningManager::VerifyRecoveredSig(Params().GetConsensus().llmqTypeChainLocks, *llmq::quorumManager, clsig.getHeight(), requestId, clsig.getBlockHash(), clsig.getSig())) {
         LogPrint(BCLog::CHAINLOCKS, "CChainLocksHandler::%s -- invalid CLSIG (%s), peer=%d\n", __func__, clsig.ToString(), from);
         if (from != -1) {
             LOCK(cs_main);
@@ -341,7 +343,7 @@ void CChainLocksHandler::TrySignChainTip()
         lastSignedMsgHash = msgHash;
     }
 
-    quorumSigningManager->AsyncSignIfMember(Params().GetConsensus().llmqTypeChainLocks, requestId, msgHash);
+    sigman.AsyncSignIfMember(Params().GetConsensus().llmqTypeChainLocks, shareman, requestId, msgHash);
 }
 
 void CChainLocksHandler::TransactionAddedToMempool(const CTransactionRef& tx, int64_t nAcceptTime)
@@ -442,19 +444,19 @@ CChainLocksHandler::BlockTxs::mapped_type CChainLocksHandler::GetBlockTxs(const 
     return ret;
 }
 
-bool CChainLocksHandler::IsTxSafeForMining(const uint256& txid) const
+bool CChainLocksHandler::IsTxSafeForMining(const CInstantSendManager& isman, const uint256& txid) const
 {
-    if (!RejectConflictingBlocks()) {
+    if (!isman.RejectConflictingBlocks()) {
         return true;
     }
     if (!isEnabled || !isEnforced) {
         return true;
     }
 
-    if (!IsInstantSendEnabled()) {
+    if (!isman.IsInstantSendEnabled()) {
         return true;
     }
-    if (quorumInstantSendManager->IsLocked(txid)) {
+    if (isman.IsLocked(txid)) {
         return true;
     }
 

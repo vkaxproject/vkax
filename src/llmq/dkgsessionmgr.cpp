@@ -22,9 +22,9 @@ static const std::string DB_VVEC = "qdkg_V";
 static const std::string DB_SKCONTRIB = "qdkg_S";
 static const std::string DB_ENC_CONTRIB = "qdkg_E";
 
-CDKGSessionManager::CDKGSessionManager(CBLSWorker& _blsWorker, bool unitTests, bool fWipe) :
+CDKGSessionManager::CDKGSessionManager(CConnman& _connman, CBLSWorker& _blsWorker, CDKGDebugManager& _dkgDebugManager, CQuorumBlockProcessor& _quorumBlockProcessor, CSporkManager& sporkManager, bool unitTests, bool fWipe) :
         db(std::make_unique<CDBWrapper>(unitTests ? "" : (GetDataDir() / "llmq/dkgdb"), 1 << 20, unitTests, fWipe)),
-        blsWorker(_blsWorker)
+        blsWorker(_blsWorker), connman(_connman), dkgDebugManager(_dkgDebugManager), quorumBlockProcessor(_quorumBlockProcessor),spork_manager(sporkManager)
 {
     MigrateDKG();
 
@@ -34,7 +34,7 @@ CDKGSessionManager::CDKGSessionManager(CBLSWorker& _blsWorker, bool unitTests, b
         for (int i = 0; i < session_count; ++i) {
             dkgSessionHandlers.emplace(std::piecewise_construct,
                                        std::forward_as_tuple(params.type, i),
-                                       std::forward_as_tuple(params, blsWorker, *this, i));
+                                       std::forward_as_tuple(params, blsWorker, *this, dkgDebugManager, quorumBlockProcessor, connman, i));
         }
     }
 }
@@ -158,7 +158,7 @@ void CDKGSessionManager::UpdatedBlockTip(const CBlockIndex* pindexNew, bool fIni
     }
 }
 
-void CDKGSessionManager::ProcessMessage(CNode* pfrom, const std::string& msg_type, CDataStream& vRecv)
+void CDKGSessionManager::ProcessMessage(CNode* pfrom, const CQuorumManager& quorum_manager, const std::string& msg_type, CDataStream& vRecv)
 {
     static Mutex cs_indexedQuorumsCache;
     static std::map<Consensus::LLMQType, unordered_lru_cache<uint256, int, StaticSaltedHasher>> indexedQuorumsCache GUARDED_BY(cs_indexedQuorumsCache);
@@ -221,7 +221,7 @@ void CDKGSessionManager::ProcessMessage(CNode* pfrom, const std::string& msg_typ
             return;
         }
 
-        if (!CLLMQUtils::IsQuorumTypeEnabled(llmqType, pQuorumBaseBlockIndex->pprev)) {
+        if (!utils::IsQuorumTypeEnabled(llmqType, quorum_manager, pQuorumBaseBlockIndex->pprev)) {
             LOCK(cs_main);
             LogPrintf("CDKGSessionManager -- llmqType [%d] quorums aren't active\n", uint8_t(llmqType));
             Misbehaving(pfrom->GetId(), 100);

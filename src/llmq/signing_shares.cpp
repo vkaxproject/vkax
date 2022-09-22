@@ -208,12 +208,12 @@ void CSigSharesManager::StopWorkerThread()
 
 void CSigSharesManager::RegisterAsRecoveredSigsListener()
 {
-    quorumSigningManager->RegisterRecoveredSigsListener(this);
+    sigman.RegisterRecoveredSigsListener(this);
 }
 
 void CSigSharesManager::UnregisterAsRecoveredSigsListener()
 {
-    quorumSigningManager->UnregisterRecoveredSigsListener(this);
+    sigman.UnregisterRecoveredSigsListener(this);
 }
 
 void CSigSharesManager::InterruptWorkerThread()
@@ -314,7 +314,7 @@ bool CSigSharesManager::ProcessMessageSigSesAnn(const CNode* pfrom, const CSigSe
 
     LogPrint(BCLog::LLMQ_SIGS, "CSigSharesManager::%s -- ann={%s}, node=%d\n", __func__, ann.ToString(), pfrom->GetId());
 
-    auto quorum = quorumManager->GetQuorum(llmqType, ann.quorumHash);
+    auto quorum = qman.GetQuorum(llmqType, ann.getQuorumHash());
     if (!quorum) {
         // TODO should we ban here?
         LogPrint(BCLog::LLMQ_SIGS, "CSigSharesManager::%s -- quorum %s not found, node=%d\n", __func__,
@@ -351,7 +351,7 @@ bool CSigSharesManager::ProcessMessageSigSharesInv(const CNode* pfrom, const CSi
     }
 
     // TODO for PoSe, we should consider propagating shares even if we already have a recovered sig
-    if (quorumSigningManager->HasRecoveredSigForSession(sessionInfo.signHash)) {
+    if (sigman.HasRecoveredSigForSession(sessionInfo.signHash)) {
         return true;
     }
 
@@ -388,7 +388,7 @@ bool CSigSharesManager::ProcessMessageGetSigShares(const CNode* pfrom, const CSi
     }
 
     // TODO for PoSe, we should consider propagating shares even if we already have a recovered sig
-    if (quorumSigningManager->HasRecoveredSigForSession(sessionInfo.signHash)) {
+    if (sigman.HasRecoveredSigForSession(sessionInfo.signHash)) {
         return true;
     }
 
@@ -413,7 +413,7 @@ bool CSigSharesManager::ProcessMessageBatchedSigShares(const CNode* pfrom, const
         return true;
     }
 
-    if (bool ban{false}; !PreVerifyBatchedSigShares(sessionInfo, batchedSigShares, ban)) {
+    if (bool ban{false}; !PreVerifyBatchedSigShares(qman, sessionInfo, batchedSigShares, ban)) {
         return !ban;
     }
 
@@ -437,7 +437,7 @@ bool CSigSharesManager::ProcessMessageBatchedSigShares(const CNode* pfrom, const
             }
 
             // TODO for PoSe, we should consider propagating shares even if we already have a recovered sig
-            if (quorumSigningManager->HasRecoveredSigForId(sigShare.llmqType, sigShare.id)) {
+            if (sigman.HasRecoveredSigForId(sigShare.getLlmqType(), sigShare.getId())) {
                 continue;
             }
 
@@ -462,11 +462,11 @@ bool CSigSharesManager::ProcessMessageBatchedSigShares(const CNode* pfrom, const
 
 void CSigSharesManager::ProcessMessageSigShare(NodeId fromId, const CSigShare& sigShare)
 {
-    auto quorum = quorumManager->GetQuorum(sigShare.llmqType, sigShare.quorumHash);
+    auto quorum = qman.GetQuorum(sigShare.getLlmqType(), sigShare.getQuorumHash());
     if (!quorum) {
         return;
     }
-    if (!CLLMQUtils::IsQuorumActive(sigShare.llmqType, quorum->qc->quorumHash)) {
+    if (!utils::IsQuorumActive(sigShare.getLlmqType(), qman, quorum->qc->quorumHash)) {
         // quorum is too old
         return;
     }
@@ -499,7 +499,7 @@ void CSigSharesManager::ProcessMessageSigShare(NodeId fromId, const CSigShare& s
             return;
         }
 
-        if (quorumSigningManager->HasRecoveredSigForId(sigShare.llmqType, sigShare.id)) {
+        if (sigman.HasRecoveredSigForId(sigShare.getLlmqType(), sigShare.getId())) {
             return;
         }
 
@@ -511,11 +511,11 @@ void CSigSharesManager::ProcessMessageSigShare(NodeId fromId, const CSigShare& s
              sigShare.GetSignHash().ToString(), sigShare.id.ToString(), sigShare.msgHash.ToString(), sigShare.quorumMember, fromId);
 }
 
-bool CSigSharesManager::PreVerifyBatchedSigShares(const CSigSharesNodeState::SessionInfo& session, const CBatchedSigShares& batchedSigShares, bool& retBan)
+bool CSigSharesManager::PreVerifyBatchedSigShares(const CQuorumManager& quorum_manager, const CSigSharesNodeState::SessionInfo& session, const CBatchedSigShares& batchedSigShares, bool& retBan)
 {
     retBan = false;
 
-    if (!CLLMQUtils::IsQuorumActive(session.llmqType, session.quorum->qc->quorumHash)) {
+    if (!utils::IsQuorumActive(session.llmqType, quorum_manager, session.quorum->qc->quorumHash)) {
         // quorum is too old
         return false;
     }
@@ -603,7 +603,7 @@ void CSigSharesManager::CollectPendingSigSharesToVerify(
                 continue;
             }
 
-            CQuorumCPtr quorum = quorumManager->GetQuorum(llmqType, sigShare.quorumHash);
+            CQuorumCPtr quorum = qman.GetQuorum(llmqType, sigShare.getQuorumHash());
             assert(quorum != nullptr);
             retQuorums.try_emplace(k, quorum);
         }
@@ -629,7 +629,7 @@ bool CSigSharesManager::ProcessPendingSigShares(const CConnman& connman)
     size_t verifyCount = 0;
     for (const auto& [nodeId, v] : sigSharesByNodes) {
         for (const auto& sigShare : v) {
-            if (quorumSigningManager->HasRecoveredSigForId(sigShare.llmqType, sigShare.id)) {
+            if (sigman.HasRecoveredSigForId(sigShare.getLlmqType(), sigShare.getId())) {
                 continue;
             }
 
@@ -707,7 +707,7 @@ void CSigSharesManager::ProcessSigShare(const CSigShare& sigShare, const CConnma
         quorumNodes = connman.GetMasternodeQuorumNodes(sigShare.llmqType, sigShare.quorumHash);
     }
 
-    if (quorumSigningManager->HasRecoveredSigForId(llmqType, sigShare.id)) {
+    if (sigman.HasRecoveredSigForId(llmqType, sigShare.getId())) {
         return;
     }
 
@@ -749,7 +749,7 @@ void CSigSharesManager::ProcessSigShare(const CSigShare& sigShare, const CConnma
 
 void CSigSharesManager::TryRecoverSig(const CQuorumCPtr& quorum, const uint256& id, const uint256& msgHash)
 {
-    if (quorumSigningManager->HasRecoveredSigForId(quorum->params.type, id)) {
+    if (sigman.HasRecoveredSigForId(quorum->params.type, id)) {
         return;
     }
 
@@ -806,7 +806,7 @@ void CSigSharesManager::TryRecoverSig(const CQuorumCPtr& quorum, const uint256& 
         }
     }
 
-    quorumSigningManager->ProcessRecoveredSig(rs);
+    sigman.ProcessRecoveredSig(rs);
 }
 
 CDeterministicMNCPtr CSigSharesManager::SelectMemberForRecovery(const CQuorumCPtr& quorum, const uint256 &id, size_t attempt)
@@ -866,7 +866,7 @@ void CSigSharesManager::CollectSigSharesToRequest(std::unordered_map<NodeId, std
                 continue;
             }
 
-            if (quorumSigningManager->HasRecoveredSigForSession(signHash)) {
+            if (sigman.HasRecoveredSigForSession(signHash)) {
                 continue;
             }
 
@@ -935,7 +935,7 @@ void CSigSharesManager::CollectSigSharesToSend(std::unordered_map<NodeId, std::u
                 continue;
             }
 
-            if (quorumSigningManager->HasRecoveredSigForSession(signHash)) {
+            if (sigman.HasRecoveredSigForSession(signHash)) {
                 continue;
             }
 
@@ -1273,8 +1273,8 @@ void CSigSharesManager::Cleanup()
 
     // Find quorums which became inactive
     for (auto it = quorums.begin(); it != quorums.end(); ) {
-        if (CLLMQUtils::IsQuorumActive(it->first.first, it->first.second)) {
-            it->second = quorumManager->GetQuorum(it->first.first, it->first.second);
+        if (utils::IsQuorumActive(it->first.first, qman, it->first.second)) {
+            it->second = qman.GetQuorum(it->first.first, it->first.second);
             ++it;
         } else {
             it = quorums.erase(it);
@@ -1300,11 +1300,11 @@ void CSigSharesManager::Cleanup()
 
         // Remove sessions which were successfully recovered
         std::unordered_set<uint256, StaticSaltedHasher> doneSessions;
-        sigShares.ForEach([&doneSessions](const SigShareKey&, const CSigShare& sigShare) {
-            if (doneSessions.count(sigShare.GetSignHash())) {
+        sigShares.ForEach([&doneSessions, this](const SigShareKey&, const CSigShare& sigShare) {
+            if (doneSessions.count(sigShare.GetSignHash()) != 0) {
                 return;
             }
-            if (quorumSigningManager->HasRecoveredSigForSession(sigShare.GetSignHash())) {
+            if (sigman.HasRecoveredSigForSession(sigShare.GetSignHash())) {
                 doneSessions.emplace(sigShare.GetSignHash());
             }
         });
@@ -1457,8 +1457,8 @@ void CSigSharesManager::WorkThreadMain()
         bool fMoreWork{false};
 
         RemoveBannedNodeStates();
-        fMoreWork |= quorumSigningManager->ProcessPendingRecoveredSigs();
-        fMoreWork |= ProcessPendingSigShares(*g_connman);
+        fMoreWork |= sigman.ProcessPendingRecoveredSigs();
+        fMoreWork |= ProcessPendingSigShares(connman);
         SignPendingSigShares();
 
         if (GetTimeMillis() - lastSendTime > 100) {
@@ -1467,7 +1467,7 @@ void CSigSharesManager::WorkThreadMain()
         }
 
         Cleanup();
-        quorumSigningManager->Cleanup();
+        sigman.Cleanup();
 
         // TODO Wakeup when pending signing is needed?
         if (!fMoreWork && !workInterrupt.sleep_for(std::chrono::milliseconds(100))) {

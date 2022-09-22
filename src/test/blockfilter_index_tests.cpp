@@ -6,6 +6,9 @@
 #include <chainparams.h>
 #include <consensus/validation.h>
 #include <index/blockfilterindex.h>
+#include <llmq/blockprocessor.h>
+#include <llmq/chainlocks.h>
+#include <llmq/instantsend.h>
 #include <miner.h>
 #include <pow.h>
 #include <script/standard.h>
@@ -57,7 +60,7 @@ static CBlock CreateBlock(const CBlockIndex* prev,
                           const CScript& scriptPubKey)
 {
     const CChainParams& chainparams = Params();
-    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
+    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(*sporkManager, *governance, *llmq::quorumBlockProcessor, *llmq::chainLocksHandler,  *llmq::quorumInstantSendManager, *m_node.mempool, chainparams).CreateNewBlock(scriptPubKey);
     CBlock& block = pblocktemplate->block;
     block.hashPrevBlock = prev->GetBlockHash();
     block.nTime = prev->nTime + 1;

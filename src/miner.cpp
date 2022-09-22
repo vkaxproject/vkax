@@ -29,6 +29,7 @@
 #include <evo/simplifiedmns.h>
 #include <llmq/blockprocessor.h>
 #include <llmq/chainlocks.h>
+#include <llmq/instantsend.h>
 #include <llmq/utils.h>
 #include <masternode/payments.h>
 #include <validation.h>
@@ -63,7 +64,16 @@ BlockAssembler::Options::Options() {
     nBlockMaxSize = DEFAULT_BLOCK_MAX_SIZE;
 }
 
-BlockAssembler::BlockAssembler(const CChainParams& params, const Options& options) : chainparams(params)
+BlockAssembler::BlockAssembler(const CSporkManager& sporkManager, CGovernanceManager& governanceManager,
+                               const llmq::CQuorumBlockProcessor& quorumBlockProcessor, llmq::CChainLocksHandler& clhandler,
+                               llmq::CInstantSendManager& isman, const CTxMemPool& mempool, const CChainParams& params, const Options& options)
+    : spork_manager(sporkManager),
+      governance_manager(governanceManager),
+      quorum_block_processor(quorumBlockProcessor),
+      chainparams(params),
+      m_mempool(mempool),
+      m_clhandler(clhandler),
+      m_isman(isman)
 {
     blockMinFeeRate = options.blockMinFeeRate;
     // Limit size to between 1K and MaxBlockSize()-1K for sanity:
@@ -87,7 +97,10 @@ static BlockAssembler::Options DefaultOptions()
     return options;
 }
 
-BlockAssembler::BlockAssembler(const CChainParams& params) : BlockAssembler(params, DefaultOptions()) {}
+BlockAssembler::BlockAssembler(const CSporkManager& sporkManager, CGovernanceManager& governanceManager,
+                               const llmq::CQuorumBlockProcessor& quorumBlockProcessor, llmq::CChainLocksHandler& clhandler,
+                               llmq::CInstantSendManager& isman, const CTxMemPool& mempool, const CChainParams& params)
+    : BlockAssembler(sporkManager, governanceManager, quorumBlockProcessor, clhandler, isman, mempool, params, DefaultOptions()) {}
 
 void BlockAssembler::resetBlock()
 {
@@ -147,9 +160,9 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     if (fDIP0003Active_context) {
         for (const Consensus::LLMQParams& params : llmq::CLLMQUtils::GetEnabledQuorumParams(pindexPrev)) {
             std::vector<CTransactionRef> vqcTx;
-            if (llmq::quorumBlockProcessor->GetMineableCommitmentsTx(params,
-                                                                     nHeight,
-                                                                     vqcTx)) {
+            if (quorum_block_processor.GetMineableCommitmentsTx(params,
+                                                                nHeight,
+                                                                vqcTx)) {
                 for (const auto& qcTx : vqcTx) {
                     pblock->vtx.emplace_back(qcTx);
                     pblocktemplate->vTxFees.emplace_back(0);
@@ -207,7 +220,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
             throw std::runtime_error(strprintf("%s: CalcCbTxMerkleRootMNList failed: %s", __func__, FormatStateMessage(state)));
         }
         if (fDIP0008Active_context) {
-            if (!CalcCbTxMerkleRootQuorums(*pblock, pindexPrev, cbTx.merkleRootQuorums, state)) {
+            if (!CalcCbTxMerkleRootQuorums(*pblock, pindexPrev, quorum_block_processor, cbTx.merkleRootQuorums, state)) {
                 throw std::runtime_error(strprintf("%s: CalcCbTxMerkleRootQuorums failed: %s", __func__, FormatStateMessage(state)));
             }
         }
@@ -231,7 +244,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     pblocktemplate->vTxSigOps[0] = GetLegacySigOpCount(*pblock->vtx[0]);
 
     CValidationState state;
-    if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+    if (!TestBlockValidity(state, m_clhandler, chainparams, *pblock, pindexPrev, false, false)) {
         throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
     }
     int64_t nTime2 = GetTimeMicros();
@@ -271,7 +284,7 @@ bool BlockAssembler::TestPackageTransactions(const CTxMemPool::setEntries& packa
     for (CTxMemPool::txiter it : package) {
         if (!IsFinalTx(it->GetTx(), nHeight, nLockTimeCutoff))
             return false;
-        if (!llmq::chainLocksHandler->IsTxSafeForMining(it->GetTx().GetHash())) {
+        if (!m_clhandler.IsTxSafeForMining(m_isman, it->GetTx().GetHash())) {
             return false;
         }
     }

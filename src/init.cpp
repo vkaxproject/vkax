@@ -76,12 +76,15 @@
 
 #include <evo/deterministicmns.h>
 #include <llmq/blockprocessor.h>
+#include <llmq/chainlocks.h>
 #include <llmq/init.h>
+#include <llmq/instantsend.h>
 #include <llmq/quorums.h>
 #include <llmq/dkgsessionmgr.h>
 #include <llmq/signing.h>
 #include <llmq/snapshot.h>
 #include <llmq/utils.h>
+#include <llmq/signing_shares.h>
 
 #include <statsd_client.h>
 
@@ -1756,10 +1759,47 @@ bool AppInitMain(InitInterfaces& interfaces)
     // is not yet setup and may end up being set up twice if we
     // need to reindex later.
 
-    assert(!g_banman);
-    g_banman = MakeUnique<BanMan>(GetDataDir() / "banlist.dat", &uiInterface, gArgs.GetArg("-bantime", DEFAULT_MISBEHAVING_BANTIME));
-    assert(!g_connman);
-    g_connman = std::make_unique<CConnman>(GetRand(std::numeric_limits<uint64_t>::max()), GetRand(std::numeric_limits<uint64_t>::max()));
+    assert(!node.banman);
+    node.banman = MakeUnique<BanMan>(GetDataDir() / "banlist.dat", &uiInterface, args.GetArg("-bantime", DEFAULT_MISBEHAVING_BANTIME));
+    assert(!node.connman);
+    node.connman = std::make_unique<CConnman>(GetRand(std::numeric_limits<uint64_t>::max()), GetRand(std::numeric_limits<uint64_t>::max()));
+
+    // Make mempool generally available in the node context. For example the connection manager, wallet, or RPC threads,
+    // which are all started after this, may use it from the node context.
+    assert(!node.mempool);
+    node.mempool = &::mempool;
+    assert(!node.chainman);
+    node.chainman = &g_chainman;
+    ChainstateManager& chainman = *Assert(node.chainman);
+
+    node.peer_logic.reset(new PeerLogicValidation(
+        node.connman.get(), node.banman.get(), *node.scheduler, chainman, *node.mempool, llmq::quorumBlockProcessor,
+        llmq::quorumDKGSessionManager, llmq::quorumManager, llmq::quorumSigSharesManager, llmq::quorumSigningManager,
+        llmq::chainLocksHandler, llmq::quorumInstantSendManager, args.GetBoolArg("-enablebip61", DEFAULT_ENABLE_BIP61))
+    );
+    RegisterValidationInterface(node.peer_logic.get());
+
+    ::governance = std::make_unique<CGovernanceManager>();
+    assert(!::sporkManager);
+    ::sporkManager = std::make_unique<CSporkManager>();
+
+    std::vector<std::string> vSporkAddresses;
+    if (args.IsArgSet("-sporkaddr")) {
+        vSporkAddresses = args.GetArgs("-sporkaddr");
+    } else {
+        vSporkAddresses = Params().SporkAddresses();
+    }
+    for (const auto& address: vSporkAddresses) {
+        if (!::sporkManager->SetSporkAddress(address)) {
+            return InitError(_("Invalid spork address specified with -sporkaddr"));
+        }
+    }
+
+    int minsporkkeys = args.GetArg("-minsporkkeys", Params().MinSporkKeys());
+    if (!::sporkManager->SetMinSporkKeys(minsporkkeys)) {
+        return InitError(_("Invalid minimum number of spork signers specified with -minsporkkeys"));
+    }
+
 
     peerLogic.reset(new PeerLogicValidation(g_connman.get(), g_banman.get(), scheduler, gArgs.GetBoolArg("-enablebip61", DEFAULT_ENABLE_BIP61)));
     RegisterValidationInterface(peerLogic.get());
@@ -1889,7 +1929,10 @@ bool AppInitMain(InitInterfaces& interfaces)
     }
 #endif
 
-    pdsNotificationInterface = new CDSNotificationInterface(*g_connman);
+    pdsNotificationInterface = new CDSNotificationInterface(
+        *node.connman, ::masternodeSync, ::deterministicMNManager, ::governance, llmq::chainLocksHandler,
+        llmq::quorumInstantSendManager, llmq::quorumManager, llmq::quorumDKGSessionManager
+    );
     RegisterValidationInterface(pdsNotificationInterface);
 
     uint64_t nMaxOutboundLimit = 0; //unlimited unless -maxuploadtarget is set
@@ -1958,9 +2001,11 @@ bool AppInitMain(InitInterfaces& interfaces)
             bool is_coinsview_empty;
             try {
                 LOCK(cs_main);
-                // This statement makes ::ChainstateActive() usable.
-                g_chainstate = MakeUnique<CChainState>();
-                UnloadBlockIndex();
+                chainman.InitializeChainstate(llmq::chainLocksHandler, llmq::quorumInstantSendManager, llmq::quorumBlockProcessor);
+                chainman.m_total_coinstip_cache = nCoinCacheUsage;
+                chainman.m_total_coinsdb_cache = nCoinDBCache;
+
+                UnloadBlockIndex(node.mempool);
 
                 // new CBlockTreeDB tries to delete the existing file, which
                 // fails if it's still open from the previous loop. Close it first:

@@ -26,8 +26,8 @@ using CDeterministicMNCPtr = std::shared_ptr<const CDeterministicMN>;
 
 namespace llmq
 {
-
 class CDKGSessionManager;
+class CQuorumBlockProcessor;
 
 // If true, we will connect to all new quorums and watch their communication
 static constexpr bool DEFAULT_WATCH_QUORUMS{false};
@@ -206,6 +206,7 @@ private:
     CEvoDB& evoDb;
     CBLSWorker& blsWorker;
     CDKGSessionManager& dkgManager;
+    CQuorumBlockProcessor& quorumBlockProcessor;
 
     mutable CCriticalSection quorumsCacheCs;
     mutable std::map<Consensus::LLMQType, unordered_lru_cache<uint256, CQuorumPtr, StaticSaltedHasher>> mapQuorumsCache GUARDED_BY(quorumsCacheCs);
@@ -215,7 +216,8 @@ private:
     mutable CThreadInterrupt quorumThreadInterrupt;
 
 public:
-    CQuorumManager(CEvoDB& _evoDb, CBLSWorker& _blsWorker, CDKGSessionManager& _dkgManager);
+    CQuorumManager(CEvoDB& _evoDb, CConnman& _connman, CBLSWorker& _blsWorker, CQuorumBlockProcessor& _quorumBlockProcessor,
+                   CDKGSessionManager& _dkgManager);
     ~CQuorumManager() { Stop(); };
 
     void Start();
@@ -227,7 +229,7 @@ public:
 
     void ProcessMessage(CNode* pfrom, const std::string& msg_type, CDataStream& vRecv);
 
-    static bool HasQuorum(Consensus::LLMQType llmqType, const uint256& quorumHash);
+    static bool HasQuorum(Consensus::LLMQType llmqType, const CQuorumBlockProcessor& quorum_block_processor, const uint256& quorumHash);
 
     bool RequestQuorumData(CNode* pFrom, Consensus::LLMQType llmqType, const CBlockIndex* pQuorumBaseBlockIndex, uint16_t nDataMask, const uint256& proTxHash = uint256()) const;
 

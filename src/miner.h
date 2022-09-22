@@ -23,6 +23,11 @@ class CConnman;
 class CScript;
 
 namespace Consensus { struct Params; };
+namespace llmq {
+class CChainLocksHandler;
+class CInstantSendManager;
+class CQuorumBlockProcessor;
+} // namespace llmq
 
 static const bool DEFAULT_PRINTPRIORITY = false;
 
@@ -147,6 +152,12 @@ private:
     int nHeight;
     int64_t nLockTimeCutoff;
     const CChainParams& chainparams;
+    const CTxMemPool& m_mempool;
+    const CSporkManager& spork_manager;
+    CGovernanceManager& governance_manager;
+    const llmq::CQuorumBlockProcessor& quorum_block_processor;
+    llmq::CChainLocksHandler& m_clhandler;
+    llmq::CInstantSendManager& m_isman;
 
 public:
     struct Options {
@@ -155,8 +166,12 @@ public:
         CFeeRate blockMinFeeRate;
     };
 
-    explicit BlockAssembler(const CChainParams& params);
-    BlockAssembler(const CChainParams& params, const Options& options);
+    explicit BlockAssembler(const CSporkManager& sporkManager, CGovernanceManager& governanceManager,
+                            const llmq::CQuorumBlockProcessor& quorumBlockProcessor, llmq::CChainLocksHandler& clhandler,
+                            llmq::CInstantSendManager& isman, const CTxMemPool& mempool, const CChainParams& params);
+    explicit BlockAssembler(const CSporkManager& sporkManager, CGovernanceManager& governanceManager,
+                            const llmq::CQuorumBlockProcessor& quorumBlockProcessor, llmq::CChainLocksHandler& clhandler,
+                            llmq::CInstantSendManager& isman, const CTxMemPool& mempool, const CChainParams& params, const Options& options);
 
     /** Construct a new block template with coinbase to scriptPubKeyIn */
     std::unique_ptr<CBlockTemplate> CreateNewBlock(const CScript& scriptPubKeyIn);

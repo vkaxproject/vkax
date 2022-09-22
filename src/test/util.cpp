@@ -7,6 +7,9 @@
 #include <chainparams.h>
 #include <consensus/merkle.h>
 #include <key_io.h>
+#include <llmq/blockprocessor.h>
+#include <llmq/chainlocks.h>
+#include <llmq/instantsend.h>
 #include <miner.h>
 #include <pow.h>
 #include <script/standard.h>
@@ -70,7 +73,7 @@ CTxIn MineBlock(const CScript& coinbase_scriptPubKey)
 std::shared_ptr<CBlock> PrepareBlock(const CScript& coinbase_scriptPubKey)
 {
     auto block = std::make_shared<CBlock>(
-        BlockAssembler{Params()}
+        BlockAssembler{*sporkManager, *governance, *llmq::quorumBlockProcessor, *llmq::chainLocksHandler, *llmq::quorumInstantSendManager, *node.mempool, Params()}
             .CreateNewBlock(coinbase_scriptPubKey)
             ->block);
 

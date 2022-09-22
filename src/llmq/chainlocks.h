@@ -24,6 +24,9 @@ class CScheduler;
 
 namespace llmq
 {
+class CInstantSendManager;
+class CSigningManager;
+class CSigSharesManager;
 
 class CChainLocksHandler : public CRecoveredSigsListener
 {
@@ -34,6 +37,11 @@ class CChainLocksHandler : public CRecoveredSigsListener
     static constexpr int64_t WAIT_FOR_ISLOCK_TIMEOUT = 10 * 60;
 
 private:
+    CConnman& connman;
+    CTxMemPool& mempool;
+    CSporkManager& spork_manager;
+    CSigningManager& sigman;
+    CSigSharesManager& shareman;
     std::unique_ptr<CScheduler> scheduler;
     std::unique_ptr<std::thread> scheduler_thread;
     mutable CCriticalSection cs;
@@ -66,7 +74,7 @@ private:
     int64_t lastCleanupTime GUARDED_BY(cs) {0};
 
 public:
-    explicit CChainLocksHandler();
+    explicit CChainLocksHandler(CTxMemPool& _mempool, CConnman& _connman, CSporkManager& sporkManager, CSigningManager& _sigman, CSigSharesManager& _shareman);
     ~CChainLocksHandler();
 
     void Start();
@@ -91,7 +99,7 @@ public:
     bool HasChainLock(int nHeight, const uint256& blockHash) const;
     bool HasConflictingChainLock(int nHeight, const uint256& blockHash) const;
 
-    bool IsTxSafeForMining(const uint256& txid) const;
+    bool IsTxSafeForMining(const CInstantSendManager& isman, const uint256& txid) const;
 
 private:
     // these require locks to be held already

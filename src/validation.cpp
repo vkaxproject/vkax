@@ -1142,10 +1142,16 @@ void CoinsViews::InitCache()
     m_cacheview = MakeUnique<CCoinsViewCache>(&m_catcherview);
 }
 
-// NOTE: for now m_blockman is set to a global, but this will be changed
-// in a future commit.
-CChainState::CChainState() : m_blockman(g_blockman) {}
-
+CChainState::CChainState(BlockManager& blockman,
+                         std::unique_ptr<llmq::CChainLocksHandler>& clhandler,
+                         std::unique_ptr<llmq::CInstantSendManager>& isman,
+                         std::unique_ptr<llmq::CQuorumBlockProcessor>& quorum_block_processor,
+                         uint256 from_snapshot_blockhash)
+    : m_blockman(blockman),
+      m_clhandler(clhandler),
+      m_isman(isman),
+      m_quorum_block_processor(quorum_block_processor),
+      m_from_snapshot_blockhash(from_snapshot_blockhash) {}
 
 void CChainState::InitCoinsDB(
     size_t cache_size_bytes,
@@ -1623,6 +1629,7 @@ int ApplyTxInUndo(Coin&& undo, CCoinsViewCache& view, const COutPoint& out)
 DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockIndex* pindex, CCoinsViewCache& view)
 {
     AssertLockHeld(cs_main);
+    assert(m_quorum_block_processor);
 
     bool fDIP0003Active = pindex->nHeight >= Params().GetConsensus().DIP0003Height;
     if (fDIP0003Active && !evoDb->VerifyBestBlock(pindex->GetBlockHash())) {
@@ -1650,7 +1657,7 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
     std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > addressUnspentIndex;
     std::vector<std::pair<CSpentIndexKey, CSpentIndexValue> > spentIndex;
 
-    if (!UndoSpecialTxsInBlock(block, pindex)) {
+    if (!UndoSpecialTxsInBlock(block, pindex, *m_quorum_block_processor)) {
         return DISCONNECT_FAILED;
     }
 
@@ -1979,6 +1986,9 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     AssertLockHeld(cs_main);
     assert(pindex);
     assert(*pindex->phashBlock == block.GetHash());
+    assert(m_clhandler);
+    assert(m_isman);
+    assert(m_quorum_block_processor);
     int64_t nTimeStart = GetTimeMicros();
 
     // Check it again in case a previous version let a bad block in
@@ -2004,8 +2014,8 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return error("%s: Consensus::CheckBlock: %s", __func__, FormatStateMessage(state));
     }
 
-    if (pindex->pprev && pindex->phashBlock && llmq::chainLocksHandler->HasConflictingChainLock(pindex->nHeight, pindex->GetBlockHash())) {
-        return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
+    if (pindex->pprev && pindex->phashBlock && m_clhandler->HasConflictingChainLock(pindex->nHeight, pindex->GetBlockHash())) {
+        return state.Invalid(ValidationInvalidReason::BLOCK_CHAINLOCK, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
     }
 
     // verify that the view's current state corresponds to the previous block
@@ -2140,7 +2150,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     bool fDIP0001Active_context = pindex->nHeight >= Params().GetConsensus().DIP0001Height;
 
     // MUST process special txes before updating UTXO to ensure consistency between mempool and block processing
-    if (!ProcessSpecialTxsInBlock(block, pindex, state, view, fJustCheck, fScriptChecks)) {
+    if (!ProcessSpecialTxsInBlock(block, pindex, *m_quorum_block_processor, state, view, fJustCheck, fScriptChecks)) {
         return error("ConnectBlock(VKAX): ProcessSpecialTxsInBlock for block %s failed with %s",
                      pindex->GetBlockHash().ToString(), FormatStateMessage(state));
     }
@@ -2300,16 +2310,16 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     // VKAX : CHECK TRANSACTIONS FOR INSTANTSEND
 
-    if (llmq::RejectConflictingBlocks()) {
+    if (m_isman->RejectConflictingBlocks()) {
         // Require other nodes to comply, send them some data in case they are missing it.
         for (const auto& tx : block.vtx) {
             // skip txes that have no inputs
             if (tx->vin.empty()) continue;
-            while (llmq::CInstantSendLockPtr conflictLock = llmq::quorumInstantSendManager->GetConflictingLock(*tx)) {
-                if (llmq::chainLocksHandler->HasChainLock(pindex->nHeight, pindex->GetBlockHash())) {
+            while (llmq::CInstantSendLockPtr conflictLock = m_isman->GetConflictingLock(*tx)) {
+                if (m_clhandler->HasChainLock(pindex->nHeight, pindex->GetBlockHash())) {
                     LogPrint(BCLog::ALL, "ConnectBlock(VKAX): chain-locked transaction %s overrides islock %s\n",
                             tx->GetHash().ToString(), ::SerializeHash(*conflictLock).ToString());
-                    llmq::quorumInstantSendManager->RemoveConflictingLock(::SerializeHash(*conflictLock), *conflictLock);
+                    m_isman->RemoveConflictingLock(::SerializeHash(*conflictLock), *conflictLock);
                 } else {
                     // The node which relayed this should switch to correct chain.
                     // TODO: relay instantsend data/proof.
@@ -4183,14 +4193,14 @@ bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<cons
     return true;
 }
 
-bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams, const CBlock& block, CBlockIndex* pindexPrev, bool fCheckPOW, bool fCheckMerkleRoot)
+bool TestBlockValidity(CValidationState& state, llmq::CChainLocksHandler& clhandler, const CChainParams& chainparams, const CBlock& block, CBlockIndex* pindexPrev, bool fCheckPOW, bool fCheckMerkleRoot)
 {
     AssertLockHeld(cs_main);
     assert(pindexPrev && pindexPrev == ::ChainActive().Tip());
 
     uint256 hash = block.GetHash();
-    if (llmq::chainLocksHandler->HasConflictingChainLock(pindexPrev->nHeight + 1, hash)) {
-        return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
+    if (clhandler.HasConflictingChainLock(pindexPrev->nHeight + 1, hash)) {
+        return state.Invalid(ValidationInvalidReason::BLOCK_INVALID_PREV, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
     }
 
     CCoinsViewCache viewNew(&::ChainstateActive().CoinsTip());
@@ -4708,6 +4718,8 @@ bool CVerifyDB::VerifyDB(const CChainParams& chainparams, CCoinsView *coinsview,
 /** Apply the effects of a block on the utxo cache, ignoring that it may already have been applied. */
 bool CChainState::RollforwardBlock(const CBlockIndex* pindex, CCoinsViewCache& inputs, const CChainParams& params)
 {
+    assert(m_quorum_block_processor);
+
     // TODO: merge with ConnectBlock
     CBlock block;
     if (!ReadBlockFromDisk(block, pindex, params.GetConsensus())) {
@@ -4716,8 +4728,8 @@ bool CChainState::RollforwardBlock(const CBlockIndex* pindex, CCoinsViewCache& i
 
     // MUST process special txes before updating UTXO to ensure consistency between mempool and block processing
     CValidationState state;
-    if (!ProcessSpecialTxsInBlock(block, pindex, state, inputs, false /*fJustCheck*/, false /*fScriptChecks*/)) {
-        return error("RollforwardBlock(VKAX): ProcessSpecialTxsInBlock for block %s failed with %s",
+    if (!ProcessSpecialTxsInBlock(block, pindex, *m_quorum_block_processor, state, inputs, false /*fJustCheck*/, false /*fScriptChecks*/)) {
+        return error("RollforwardBlock(DASH): ProcessSpecialTxsInBlock for block %s failed with %s",
             pindex->GetBlockHash().ToString(), FormatStateMessage(state));
     }
 
@@ -5427,3 +5439,124 @@ public:
 };
 static CMainCleanup instance_of_cmaincleanup;
 
+Optional<uint256> ChainstateManager::SnapshotBlockhash() const {
+    if (m_active_chainstate != nullptr) {
+        // If a snapshot chainstate exists, it will always be our active.
+        return m_active_chainstate->m_from_snapshot_blockhash;
+    }
+    return {};
+}
+
+std::vector<CChainState*> ChainstateManager::GetAll()
+{
+    std::vector<CChainState*> out;
+
+    if (!IsSnapshotValidated() && m_ibd_chainstate) {
+        out.push_back(m_ibd_chainstate.get());
+    }
+
+    if (m_snapshot_chainstate) {
+        out.push_back(m_snapshot_chainstate.get());
+    }
+
+    return out;
+}
+
+CChainState& ChainstateManager::InitializeChainstate(std::unique_ptr<llmq::CChainLocksHandler>& clhandler,
+                                                     std::unique_ptr<llmq::CInstantSendManager>& isman,
+                                                     std::unique_ptr<llmq::CQuorumBlockProcessor>& quorum_block_processor,
+                                                     const uint256& snapshot_blockhash)
+{
+    bool is_snapshot = !snapshot_blockhash.IsNull();
+    std::unique_ptr<CChainState>& to_modify =
+        is_snapshot ? m_snapshot_chainstate : m_ibd_chainstate;
+
+    if (to_modify) {
+        throw std::logic_error("should not be overwriting a chainstate");
+    }
+
+    to_modify.reset(new CChainState(m_blockman, clhandler, isman, quorum_block_processor, snapshot_blockhash));
+
+    // Snapshot chainstates and initial IBD chaintates always become active.
+    if (is_snapshot || (!is_snapshot && !m_active_chainstate)) {
+        LogPrintf("Switching active chainstate to %s\n", to_modify->ToString());
+        m_active_chainstate = to_modify.get();
+    } else {
+        throw std::logic_error("unexpected chainstate activation");
+    }
+
+    return *to_modify;
+}
+
+CChainState& ChainstateManager::ActiveChainstate() const
+{
+    assert(m_active_chainstate);
+    return *m_active_chainstate;
+}
+
+bool ChainstateManager::IsSnapshotActive() const
+{
+    return m_snapshot_chainstate && m_active_chainstate == m_snapshot_chainstate.get();
+}
+
+CChainState& ChainstateManager::ValidatedChainstate() const
+{
+    if (m_snapshot_chainstate && IsSnapshotValidated()) {
+        return *m_snapshot_chainstate.get();
+    }
+    assert(m_ibd_chainstate);
+    return *m_ibd_chainstate.get();
+}
+
+bool ChainstateManager::IsBackgroundIBD(CChainState* chainstate) const
+{
+    return (m_snapshot_chainstate && chainstate == m_ibd_chainstate.get());
+}
+
+void ChainstateManager::Unload()
+{
+    for (CChainState* chainstate : this->GetAll()) {
+        chainstate->m_chain.SetTip(nullptr);
+        chainstate->UnloadBlockIndex();
+    }
+
+    m_blockman.Unload();
+}
+
+void ChainstateManager::Reset()
+{
+    m_ibd_chainstate.reset();
+    m_snapshot_chainstate.reset();
+    m_active_chainstate = nullptr;
+    m_snapshot_validated = false;
+}
+
+void ChainstateManager::MaybeRebalanceCaches()
+{
+    if (m_ibd_chainstate && !m_snapshot_chainstate) {
+        LogPrintf("[snapshot] allocating all cache to the IBD chainstate\n");
+        // Allocate everything to the IBD chainstate.
+        m_ibd_chainstate->ResizeCoinsCaches(m_total_coinstip_cache, m_total_coinsdb_cache);
+    }
+    else if (m_snapshot_chainstate && !m_ibd_chainstate) {
+        LogPrintf("[snapshot] allocating all cache to the snapshot chainstate\n");
+        // Allocate everything to the snapshot chainstate.
+        m_snapshot_chainstate->ResizeCoinsCaches(m_total_coinstip_cache, m_total_coinsdb_cache);
+    }
+    else if (m_ibd_chainstate && m_snapshot_chainstate) {
+        // If both chainstates exist, determine who needs more cache based on IBD status.
+        //
+        // Note: shrink caches first so that we don't inadvertently overwhelm available memory.
+        if (m_snapshot_chainstate->IsInitialBlockDownload()) {
+            m_ibd_chainstate->ResizeCoinsCaches(
+                m_total_coinstip_cache * 0.05, m_total_coinsdb_cache * 0.05);
+            m_snapshot_chainstate->ResizeCoinsCaches(
+                m_total_coinstip_cache * 0.95, m_total_coinsdb_cache * 0.95);
+        } else {
+            m_snapshot_chainstate->ResizeCoinsCaches(
+                m_total_coinstip_cache * 0.05, m_total_coinsdb_cache * 0.05);
+            m_ibd_chainstate->ResizeCoinsCaches(
+                m_total_coinstip_cache * 0.95, m_total_coinsdb_cache * 0.95);
+        }
+    }
+}

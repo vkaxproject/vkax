@@ -24,6 +24,7 @@ class CBLSPublicKey;
 namespace llmq
 {
 
+class CQuorumManager;
 class CQuorumSnapshot;
 
 // Use a separate cache instance instead of versionbitscache to avoid locking cs_main
@@ -69,11 +70,48 @@ public:
     static uint256 BuildCommitmentHash(Consensus::LLMQType llmqType, const uint256& blockHash, const std::vector<bool>& validMembers, const CBLSPublicKey& pubKey, const uint256& vvecHash);
     static uint256 BuildSignHash(Consensus::LLMQType llmqType, const uint256& quorumHash, const uint256& id, const uint256& msgHash);
 
-    // works for sig shares and recovered sigs
-    template<typename T>
-    static uint256 BuildSignHash(const T& s)
-    {
-        return BuildSignHash((Consensus::LLMQType)s.llmqType, s.quorumHash, s.id, s.msgHash);
+uint256 BuildCommitmentHash(Consensus::LLMQType llmqType, const uint256& blockHash, const std::vector<bool>& validMembers, const CBLSPublicKey& pubKey, const uint256& vvecHash);
+uint256 BuildSignHash(Consensus::LLMQType llmqType, const uint256& quorumHash, const uint256& id, const uint256& msgHash);
+
+bool IsAllMembersConnectedEnabled(Consensus::LLMQType llmqType);
+bool IsQuorumPoseEnabled(Consensus::LLMQType llmqType);
+uint256 DeterministicOutboundConnection(const uint256& proTxHash1, const uint256& proTxHash2);
+std::set<uint256> GetQuorumConnections(const Consensus::LLMQParams& llmqParams, const CBlockIndex* pQuorumBaseBlockIndex, const uint256& forMember, bool onlyOutbound);
+std::set<uint256> GetQuorumRelayMembers(const Consensus::LLMQParams& llmqParams, const CBlockIndex* pQuorumBaseBlockIndex, const uint256& forMember, bool onlyOutbound);
+std::set<size_t> CalcDeterministicWatchConnections(Consensus::LLMQType llmqType, const CBlockIndex* pQuorumBaseBlockIndex, size_t memberCount, size_t connectionCount);
+
+bool EnsureQuorumConnections(const Consensus::LLMQParams& llmqParams, const CBlockIndex* pQuorumBaseBlockIndex, CConnman& connman, const uint256& myProTxHash);
+void AddQuorumProbeConnections(const Consensus::LLMQParams& llmqParams, const CBlockIndex* pQuorumBaseBlockIndex, CConnman& connman, const uint256& myProTxHash);
+
+bool IsQuorumActive(Consensus::LLMQType llmqType, const CQuorumManager& qman, const uint256& quorumHash);
+bool IsQuorumTypeEnabled(Consensus::LLMQType llmqType, const CQuorumManager& qman, const CBlockIndex* pindex);
+bool IsQuorumTypeEnabledInternal(Consensus::LLMQType llmqType, const CQuorumManager& qman, const CBlockIndex* pindex, std::optional<bool> optDIP0024IsActive, std::optional<bool> optHaveDIP0024Quorums);
+
+std::vector<Consensus::LLMQType> GetEnabledQuorumTypes(const CBlockIndex* pindex);
+std::vector<std::reference_wrapper<const Consensus::LLMQParams>> GetEnabledQuorumParams(const CBlockIndex* pindex);
+
+bool IsQuorumRotationEnabled(Consensus::LLMQType llmqType, const CBlockIndex* pindex);
+Consensus::LLMQType GetInstantSendLLMQType(const CQuorumManager& qman, const CBlockIndex* pindex);
+Consensus::LLMQType GetInstantSendLLMQType(bool deterministic);
+bool IsDIP0024Active(const CBlockIndex* pindex);
+static bool IsInstantSendLLMQTypeShared();
+
+/// Returns the state of `-llmq-data-recovery`
+bool QuorumDataRecoveryEnabled();
+
+/// Returns the state of `-watchquorums`
+bool IsWatchQuorumsEnabled();
+
+/// Returns the parsed entries given by `-llmq-qvvec-sync`
+std::map<Consensus::LLMQType, QvvecSyncMode> GetEnabledQuorumVvecSyncEntries();
+
+template<typename NodesContainer, typename Continue, typename Callback>
+static void IterateNodesRandom(NodesContainer& nodeStates, Continue&& cont, Callback&& callback, FastRandomContext& rnd)
+{
+    std::vector<typename NodesContainer::iterator> rndNodes;
+    rndNodes.reserve(nodeStates.size());
+    for (auto it = nodeStates.begin(); it != nodeStates.end(); ++it) {
+        rndNodes.emplace_back(it);
     }
 
     static bool IsAllMembersConnectedEnabled(Consensus::LLMQType llmqType);

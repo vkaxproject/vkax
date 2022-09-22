@@ -12,6 +12,15 @@
 #include <crypto/sha256.h>
 #include <index/txindex.h>
 #include <init.h>
+#include <interfaces/chain.h>
+#include <masternode/sync.h>
+#include <llmq/blockprocessor.h>
+#include <llmq/chainlocks.h>
+#include <llmq/dkgsessionmgr.h>
+#include <llmq/instantsend.h>
+#include <llmq/quorums.h>
+#include <llmq/signing_shares.h>
+#include <llmq/signing.h>
 #include <miner.h>
 #include <net.h>
 #include <noui.h>
@@ -126,7 +135,9 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
     g_banman = MakeUnique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
     g_connman = MakeUnique<CConnman>(0x1337, 0x1337); // Deterministic randomness for tests.
     pblocktree.reset(new CBlockTreeDB(1 << 20, true));
-    g_chainstate = MakeUnique<CChainState>();
+
+    m_node.chainman = &::g_chainman;
+    m_node.chainman->InitializeChainstate(llmq::chainLocksHandler, llmq::quorumInstantSendManager, llmq::quorumBlockProcessor);
     ::ChainstateActive().InitCoinsDB(
         /* cache_size_bytes */ 1 << 23, /* in_memory */ true, /* should_wipe */ false);
     assert(!::ChainstateActive().CanFlushToDisk());
@@ -138,12 +149,39 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
     if (!LoadGenesisBlock(chainparams)) {
         throw std::runtime_error("LoadGenesisBlock failed.");
     }
+
+    m_node.mempool = &::mempool;
+    m_node.mempool->setSanityCheck(1.0);
+    m_node.banman = MakeUnique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
+    m_node.connman = MakeUnique<CConnman>(0x1337, 0x1337); // Deterministic randomness for tests.
+    m_node.peer_logic = MakeUnique<PeerLogicValidation>(
+        m_node.connman.get(), m_node.banman.get(), *m_node.scheduler, *m_node.chainman, *m_node.mempool,
+        llmq::quorumBlockProcessor, llmq::quorumDKGSessionManager, llmq::quorumManager,
+        llmq::quorumSigSharesManager, llmq::quorumSigningManager, llmq::chainLocksHandler,
+        llmq::quorumInstantSendManager, false
+    );
     {
-        CValidationState state;
-        if (!ActivateBestChain(state, chainparams)) {
-            throw std::runtime_error(strprintf("ActivateBestChain failed. (%s)", FormatStateMessage(state)));
-        }
+        CConnman::Options options;
+        options.m_msgproc = m_node.peer_logic.get();
+        m_node.connman->Init(options);
     }
+
+    ::sporkManager = std::make_unique<CSporkManager>();
+    ::governance = std::make_unique<CGovernanceManager>();
+    ::masternodeSync = std::make_unique<CMasternodeSync>(*m_node.connman);
+    ::coinJoinServer = std::make_unique<CCoinJoinServer>(*m_node.connman);
+#ifdef ENABLE_WALLET
+    ::coinJoinClientQueueManager = std::make_unique<CCoinJoinClientQueueManager>(*m_node.connman);
+#endif // ENABLE_WALLET
+
+    deterministicMNManager.reset(new CDeterministicMNManager(*evoDb, *m_node.connman));
+    llmq::InitLLMQSystem(*evoDb, *m_node.mempool, *m_node.connman, *sporkManager, true);
+
+    CValidationState state;
+    if (!ActivateBestChain(state, chainparams)) {
+        throw std::runtime_error(strprintf("ActivateBestChain failed. (%s)", FormatStateMessage(state)));
+    }
+
     // Start script-checking threads. Set g_parallel_script_checks to true so they are used.
     constexpr int script_check_threads = 2;
     StartScriptCheckWorkerThreads(script_check_threads);
@@ -221,7 +259,7 @@ CBlock TestChainSetup::CreateAndProcessBlock(const std::vector<CMutableTransacti
 CBlock TestChainSetup::CreateBlock(const std::vector<CMutableTransaction>& txns, const CScript& scriptPubKey)
 {
     const CChainParams& chainparams = Params();
-    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
+    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(*sporkManager, *governance, *llmq::quorumBlockProcessor, *llmq::chainLocksHandler,  *llmq::quorumInstantSendManager, *m_node.mempool, chainparams).CreateNewBlock(scriptPubKey);
     CBlock& block = pblocktemplate->block;
 
     std::vector<CTransactionRef> llmqCommitments;
@@ -249,7 +287,7 @@ CBlock TestChainSetup::CreateBlock(const std::vector<CMutableTransaction>& txns,
         if (!CalcCbTxMerkleRootMNList(block, ::ChainActive().Tip(), cbTx.merkleRootMNList, state, ::ChainstateActive().CoinsTip())) {
             BOOST_ASSERT(false);
         }
-        if (!CalcCbTxMerkleRootQuorums(block, ::ChainActive().Tip(), cbTx.merkleRootQuorums, state)) {
+        if (!CalcCbTxMerkleRootQuorums(block, ::ChainActive().Tip(), *llmq::quorumBlockProcessor, cbTx.merkleRootQuorums, state)) {
             BOOST_ASSERT(false);
         }
         CMutableTransaction tmpTx{*block.vtx[0]};
