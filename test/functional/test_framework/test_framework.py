@@ -116,7 +116,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         self.network_thread = None
         self.mocktime = 0
         self.rpc_timeout = 60  # Wait for up to 60 seconds for the RPC server to respond
-        self.supports_cli = False
+        self.supports_cli = True
         self.bind_to_localhost_only = True
         self.extra_args_from_options = []
         self.set_test_params()
@@ -260,6 +260,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         self.skip_test_if_missing_module()
         self.setup_chain()
         self.setup_network()
+
         self.success = TestStatus.PASSED
 
     def shutdown(self):
@@ -401,9 +402,6 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
                 assert_equal(chain_info["initialblockdownload"], False)
 
     def import_deterministic_coinbase_privkeys(self):
-        if self.setup_clean_chain:
-            return
-
         for n in self.nodes:
             try:
                 n.getwalletinfo()
@@ -411,7 +409,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
                 assert str(e).startswith('Method not found')
                 continue
 
-            n.importprivkey(n.get_deterministic_priv_key().key)
+            n.importprivkey(privkey=n.get_deterministic_priv_key().key, label='coinbase')
 
     def run_test(self):
         """Tests must override this method to define test logic"""
@@ -992,6 +990,7 @@ class DashTestFramework(BitcoinTestFramework):
         self.log.info("Creating and starting controller node")
         self.add_nodes(1, extra_args=[self.extra_args[0]])
         self.start_node(0)
+        self.import_deterministic_coinbase_privkeys()
         required_balance = MASTERNODE_COLLATERAL * self.mn_count + 1
         self.log.info("Generating %d coins" % required_balance)
         while self.nodes[0].getbalance() < required_balance:
@@ -1012,6 +1011,7 @@ class DashTestFramework(BitcoinTestFramework):
         self.prepare_masternodes()
         self.prepare_datadirs()
         self.start_masternodes()
+        self.import_deterministic_coinbase_privkeys()
 
         # non-masternodes where disconnected from the control node during prepare_datadirs,
         # let's reconnect them back to make sure they receive updates
@@ -1026,9 +1026,9 @@ class DashTestFramework(BitcoinTestFramework):
             force_finish_mnsync(self.nodes[i + 1])
 
         # Enable InstantSend (including block filtering) and ChainLocks by default
-        self.nodes[0].spork("SPORK_2_INSTANTSEND_ENABLED", 0)
-        self.nodes[0].spork("SPORK_3_INSTANTSEND_BLOCK_FILTERING", 0)
-        self.nodes[0].spork("SPORK_19_CHAINLOCKS_ENABLED", 0)
+        self.nodes[0].sporkupdate("SPORK_2_INSTANTSEND_ENABLED", 0)
+        self.nodes[0].sporkupdate("SPORK_3_INSTANTSEND_BLOCK_FILTERING", 0)
+        self.nodes[0].sporkupdate("SPORK_19_CHAINLOCKS_ENABLED", 0)
         self.wait_for_sporks_same()
         self.bump_mocktime(1)
 

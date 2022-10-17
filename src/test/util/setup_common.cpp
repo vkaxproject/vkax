@@ -10,6 +10,7 @@
 #include <consensus/params.h>
 #include <consensus/validation.h>
 #include <crypto/sha256.h>
+#include <governance/governance.h>
 #include <index/txindex.h>
 #include <init.h>
 #include <interfaces/chain.h>
@@ -23,24 +24,33 @@
 #include <llmq/signing.h>
 #include <miner.h>
 #include <net.h>
+#include <net_processing.h>
 #include <noui.h>
 #include <pow.h>
+#include <rpc/blockchain.h>
 #include <rpc/register.h>
 #include <rpc/server.h>
 #include <script/sigcache.h>
 #include <streams.h>
+#include <spork.h>
 #include <txdb.h>
 #include <util/memory.h>
 #include <util/strencodings.h>
 #include <util/time.h>
 #include <util/translation.h>
+#include <util/vector.h>
 #include <validation.h>
 #include <validationinterface.h>
+#include <walletinitinterface.h>
 
 #include <util/validation.h>
 
 #include <bls/bls.h>
+#ifdef ENABLE_WALLET
+#include <coinjoin/client.h>
+#endif // ENABLE_WALLET
 #include <coinjoin/coinjoin.h>
+#include <coinjoin/server.h>
 #include <evo/cbtx.h>
 #include <evo/deterministicmns.h>
 #include <evo/evodb.h>
@@ -79,17 +89,36 @@ std::ostream& operator<<(std::ostream& os, const uint256& num)
     return os;
 }
 
-BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
-    : m_path_root{fs::temp_directory_path() / "test_common_" PACKAGE_NAME / std::to_string(g_insecure_rand_ctx_temp_path.rand32())}
+BasicTestingSetup::BasicTestingSetup(const std::string& chainName, const std::vector<const char*>& extra_args)
+    : m_path_root{fs::temp_directory_path() / "test_common_" PACKAGE_NAME / g_insecure_rand_ctx_temp_path.rand256().ToString()}
 {
+    const std::vector<const char*> arguments = Cat(
+        {
+            "dummy",
+            "-printtoconsole=0",
+            "-logtimemicros",
+            "-logthreadnames",
+            "-debug",
+            "-debugexclude=libevent",
+            "-debugexclude=leveldb",
+        },
+        extra_args);
+    util::ThreadRename("test");
     fs::create_directories(m_path_root);
     gArgs.ForceSetArg("-datadir", m_path_root.string());
     ClearDatadirCache();
+    {
+        SetupServerArgs(m_node);
+        std::string error;
+        const bool success{m_node.args->ParseParameters(arguments.size(), arguments.data(), error)};
+        assert(success);
+        assert(error.empty());
+    }
     SelectParams(chainName);
     SeedInsecureRand();
-    gArgs.ForceSetArg("-printtoconsole", "0");
     if (G_TEST_LOG_FUN) LogInstance().PushBackCallback(G_TEST_LOG_FUN);
-    InitLogging();
+    InitLogging(*m_node.args);
+    AppInitParameterInteraction(*m_node.args);
     LogInstance().StartLogging();
     SHA256AutoDetect();
     ECC_Start();
@@ -98,9 +127,12 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
     SetupNetworking();
     InitSignatureCache();
     InitScriptExecutionCache();
+    m_node.chain = interfaces::MakeChain(m_node);
+    g_wallet_init_interface.Construct(m_node);
     fCheckBlockIndex = true;
     evoDb.reset(new CEvoDB(1 << 20, true, true));
-    deterministicMNManager.reset(new CDeterministicMNManager(*evoDb));
+    connman = MakeUnique<CConnman>(0x1337, 0x1337);
+    deterministicMNManager.reset(new CDeterministicMNManager(*evoDb, *connman));
     llmq::quorumSnapshotManager.reset(new llmq::CQuorumSnapshotManager(*evoDb));
     static bool noui_connected = false;
     if (!noui_connected) {
@@ -111,29 +143,32 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
 
 BasicTestingSetup::~BasicTestingSetup()
 {
+    connman.reset();
     llmq::quorumSnapshotManager.reset();
     deterministicMNManager.reset();
     evoDb.reset();
 
     LogInstance().DisconnectTestLogger();
     fs::remove_all(m_path_root);
+    gArgs.ClearArgs();
     ECC_Stop();
 }
 
-TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(chainName)
+TestingSetup::TestingSetup(const std::string& chainName, const std::vector<const char*>& extra_args)
+    : BasicTestingSetup(chainName, extra_args)
 {
     const CChainParams& chainparams = Params();
     // Ideally we'd move all the RPC tests to the functional testing framework
     // instead of unit tests, but for now we need these here.
     RegisterAllCoreRPCCommands(tableRPC);
 
+    m_node.scheduler = MakeUnique<CScheduler>();
+
     // We have to run a scheduler thread to prevent ActivateBestChain
     // from blocking due to queue overrun.
-    threadGroup.create_thread(std::bind(&CScheduler::serviceQueue, &scheduler));
-    GetMainSignals().RegisterBackgroundSignalScheduler(scheduler);
-    mempool.setSanityCheck(1.0);
-    g_banman = MakeUnique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
-    g_connman = MakeUnique<CConnman>(0x1337, 0x1337); // Deterministic randomness for tests.
+    threadGroup.create_thread([&] { TraceThread("scheduler", [&] { m_node.scheduler->serviceQueue(); }); });
+    GetMainSignals().RegisterBackgroundSignalScheduler(*m_node.scheduler);
+
     pblocktree.reset(new CBlockTreeDB(1 << 20, true));
 
     m_node.chainman = &::g_chainman;
@@ -141,10 +176,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
     ::ChainstateActive().InitCoinsDB(
         /* cache_size_bytes */ 1 << 23, /* in_memory */ true, /* should_wipe */ false);
     assert(!::ChainstateActive().CanFlushToDisk());
-    g_txindex = MakeUnique<TxIndex>(1 << 20, true);
-    g_txindex->Start();
-    llmq::InitLLMQSystem(*evoDb, true);
-    ::ChainstateActive().InitCoinsCache();
+    ::ChainstateActive().InitCoinsCache(1 << 23);
     assert(::ChainstateActive().CanFlushToDisk());
     if (!LoadGenesisBlock(chainparams)) {
         throw std::runtime_error("LoadGenesisBlock failed.");
@@ -190,22 +222,31 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
 
 TestingSetup::~TestingSetup()
 {
-    scheduler.stop();
+    m_node.scheduler->stop();
+    deterministicMNManager.reset();
     llmq::InterruptLLMQSystem();
     llmq::StopLLMQSystem();
-    g_txindex->Interrupt();
-    g_txindex->Stop();
-    g_txindex.reset();
     threadGroup.interrupt_all();
     threadGroup.join_all();
     StopScriptCheckWorkerThreads();
     GetMainSignals().FlushBackgroundCallbacks();
     GetMainSignals().UnregisterBackgroundSignalScheduler();
-    g_connman.reset();
-    g_banman.reset();
-    UnloadBlockIndex();
-    g_chainstate.reset();
+#ifdef ENABLE_WALLET
+    ::coinJoinClientQueueManager.reset();
+#endif // ENABLE_WALLET
+    ::coinJoinServer.reset();
+    ::masternodeSync.reset();
+    ::governance.reset();
+    ::sporkManager.reset();
+    m_node.connman.reset();
+    m_node.banman.reset();
+    UnloadBlockIndex(m_node.mempool);
+    m_node.mempool = nullptr;
+    m_node.args = nullptr;
+    m_node.scheduler.reset();
     llmq::DestroyLLMQSystem();
+    m_node.chainman->Reset();
+    m_node.chainman = nullptr;
     pblocktree.reset();
 }
 
@@ -213,6 +254,7 @@ TestChainSetup::TestChainSetup(int blockCount)
 {
     // Make sure CreateAndProcessBlock() support building <deployment_name> blocks before activating it in these tests.
     //gArgs.ForceSetArg("-vbparams", strprintf("deployment_name:0:%d", (int64_t)Consensus::BIP9Deployment::NO_TIMEOUT));
+    // Need to recreate chainparams
     SelectParams(CBaseChainParams::REGTEST);
 
     // Generate a 100-block chain:
@@ -224,6 +266,10 @@ TestChainSetup::TestChainSetup(int blockCount)
         CBlock b = CreateAndProcessBlock(noTxns, scriptPubKey);
         m_coinbase_txns.push_back(b.vtx[0]);
     }
+
+    g_txindex = MakeUnique<TxIndex>(1 << 20, true);
+    g_txindex->Start();
+
     // Allow tx index to catch up with the block index.
     constexpr int64_t timeout_ms = 10 * 1000;
     int64_t time_start = GetTimeMillis();
@@ -233,18 +279,15 @@ TestChainSetup::TestChainSetup(int blockCount)
     }
 }
 
-//
 // Create a new block with just given transactions, coinbase paying to
 // scriptPubKey, and try to add it to the current chain.
-//
-CBlock
-TestChainSetup::CreateAndProcessBlock(const std::vector<CMutableTransaction>& txns, const CScript& scriptPubKey)
+CBlock TestChainSetup::CreateAndProcessBlock(const std::vector<CMutableTransaction>& txns, const CScript& scriptPubKey)
 {
     const CChainParams& chainparams = Params();
     auto block = CreateBlock(txns, scriptPubKey);
 
     std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(block);
-    ProcessNewBlock(chainparams, shared_pblock, true, nullptr);
+    Assert(m_node.chainman)->ProcessNewBlock(chainparams, shared_pblock, true, nullptr);
 
     CBlock result = block;
     return result;
@@ -316,6 +359,9 @@ CBlock TestChainSetup::CreateBlock(const std::vector<CMutableTransaction>& txns,
 
 TestChainSetup::~TestChainSetup()
 {
+    g_txindex->Interrupt();
+    g_txindex->Stop();
+    g_txindex.reset();
 }
 
 

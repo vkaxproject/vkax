@@ -5,6 +5,7 @@
 
 
 #include <bench/bench.h>
+#include <crypto/muhash.h>
 #include <crypto/ripemd160.h>
 #include <crypto/sha1.h>
 #include <crypto/sha256.h>
@@ -283,6 +284,53 @@ static void HASH_CN_cryptonight_turtle_hash(benchmark::Bench& bench)
 static void HASH_CN_cryptonight_turtlelite_hash(benchmark::Bench& bench)
 {
     HashCn(bench, 5);
+
+static void MuHash(benchmark::Bench& bench)
+{
+    MuHash3072 acc;
+    unsigned char key[32] = {0};
+    int i = 0;
+    bench.run([&] {
+        key[0] = ++i;
+        acc *= MuHash3072(key);
+    });
+}
+
+static void MuHashMul(benchmark::Bench& bench)
+{
+    MuHash3072 acc;
+    FastRandomContext rng(true);
+    MuHash3072 muhash{rng.randbytes(32)};
+
+    bench.run([&] {
+        acc *= muhash;
+    });
+}
+
+static void MuHashDiv(benchmark::Bench& bench)
+{
+    MuHash3072 acc;
+    FastRandomContext rng(true);
+    MuHash3072 muhash{rng.randbytes(32)};
+
+    for (size_t i = 0; i < bench.epochIterations(); ++i) {
+        acc *= muhash;
+    }
+
+    bench.run([&] {
+        acc /= muhash;
+    });
+}
+
+static void MuHashPrecompute(benchmark::Bench& bench)
+{
+    MuHash3072 acc;
+    FastRandomContext rng(true);
+    std::vector<unsigned char> key{rng.randbytes(32)};
+
+    bench.run([&] {
+        MuHash3072{key};
+    });
 }
 
 BENCHMARK(HASH_1MB_DSHA256);
@@ -320,3 +368,9 @@ BENCHMARK(HASH_CN_cryptonight_cnfast_hash);
 BENCHMARK(HASH_CN_cryptonight_cnlite_hash);
 BENCHMARK(HASH_CN_cryptonight_turtle_hash);
 BENCHMARK(HASH_CN_cryptonight_turtlelite_hash);
+
+BENCHMARK(MuHash);
+BENCHMARK(MuHashMul);
+BENCHMARK(MuHashDiv);
+BENCHMARK(MuHashPrecompute);
+

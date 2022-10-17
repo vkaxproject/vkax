@@ -12,6 +12,7 @@
 #include <llmq/instantsend.h>
 #include <miner.h>
 #include <script/interpreter.h>
+#include <spork.h>
 #include <validation.h>
 
 #include <boost/test/unit_test.hpp>
@@ -41,7 +42,7 @@ struct TestChainDATSetup : public TestChainSetup
         for (int i = 0; i < window - num_blocks; ++i) {
             CreateAndProcessBlock({}, coinbaseKey);
         }
-        gArgs.ForceRemoveArg("-blockversion");
+        gArgs.ForceRemoveArg("blockversion");
         if (num_blocks > 0) {
             // Mine signalling blocks
             for (int i = 0; i < num_blocks; ++i) {

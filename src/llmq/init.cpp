@@ -21,11 +21,11 @@
 namespace llmq
 {
 
-CBLSWorker* blsWorker;
+std::shared_ptr<CBLSWorker> blsWorker;
 
-void InitLLMQSystem(CEvoDB& evoDb, bool unitTests, bool fWipe)
+void InitLLMQSystem(CEvoDB& evoDb, CTxMemPool& mempool, CConnman& connman, CSporkManager& sporkManager, bool unitTests, bool fWipe)
 {
-    blsWorker = new CBLSWorker();
+    blsWorker = std::make_shared<CBLSWorker>();
 
     quorumDKGDebugManager = std::make_unique<CDKGDebugManager>();
     quorumBlockProcessor = std::make_unique<CQuorumBlockProcessor>(evoDb, connman);
@@ -58,56 +58,56 @@ void DestroyLLMQSystem()
 
 void StartLLMQSystem()
 {
-    if (blsWorker) {
+    if (blsWorker != nullptr) {
         blsWorker->Start();
     }
-    if (quorumDKGSessionManager) {
+    if (quorumDKGSessionManager != nullptr) {
         quorumDKGSessionManager->StartThreads();
     }
-    if (quorumManager) {
+    if (quorumManager != nullptr) {
         quorumManager->Start();
     }
-    if (quorumSigSharesManager) {
+    if (quorumSigSharesManager != nullptr) {
         quorumSigSharesManager->RegisterAsRecoveredSigsListener();
         quorumSigSharesManager->StartWorkerThread();
     }
-    if (chainLocksHandler) {
+    if (chainLocksHandler != nullptr) {
         chainLocksHandler->Start();
     }
-    if (quorumInstantSendManager) {
+    if (quorumInstantSendManager != nullptr) {
         quorumInstantSendManager->Start();
     }
 }
 
 void StopLLMQSystem()
 {
-    if (quorumInstantSendManager) {
+    if (quorumInstantSendManager != nullptr) {
         quorumInstantSendManager->Stop();
     }
-    if (chainLocksHandler) {
+    if (chainLocksHandler != nullptr) {
         chainLocksHandler->Stop();
     }
-    if (quorumSigSharesManager) {
+    if (quorumSigSharesManager != nullptr) {
         quorumSigSharesManager->StopWorkerThread();
         quorumSigSharesManager->UnregisterAsRecoveredSigsListener();
     }
-    if (quorumManager) {
+    if (quorumManager != nullptr) {
         quorumManager->Stop();
     }
-    if (quorumDKGSessionManager) {
+    if (quorumDKGSessionManager != nullptr) {
         quorumDKGSessionManager->StopThreads();
     }
-    if (blsWorker) {
+    if (blsWorker != nullptr) {
         blsWorker->Stop();
     }
 }
 
 void InterruptLLMQSystem()
 {
-    if (quorumSigSharesManager) {
+    if (quorumSigSharesManager != nullptr) {
         quorumSigSharesManager->InterruptWorkerThread();
     }
-    if (quorumInstantSendManager) {
+    if (quorumInstantSendManager != nullptr) {
         quorumInstantSendManager->InterruptWorkerThread();
     }
 }

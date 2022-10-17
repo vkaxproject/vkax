@@ -25,15 +25,15 @@ class WalletTest(BitcoinTestFramework):
             '-usehd={:d}'.format(i%2==0),
         ] for i in range(self.num_nodes)]
         self.setup_clean_chain = True
+        self.supports_cli = False
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
 
     def setup_network(self):
-        self.add_nodes(4, self.extra_args)
-        self.start_node(0)
-        self.start_node(1)
-        self.start_node(2)
+        self.setup_nodes()
+        # Only need nodes 0-2 running at start of test
+        self.stop_node(3)
         connect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[1], 2)
         connect_nodes(self.nodes[0], 2)
@@ -396,8 +396,6 @@ class WalletTest(BitcoinTestFramework):
         maintenance = [
             '-rescan',
             '-reindex',
-            '-zapwallettxes=1',
-            '-zapwallettxes=2',
         ]
         chainlimit = 6
         for m in maintenance:

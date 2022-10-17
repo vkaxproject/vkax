@@ -18,6 +18,7 @@
 #include <unordered_map>
 
 using NodeId = int64_t;
+class CConnman;
 class CInv;
 class CNode;
 
@@ -66,18 +67,14 @@ public:
 class CRecoveredSig : virtual public CSigBase
 {
 public:
-    const Consensus::LLMQType llmqType{Consensus::LLMQType::LLMQ_NONE};
-    const uint256 quorumHash;
-    const uint256 id;
-    const uint256 msgHash;
     const CBLSLazySignature sig;
 
     CRecoveredSig() = default;
 
     CRecoveredSig(Consensus::LLMQType _llmqType, const uint256& _quorumHash, const uint256& _id, const uint256& _msgHash, const CBLSLazySignature& _sig) :
-                  llmqType(_llmqType), quorumHash(_quorumHash), id(_id), msgHash(_msgHash), sig(_sig) {UpdateHash();};
+                  CSigBase(_llmqType, _quorumHash, _id, _msgHash), sig(_sig) {UpdateHash();};
     CRecoveredSig(Consensus::LLMQType _llmqType, const uint256& _quorumHash, const uint256& _id, const uint256& _msgHash, const CBLSSignature& _sig) :
-                  llmqType(_llmqType), quorumHash(_quorumHash), id(_id), msgHash(_msgHash) {const_cast<CBLSLazySignature&>(sig).Set(_sig); UpdateHash();};
+                  CSigBase(_llmqType, _quorumHash, _id, _msgHash) {const_cast<CBLSLazySignature&>(sig).Set(_sig); UpdateHash();};
 
 private:
     // only in-memory
@@ -129,7 +126,6 @@ public:
     bool GetRecoveredSigByHash(const uint256& hash, CRecoveredSig& ret) const;
     bool GetRecoveredSigById(Consensus::LLMQType llmqType, const uint256& id, CRecoveredSig& ret) const;
     void WriteRecoveredSig(const CRecoveredSig& recSig);
-    void RemoveRecoveredSig(Consensus::LLMQType llmqType, const uint256& id);
     void TruncateRecoveredSig(Consensus::LLMQType llmqType, const uint256& id);
 
     void CleanupOldRecoveredSigs(int64_t maxAge);
@@ -168,6 +164,7 @@ class CSigningManager
 private:
     mutable CCriticalSection cs;
 
+    CConnman& connman;
     CRecoveredSigsDb db;
     const CQuorumManager& qman;
 
@@ -223,7 +220,6 @@ public:
     bool GetRecoveredSigForId(Consensus::LLMQType llmqType, const uint256& id, CRecoveredSig& retRecSig) const;
     bool IsConflicting(Consensus::LLMQType llmqType, const uint256& id, const uint256& msgHash) const;
 
-    bool HasVotedOnId(Consensus::LLMQType llmqType, const uint256& id) const;
     bool GetVoteForId(Consensus::LLMQType llmqType, const uint256& id, uint256& msgHashRet) const;
 
     static std::vector<CQuorumCPtr> GetActiveQuorumSet(Consensus::LLMQType llmqType, int signHeight);
@@ -233,7 +229,7 @@ public:
     static bool VerifyRecoveredSig(Consensus::LLMQType llmqType, const CQuorumManager& quorum_manager, int signedAtHeight, const uint256& id, const uint256& msgHash, const CBLSSignature& sig, int signOffset = SIGN_HEIGHT_OFFSET);
 };
 
-extern CSigningManager* quorumSigningManager;
+extern std::unique_ptr<CSigningManager> quorumSigningManager;
 
 } // namespace llmq
 

@@ -110,6 +110,7 @@ private:
     std::atomic<bool> stopRequested{false};
 
     const Consensus::LLMQParams& params;
+    CConnman& connman;
     const int quorumIndex;
     CBLSWorker& blsWorker;
     CDKGSessionManager& dkgManager;

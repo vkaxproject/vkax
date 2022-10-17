@@ -17,6 +17,7 @@
 
 class UniValue;
 class CInv;
+class CConnman;
 
 namespace llmq
 {
@@ -70,7 +71,7 @@ public:
         contributions = std::make_shared<CBLSIESMultiRecipientObjects<CBLSSecretKey>>(std::move(tmp2));
     }
 
-    uint256 GetSignHash() const
+    [[nodiscard]] uint256 GetSignHash() const
     {
         CHashWriter hw(SER_GETHASH, 0);
         SerializeWithoutSig(hw);
@@ -106,7 +107,7 @@ public:
                 );
     }
 
-    uint256 GetSignHash() const
+    [[nodiscard]] uint256 GetSignHash() const
     {
         CDKGComplaint tmp(*this);
         tmp.sig = CBLSSignature();
@@ -130,7 +131,7 @@ public:
         READWRITE(obj.llmqType, obj.quorumHash, obj.proTxHash, obj.contributions, obj.sig);
     }
 
-    uint256 GetSignHash() const
+    [[nodiscard]] uint256 GetSignHash() const
     {
         CDKGJustification tmp(*this);
         tmp.sig = CBLSSignature();
@@ -161,9 +162,9 @@ public:
     explicit CDKGPrematureCommitment(const Consensus::LLMQParams& params) :
             validMembers((size_t)params.size) {};
 
-    int CountValidMembers() const
+    [[nodiscard]] int CountValidMembers() const
     {
-        return (int)std::count(validMembers.begin(), validMembers.end(), true);
+        return int(std::count(validMembers.begin(), validMembers.end(), true));
     }
 
 public:
@@ -181,9 +182,9 @@ public:
                 );
     }
 
-    uint256 GetSignHash() const
+    [[nodiscard]] uint256 GetSignHash() const
     {
-        return CLLMQUtils::BuildCommitmentHash(llmqType, quorumHash, validMembers, quorumPublicKey, quorumVvecHash);
+        return utils::BuildCommitmentHash(llmqType, quorumHash, validMembers, quorumPublicKey, quorumVvecHash);
     }
 };
 
@@ -208,6 +209,30 @@ public:
     bool badConnection{false};
     bool weComplain{false};
     bool someoneComplain{false};
+};
+
+class DKGError {
+public:
+    enum type {
+        COMPLAIN_LIE = 0,
+        COMMIT_OMIT,
+        COMMIT_LIE,
+        CONTRIBUTION_OMIT,
+        CONTRIBUTION_LIE,
+        JUSTIFY_OMIT,
+        JUSTIFY_LIE,
+        _COUNT
+    };
+    static constexpr DKGError::type from_string(std::string_view in) {
+        if (in == "complain-lie") return COMPLAIN_LIE;
+        if (in == "commit-omit") return COMMIT_OMIT;
+        if (in == "commit-lie") return COMMIT_LIE;
+        if (in == "contribution-omit") return CONTRIBUTION_OMIT;
+        if (in == "contribution-lie") return CONTRIBUTION_LIE;
+        if (in == "justify-lie") return JUSTIFY_LIE;
+        if (in == "justify-omit") return JUSTIFY_OMIT;
+        return _COUNT;
+    }
 };
 
 /**
@@ -246,7 +271,7 @@ private:
     std::map<uint256, size_t> membersMap;
     std::set<uint256> relayMembers;
     BLSVerificationVectorPtr vvecContribution;
-    BLSSecretKeyVector skContributions;
+    BLSSecretKeyVector m_sk_contributions;
 
     BLSIdVector memberIds;
     std::vector<BLSVerificationVectorPtr> receivedVvecs;
@@ -257,6 +282,7 @@ private:
 
     uint256 myProTxHash;
     CBLSId myId;
+    CConnman& connman;
     std::optional<size_t> myIdx;
 
     // all indexed by msg hash
@@ -281,7 +307,7 @@ public:
 
     bool Init(const CBlockIndex* pQuorumBaseBlockIndex, const std::vector<CDeterministicMNCPtr>& mns, const uint256& _myProTxHash, int _quorumIndex);
 
-    std::optional<size_t> GetMyMemberIndex() const { return myIdx; }
+    [[nodiscard]] std::optional<size_t> GetMyMemberIndex() const { return myIdx; }
 
     /**
      * The following sets of methods are for the first 4 phases handled in the session. The flow of message calls
@@ -325,16 +351,16 @@ public:
     // Phase 5: aggregate/finalize
     std::vector<CFinalCommitment> FinalizeCommitments();
 
-    bool AreWeMember() const { return !myProTxHash.IsNull(); }
+    [[nodiscard]] bool AreWeMember() const { return !myProTxHash.IsNull(); }
     void MarkBadMember(size_t idx);
 
     void RelayInvToParticipants(const CInv& inv) const;
 
 public:
-    CDKGMember* GetMember(const uint256& proTxHash) const;
+    [[nodiscard]] CDKGMember* GetMember(const uint256& proTxHash) const;
 
 private:
-    bool ShouldSimulateError(const std::string& type) const;
+    [[nodiscard]] bool ShouldSimulateError(DKGError::type type) const;
 };
 
 class CDKGLogger : public CBatchedLogger
@@ -346,7 +372,8 @@ public:
         CBatchedLogger(BCLog::LLMQ_DKG, strprintf("QuorumDKG(type=%s, quorumIndex=%d, height=%d, member=%d, func=%s)", _llmqTypeName, _quorumIndex, _height, _areWeMember, _func)){};
 };
 
-void SetSimulatedDKGErrorRate(const std::string& type, double rate);
+void SetSimulatedDKGErrorRate(DKGError::type type, double rate);
+double GetSimulatedErrorRate(DKGError::type type);
 
 } // namespace llmq
 

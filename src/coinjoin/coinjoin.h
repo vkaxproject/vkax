@@ -310,7 +310,7 @@ public:
 class CCoinJoinBaseSession
 {
 protected:
-    mutable CCriticalSection cs_coinjoin;
+    mutable Mutex cs_coinjoin;
 
     std::vector<CCoinJoinEntry> vecEntries GUARDED_BY(cs_coinjoin); // Masternode/clients entries
 
@@ -321,9 +321,9 @@ protected:
 
     CMutableTransaction finalMutableTransaction GUARDED_BY(cs_coinjoin); // the finalized transaction ready for signing
 
-    void SetNull();
+    void SetNull() EXCLUSIVE_LOCKS_REQUIRED(cs_coinjoin);
 
-    bool IsValidInOuts(const std::vector<CTxIn>& vin, const std::vector<CTxOut>& vout, PoolMessage& nMessageIDRet, bool* fConsumeCollateralRet) const EXCLUSIVE_LOCKS_REQUIRED(cs_main);
+    bool IsValidInOuts(const std::vector<CTxIn>& vin, const std::vector<CTxOut>& vout, PoolMessage& nMessageIDRet, bool* fConsumeCollateralRet) const;
 
 public:
     int nSessionDenom{0}; // Users must submit a denom matching this
@@ -333,26 +333,27 @@ public:
     int GetState() const { return nState; }
     std::string GetStateString() const;
 
-    int GetEntriesCount() const { LOCK(cs_coinjoin); return vecEntries.size(); }
+    int GetEntriesCount() const LOCKS_EXCLUDED(cs_coinjoin) { LOCK(cs_coinjoin); return vecEntries.size(); }
+    int GetEntriesCountLocked() const EXCLUSIVE_LOCKS_REQUIRED(cs_coinjoin) { return vecEntries.size(); }
 };
 
 // base class
 class CCoinJoinBaseManager
 {
 protected:
-    mutable CCriticalSection cs_vecqueue;
+    mutable Mutex cs_vecqueue;
 
     // The current mixing sessions in progress on the network
     std::vector<CCoinJoinQueue> vecCoinJoinQueue GUARDED_BY(cs_vecqueue);
 
-    void SetNull();
-    void CheckQueue();
+    void SetNull() LOCKS_EXCLUDED(cs_vecqueue);
+    void CheckQueue() LOCKS_EXCLUDED(cs_vecqueue);
 
 public:
     CCoinJoinBaseManager() = default;
 
-    int GetQueueSize() const { LOCK(cs_vecqueue); return vecCoinJoinQueue.size(); }
-    bool GetQueueItemAndTry(CCoinJoinQueue& dsqRet);
+    int GetQueueSize() const LOCKS_EXCLUDED(cs_vecqueue) { LOCK(cs_vecqueue); return vecCoinJoinQueue.size(); }
+    bool GetQueueItemAndTry(CCoinJoinQueue& dsqRet) LOCKS_EXCLUDED(cs_vecqueue);
 };
 
 // helper class
@@ -374,9 +375,8 @@ private:
             (COIN / 1000) + 1,
     };
 
-    static std::map<uint256, CCoinJoinBroadcastTx> mapDSTX;
-
-    static CCriticalSection cs_mapdstx;
+    static Mutex cs_mapdstx;
+    static std::map<uint256, CCoinJoinBroadcastTx> mapDSTX GUARDED_BY(cs_mapdstx);
 
     static void CheckDSTXes(const CBlockIndex* pindex, const llmq::CChainLocksHandler& clhandler) LOCKS_EXCLUDED(cs_mapdstx);
 
@@ -478,16 +478,16 @@ public:
     }
 
 
-    static void AddDSTX(const CCoinJoinBroadcastTx& dstx);
-    static CCoinJoinBroadcastTx GetDSTX(const uint256& hash);
+    static void AddDSTX(const CCoinJoinBroadcastTx& dstx) LOCKS_EXCLUDED(cs_mapdstx);
+    static CCoinJoinBroadcastTx GetDSTX(const uint256& hash) LOCKS_EXCLUDED(cs_mapdstx);
 
     static void UpdatedBlockTip(const CBlockIndex* pindex, const llmq::CChainLocksHandler& clhandler);
     static void NotifyChainLock(const CBlockIndex* pindex, const llmq::CChainLocksHandler& clhandler);
 
     static void UpdateDSTXConfirmedHeight(const CTransactionRef& tx, int nHeight);
-    static void TransactionAddedToMempool(const CTransactionRef& tx);
-    static void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindex, const std::vector<CTransactionRef>& vtxConflicted);
-    static void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex*);
+    static void TransactionAddedToMempool(const CTransactionRef& tx) LOCKS_EXCLUDED(cs_mapdstx);
+    static void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindex, const std::vector<CTransactionRef>& vtxConflicted) LOCKS_EXCLUDED(cs_mapdstx);
+    static void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex*) LOCKS_EXCLUDED(cs_mapdstx);
 
 };
 

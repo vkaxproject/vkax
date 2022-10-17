@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_SUITE(evo_utils_tests)
 
 void Test()
 {
-    using namespace llmq;
+    using namespace llmq::utils;
     const auto& consensus_params = Params().GetConsensus();
     assert(llmq::quorumManager);
     BOOST_CHECK_EQUAL(IsQuorumTypeEnabledInternal(consensus_params.llmqTypeInstantSend, *llmq::quorumManager, nullptr, false, false), true);

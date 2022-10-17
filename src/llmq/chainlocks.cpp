@@ -18,17 +18,16 @@
 #include <txmempool.h>
 #include <ui_interface.h>
 #include <util/validation.h>
+#include <validation.h>
 
 namespace llmq
 {
-CChainLocksHandler* chainLocksHandler;
+std::unique_ptr<CChainLocksHandler> chainLocksHandler;
 
 CChainLocksHandler::CChainLocksHandler(CTxMemPool& _mempool, CConnman& _connman, CSporkManager& sporkManager, CSigningManager& _sigman, CSigSharesManager& _shareman) :
     scheduler(std::make_unique<CScheduler>()), mempool(_mempool), connman(_connman), spork_manager(sporkManager), sigman(_sigman), shareman(_shareman),
     scheduler_thread(std::make_unique<std::thread>([&] { TraceThread("cl-schdlr", [&] { scheduler->serviceQueue(); }); }))
 {
-    CScheduler::Function serviceLoop = std::bind(&CScheduler::serviceQueue, scheduler.get());
-    scheduler_thread = std::make_unique<std::thread>(std::bind(&TraceThread<CScheduler::Function>, "cl-schdlr", serviceLoop));
 }
 
 CChainLocksHandler::~CChainLocksHandler()
@@ -81,7 +80,7 @@ CChainLockSig CChainLocksHandler::GetBestChainLock() const
 
 void CChainLocksHandler::ProcessMessage(CNode* pfrom, const std::string& msg_type, CDataStream& vRecv)
 {
-    if (!AreChainLocksEnabled()) {
+    if (!AreChainLocksEnabled(spork_manager)) {
         return;
     }
 
@@ -110,7 +109,7 @@ void CChainLocksHandler::ProcessNewChainLock(const NodeId from, const llmq::CCha
             return;
         }
 
-        if (!bestChainLock.IsNull() && clsig.nHeight <= bestChainLock.nHeight) {
+        if (!bestChainLock.IsNull() && clsig.getHeight() <= bestChainLock.getHeight()) {
             // no need to process/relay older CLSIGs
             return;
         }
@@ -126,7 +125,7 @@ void CChainLocksHandler::ProcessNewChainLock(const NodeId from, const llmq::CCha
         return;
     }
 
-    CBlockIndex* pindex = WITH_LOCK(cs_main, return LookupBlockIndex(clsig.blockHash));
+    CBlockIndex* pindex = WITH_LOCK(cs_main, return LookupBlockIndex(clsig.getBlockHash()));
 
     {
         LOCK(cs);
@@ -135,7 +134,7 @@ void CChainLocksHandler::ProcessNewChainLock(const NodeId from, const llmq::CCha
 
         if (pindex != nullptr) {
 
-            if (pindex->nHeight != clsig.nHeight) {
+            if (pindex->nHeight != clsig.getHeight()) {
                 // Should not happen, same as the conflict check from above.
                 LogPrintf("CChainLocksHandler::%s -- height of CLSIG (%s) does not match the specified block's height (%d)\n",
                         __func__, clsig.ToString(), pindex->nHeight);
@@ -152,7 +151,7 @@ void CChainLocksHandler::ProcessNewChainLock(const NodeId from, const llmq::CCha
 
     // Note: do not hold cs while calling RelayInv
     AssertLockNotHeld(cs);
-    g_connman->RelayInv(clsigInv);
+    connman.RelayInv(clsigInv);
 
     if (pindex == nullptr) {
         // we don't know the block/header for this CLSIG yet, so bail out for now
@@ -173,10 +172,10 @@ void CChainLocksHandler::AcceptedBlockHeader(const CBlockIndex* pindexNew)
 {
     LOCK(cs);
 
-    if (pindexNew->GetBlockHash() == bestChainLock.blockHash) {
+    if (pindexNew->GetBlockHash() == bestChainLock.getBlockHash()) {
         LogPrint(BCLog::CHAINLOCKS, "CChainLocksHandler::%s -- block header %s came in late, updating and enforcing\n", __func__, pindexNew->GetBlockHash().ToString());
 
-        if (bestChainLock.nHeight != pindexNew->nHeight) {
+        if (bestChainLock.getHeight() != pindexNew->nHeight) {
             // Should not happen, same as the conflict check from ProcessNewChainLock.
             LogPrintf("CChainLocksHandler::%s -- height of CLSIG (%s) does not match the specified block's height (%d)\n",
                       __func__, bestChainLock.ToString(), pindexNew->nHeight);
@@ -209,14 +208,10 @@ void CChainLocksHandler::UpdatedBlockTip()
 
 void CChainLocksHandler::CheckActiveState()
 {
-    bool fDIP0008Active;
-    {
-        LOCK(cs_main);
-        fDIP0008Active = ::ChainActive().Tip() && ::ChainActive().Tip()->pprev && ::ChainActive().Tip()->pprev->nHeight >= Params().GetConsensus().DIP0008Height;
-    }
+    const bool fDIP0008Active = WITH_LOCK(cs_main, return (::ChainActive().Tip() != nullptr) && (::ChainActive().Tip()->pprev != nullptr) && ::ChainActive().Tip()->pprev->nHeight >= Params().GetConsensus().DIP0008Height);
 
     bool oldIsEnforced = isEnforced;
-    isEnabled = AreChainLocksEnabled();
+    isEnabled = AreChainLocksEnabled(spork_manager);
     isEnforced = (fDIP0008Active && isEnabled);
 
     if (!oldIsEnforced && isEnforced) {
@@ -238,7 +233,7 @@ void CChainLocksHandler::TrySignChainTip()
         return;
     }
 
-    if (!masternodeSync.IsBlockchainSynced()) {
+    if (!masternodeSync->IsBlockchainSynced()) {
         return;
     }
 
@@ -246,13 +241,9 @@ void CChainLocksHandler::TrySignChainTip()
         return;
     }
 
-    const CBlockIndex* pindex;
-    {
-        LOCK(cs_main);
-        pindex = ::ChainActive().Tip();
-    }
+    const CBlockIndex* pindex = WITH_LOCK(cs_main, return ::ChainActive().Tip());
 
-    if (!pindex->pprev) {
+    if (pindex->pprev == nullptr) {
         return;
     }
 
@@ -269,7 +260,7 @@ void CChainLocksHandler::TrySignChainTip()
             return;
         }
 
-        if (bestChainLock.nHeight >= pindex->nHeight) {
+        if (bestChainLock.getHeight() >= pindex->nHeight) {
             // already got the same CLSIG or a better one
             return;
         }
@@ -287,9 +278,9 @@ void CChainLocksHandler::TrySignChainTip()
     // considered safe when it is islocked or at least known since 10 minutes (from mempool or block). These checks are
     // performed for the tip (which we try to sign) and the previous 5 blocks. If a ChainLocked block is found on the
     // way down, we consider all TXs to be safe.
-    if (IsInstantSendEnabled() && RejectConflictingBlocks()) {
-        auto pindexWalk = pindex;
-        while (pindexWalk) {
+    if (quorumInstantSendManager->IsInstantSendEnabled() && quorumInstantSendManager->RejectConflictingBlocks()) {
+        const auto* pindexWalk = pindex;
+        while (pindexWalk != nullptr) {
             if (pindex->nHeight - pindexWalk->nHeight > 5) {
                 // no need to check further down, 6 confs is safe to assume that TXs below this height won't be
                 // islocked anymore if they aren't already
@@ -308,7 +299,7 @@ void CChainLocksHandler::TrySignChainTip()
                 continue;
             }
 
-            for (auto& txid : *txids) {
+            for (const auto& txid : *txids) {
                 int64_t txAge = 0;
                 {
                     LOCK(cs);
@@ -334,7 +325,7 @@ void CChainLocksHandler::TrySignChainTip()
 
     {
         LOCK(cs);
-        if (bestChainLock.nHeight >= pindex->nHeight) {
+        if (bestChainLock.getHeight() >= pindex->nHeight) {
             // might have happened while we didn't hold cs
             return;
         }
@@ -358,7 +349,7 @@ void CChainLocksHandler::TransactionAddedToMempool(const CTransactionRef& tx, in
 
 void CChainLocksHandler::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindex, const std::vector<CTransactionRef>& vtxConflicted)
 {
-    if (!masternodeSync.IsBlockchainSynced()) {
+    if (!masternodeSync->IsBlockchainSynced()) {
         return;
     }
 
@@ -418,7 +409,7 @@ CChainLocksHandler::BlockTxs::mapped_type CChainLocksHandler::GetBlockTxs(const 
         uint32_t blockTime;
         {
             LOCK(cs_main);
-            auto pindex = LookupBlockIndex(blockHash);
+            auto* pindex = LookupBlockIndex(blockHash);
             CBlock block;
             if (!ReadBlockFromDisk(block, pindex, Params().GetConsensus())) {
                 return nullptr;
@@ -437,7 +428,7 @@ CChainLocksHandler::BlockTxs::mapped_type CChainLocksHandler::GetBlockTxs(const 
 
         LOCK(cs);
         blockTxs.emplace(blockHash, ret);
-        for (auto& txid : *ret) {
+        for (const auto& txid : *ret) {
             txFirstSeenTime.emplace(txid, blockTime);
         }
     }
@@ -492,7 +483,7 @@ void CChainLocksHandler::EnforceBestChainLock()
         clsig = std::make_shared<CChainLockSig>(bestChainLockWithKnownBlock);
         pindex = currentBestChainLockBlockIndex = this->bestChainLockBlockIndex;
 
-        if (!currentBestChainLockBlockIndex) {
+        if (currentBestChainLockBlockIndex == nullptr) {
             // we don't have the header/block, so we can't do anything right now
             return;
         }
@@ -527,7 +518,7 @@ void CChainLocksHandler::EnforceBestChainLock()
     }
 
     GetMainSignals().NotifyChainLock(currentBestChainLockBlockIndex, clsig);
-    uiInterface.NotifyChainLock(clsig->blockHash.ToString(), clsig->nHeight);
+    uiInterface.NotifyChainLock(clsig->getBlockHash().ToString(), clsig->getHeight());
 }
 
 void CChainLocksHandler::HandleNewRecoveredSig(const llmq::CRecoveredSig& recoveredSig)
@@ -540,18 +531,17 @@ void CChainLocksHandler::HandleNewRecoveredSig(const llmq::CRecoveredSig& recove
     {
         LOCK(cs);
 
-        if (recoveredSig.id != lastSignedRequestId || recoveredSig.msgHash != lastSignedMsgHash) {
+        if (recoveredSig.getId() != lastSignedRequestId || recoveredSig.getMsgHash() != lastSignedMsgHash) {
             // this is not what we signed, so lets not create a CLSIG for it
             return;
         }
-        if (bestChainLock.nHeight >= lastSignedHeight) {
+        if (bestChainLock.getHeight() >= lastSignedHeight) {
             // already got the same or a better CLSIG through the CLSIG message
             return;
         }
 
-        clsig.nHeight = lastSignedHeight;
-        clsig.blockHash = lastSignedMsgHash;
-        clsig.sig = recoveredSig.sig.Get();
+
+        clsig = CChainLockSig(lastSignedHeight, lastSignedMsgHash, recoveredSig.sig.Get());
     }
     ProcessNewChainLock(-1, clsig, ::SerializeHash(clsig));
 }
@@ -570,7 +560,7 @@ bool CChainLocksHandler::InternalHasChainLock(int nHeight, const uint256& blockH
         return false;
     }
 
-    if (!bestChainLockBlockIndex) {
+    if (bestChainLockBlockIndex == nullptr) {
         return false;
     }
 
@@ -582,8 +572,8 @@ bool CChainLocksHandler::InternalHasChainLock(int nHeight, const uint256& blockH
         return blockHash == bestChainLockBlockIndex->GetBlockHash();
     }
 
-    auto pAncestor = bestChainLockBlockIndex->GetAncestor(nHeight);
-    return pAncestor && pAncestor->GetBlockHash() == blockHash;
+    const auto* pAncestor = bestChainLockBlockIndex->GetAncestor(nHeight);
+    return (pAncestor != nullptr) && pAncestor->GetBlockHash() == blockHash;
 }
 
 bool CChainLocksHandler::HasConflictingChainLock(int nHeight, const uint256& blockHash) const
@@ -600,7 +590,7 @@ bool CChainLocksHandler::InternalHasConflictingChainLock(int nHeight, const uint
         return false;
     }
 
-    if (!bestChainLockBlockIndex) {
+    if (bestChainLockBlockIndex == nullptr) {
         return false;
     }
 
@@ -612,14 +602,14 @@ bool CChainLocksHandler::InternalHasConflictingChainLock(int nHeight, const uint
         return blockHash != bestChainLockBlockIndex->GetBlockHash();
     }
 
-    auto pAncestor = bestChainLockBlockIndex->GetAncestor(nHeight);
+    const auto* pAncestor = bestChainLockBlockIndex->GetAncestor(nHeight);
     assert(pAncestor);
     return pAncestor->GetBlockHash() != blockHash;
 }
 
 void CChainLocksHandler::Cleanup()
 {
-    if (!masternodeSync.IsBlockchainSynced()) {
+    if (!masternodeSync->IsBlockchainSynced()) {
         return;
     }
 
@@ -643,9 +633,9 @@ void CChainLocksHandler::Cleanup()
     }
 
     for (auto it = blockTxs.begin(); it != blockTxs.end(); ) {
-        auto pindex = LookupBlockIndex(it->first);
+        auto* pindex = LookupBlockIndex(it->first);
         if (InternalHasChainLock(pindex->nHeight, pindex->GetBlockHash())) {
-            for (auto& txid : *it->second) {
+            for (const auto& txid : *it->second) {
                 txFirstSeenTime.erase(txid);
             }
             it = blockTxs.erase(it);
@@ -656,13 +646,13 @@ void CChainLocksHandler::Cleanup()
         }
     }
     for (auto it = txFirstSeenTime.begin(); it != txFirstSeenTime.end(); ) {
-        CTransactionRef tx;
         uint256 hashBlock;
-        if (!GetTransaction(it->first, tx, Params().GetConsensus(), hashBlock)) {
+        CTransactionRef tx = GetTransaction(/* block_index */ nullptr, &mempool, it->first, Params().GetConsensus(), hashBlock);
+        if (!tx) {
             // tx has vanished, probably due to conflicts
             it = txFirstSeenTime.erase(it);
         } else if (!hashBlock.IsNull()) {
-            auto pindex = LookupBlockIndex(hashBlock);
+            auto* pindex = LookupBlockIndex(hashBlock);
             if (::ChainActive().Tip()->GetAncestor(pindex->nHeight) == pindex && ::ChainActive().Height() - pindex->nHeight >= 6) {
                 // tx got confirmed >= 6 times, so we can stop keeping track of it
                 it = txFirstSeenTime.erase(it);
@@ -677,7 +667,7 @@ void CChainLocksHandler::Cleanup()
     lastCleanupTime = GetTimeMillis();
 }
 
-bool AreChainLocksEnabled()
+bool AreChainLocksEnabled(const CSporkManager& sporkManager)
 {
     return sporkManager.IsSporkActive(SPORK_19_CHAINLOCKS_ENABLED);
 }

@@ -13,6 +13,7 @@
 #include <serialize.h>
 #include <univalue.h>
 #include <unordered_lru_cache.h>
+#include <util/irange.h>
 
 #include <optional>
 
@@ -74,7 +75,7 @@ public:
         size_t cnt = ReadCompactSize(s);
         ReadFixedBitSet(s, activeQuorumMembers, cnt);
         cnt = ReadCompactSize(s);
-        for (size_t i = 0; i < cnt; i++) {
+        for ([[maybe_unused]] const auto _ : irange::range(cnt)) {
             int obj;
             s >> obj;
             mnSkipList.push_back(obj);
@@ -114,7 +115,7 @@ public:
     CSimplifiedMNListDiff mnListDiffAtHMinus2C;
     CSimplifiedMNListDiff mnListDiffAtHMinus3C;
 
-    bool extraShare;
+    bool extraShare{false};
     std::optional<CQuorumSnapshot> quorumSnapshotAtHMinus4C;
     std::optional<CSimplifiedMNListDiff> mnListDiffAtHMinus4C;
 
@@ -179,22 +180,21 @@ public:
         }
 
         size_t cnt = ReadCompactSize(s);
-        for (size_t i = 0; i < cnt; i++) {
-            uint256 hash;
+        for ([[maybe_unused]] const auto _ : irange::range(cnt)) {
             CFinalCommitment qc;
             ::Unserialize(s, qc);
             lastCommitmentPerIndex.push_back(std::move(qc));
         }
 
         cnt = ReadCompactSize(s);
-        for (size_t i = 0; i < cnt; i++) {
+        for ([[maybe_unused]] const auto _ : irange::range(cnt)) {
             CQuorumSnapshot snap;
             ::Unserialize(s, snap);
             quorumSnapshotList.push_back(std::move(snap));
         }
 
         cnt = ReadCompactSize(s);
-        for (size_t i = 0; i < cnt; i++) {
+        for ([[maybe_unused]] const auto _ : irange::range(cnt)) {
             CSimplifiedMNListDiff mnlist;
             ::Unserialize(s, mnlist);
             mnListDiffList.push_back(std::move(mnlist));

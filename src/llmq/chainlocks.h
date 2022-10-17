@@ -19,8 +19,11 @@
 #include <atomic>
 #include <unordered_set>
 
+class CConnman;
 class CBlockIndex;
 class CScheduler;
+class CTxMemPool;
+class CSporkManager;
 
 namespace llmq
 {
@@ -111,9 +114,9 @@ private:
     void Cleanup();
 };
 
-extern CChainLocksHandler* chainLocksHandler;
+extern std::unique_ptr<CChainLocksHandler> chainLocksHandler;
 
-bool AreChainLocksEnabled();
+bool AreChainLocksEnabled(const CSporkManager& sporkManager);
 
 } // namespace llmq
 
