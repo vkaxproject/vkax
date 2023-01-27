@@ -2639,11 +2639,11 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>최종 블록 해시</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
+        <source>Latest BlockLocked block hash</source>
         <translation>최신 체인락스 블록 해시</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
+        <source>Latest BlockLocked block height</source>
         <translation>최신 체인락스 블록 높이</translation>
     </message>
     <message>
@@ -3692,7 +3692,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>%1 확인</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>체인락스로 잠김</translation>
     </message>
     <message>
@@ -3894,7 +3894,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>인스턴트샌드를 통해 검증됨</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>체인락스로 잠김</translation>
     </message>
     <message>

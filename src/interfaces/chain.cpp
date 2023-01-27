@@ -202,6 +202,10 @@ public:
     {
         m_notifications->NotifyChainLock(pindexChainLock, clsig);
     }
+    void NotifyBlockLock(const CBlockIndex* pindexBlockLock, const std::shared_ptr<const llmq::CBlockLockSig>& blsig) override
+    {
+        m_notifications->NotifyBlockLock(pindexBlockLock, blsig);
+    }
     void NotifyTransactionLock(const CTransactionRef &tx, const std::shared_ptr<const llmq::CInstantSendLock>& islock) override
     {
         m_notifications->NotifyTransactionLock(tx, islock);

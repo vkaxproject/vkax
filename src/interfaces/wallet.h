@@ -313,6 +313,10 @@ public:
     using ChainLockReceivedFn = std::function<void(int chainLockHeight)>;
     virtual std::unique_ptr<Handler> handleChainLockReceived(ChainLockReceivedFn fn) = 0;
 
+    //! Register handler for blocklock messages.
+    using BlockLockReceivedFn = std::function<void(int blockLockHeight)>;
+    virtual std::unique_ptr<Handler> handleBlockLockReceived(BlockLockReceivedFn fn) = 0;
+
     //! Register handler for watchonly changed messages.
     using WatchOnlyChangedFn = std::function<void(bool have_watch_only)>;
     virtual std::unique_ptr<Handler> handleWatchOnlyChanged(WatchOnlyChangedFn fn) = 0;
@@ -388,6 +392,7 @@ struct WalletTxStatus
     bool is_coinbase;
     bool is_in_main_chain;
     bool is_chainlocked;
+   bool is_blocklocked;
     bool is_islocked;
 };
 

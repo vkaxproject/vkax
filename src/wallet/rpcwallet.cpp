@@ -38,6 +38,7 @@
 #include <coinjoin/client.h>
 #include <coinjoin/options.h>
 #include <llmq/chainlocks.h>
+#include <llmq/blocklocks.h>
 #include <llmq/instantsend.h>
 
 #include <stdint.h>
@@ -99,13 +100,15 @@ static void WalletTxToJSON(interfaces::Chain& chain, interfaces::Chain::Lock& lo
     int confirms = wtx.GetDepthInMainChain(locked_chain);
     bool fLocked = llmq::quorumInstantSendManager->IsLocked(wtx.GetHash());
     bool chainlock = false;
+    bool blocklock = false;
     if (confirms > 0) {
-        chainlock = llmq::chainLocksHandler->HasChainLock(::BlockIndex()[wtx.hashBlock]->nHeight, wtx.hashBlock);
+        blocklock = llmq::blockLocksHandler->HasBlockLock(::BlockIndex()[wtx.hashBlock]->nHeight, wtx.hashBlock);
     }
     entry.pushKV("confirmations", confirms);
     entry.pushKV("instantlock", fLocked || chainlock);
     entry.pushKV("instantlock_internal", fLocked);
     entry.pushKV("chainlock", chainlock);
+    entry.pushKV("blocklock", blocklock);
     if (wtx.IsCoinBase())
         entry.pushKV("generated", true);
     if (confirms > 0)
@@ -1421,6 +1424,7 @@ static UniValue listtransactions(const JSONRPCRequest& request)
             "    \"instantlock\" : true|false, (boolean) Current transaction lock state. Available for 'send' and 'receive' category of transactions\n"
             "    \"instantlock_internal\" : true|false, (boolean) Current internal transaction lock state. Available for 'send' and 'receive' category of transactions\n"
             "    \"chainlock\" : true|false, (boolean) The state of the corresponding block chainlock\n"
+            "    \"blocklock\" : true|false, (boolean) The state of the corresponding block blocklock\n"
             "    \"trusted\" : xxx,           (boolean) Whether we consider the outputs of this unconfirmed transaction safe to spend.\n"
             "    \"blockhash\" : \"hashvalue\", (string) The block hash containing the transaction. Available for 'send' and 'receive'\n"
             "                                          category of transactions.\n"
@@ -1537,6 +1541,7 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
             "    \"instantlock\" : true|false, (boolean) Current transaction lock state. Available for 'send' and 'receive' category of transactions\n"
             "    \"instantlock_internal\" : true|false, (boolean) Current internal transaction lock state. Available for 'send' and 'receive' category of transactions\n"
             "    \"chainlock\" : true|false, (boolean) The state of the corresponding block chainlock\n"
+            "    \"blocklock\" : true|false, (boolean) The state of the corresponding block blocklock\n"
             "    \"blockhash\" : \"hashvalue\", (string) The block hash containing the transaction. Available for 'send' and 'receive' category of transactions.\n"
             "    \"blockindex\" : n,          (numeric) The index of the transaction in the block that includes it. Available for 'send' and 'receive' category of transactions.\n"
             "    \"blocktime\" : xxx,         (numeric) The block time in seconds since epoch (1 Jan 1970 GMT).\n"
@@ -1666,6 +1671,7 @@ static UniValue gettransaction(const JSONRPCRequest& request)
             "  \"instantlock\" : true|false, (boolean) Current transaction lock state\n"
             "  \"instantlock_internal\" : true|false, (boolean) Current internal transaction lock state\n"
             "  \"chainlock\" : true|false, (boolean) The state of the corresponding block chainlock\n"
+            "  \"blocklock\" : true|false, (boolean) The state of the corresponding block blocklock\n"
             "  \"confirmations\" : n,     (numeric) The number of blockchain confirmations\n"
             "  \"blockhash\" : \"hash\",    (string) The block hash\n"
             "  \"blockindex\" : xx,       (numeric) The index of the transaction in the block that includes it\n"

@@ -450,6 +450,12 @@ public:
             fn(bestChainLockHash, bestChainLockHeight);
         }));
     }
+    std::unique_ptr<Handler> handleNotifyBlockLock(NotifyBlockLockFn fn) override
+    {
+        return MakeHandler(::uiInterface.NotifyBlockLock_connect([fn](const std::string& bestBlockLockHash, int bestBlockLockHeight) {
+            fn(bestBlockLockHash, bestBlockLockHeight);
+        }));
+    }
     std::unique_ptr<Handler> handleNotifyHeaderTip(NotifyHeaderTipFn fn) override
     {
         return MakeHandler(

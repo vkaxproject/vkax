@@ -19,10 +19,11 @@ enum class LLMQType : uint8_t {
     LLMQ_400_85 = 3, // 400 members, 340 (85%) threshold, one every 24 hours
     LLMQ_100_67 = 4, // 100 members, 67 (67%) threshold, one per hour
     LLMQ_60_75 = 5,  // 60 members, 45 (75%) threshold, one every 12 hours
+    LLMQ_20_30 = 6,  // 20 members, 30 (30%) threshold, one per hour
 
     // for testing only
     LLMQ_TEST = 100, // 3 members, 2 (66%) threshold, one per hour. Params might differ when -llmqtestparams is used
-
+    LLMQ_TEST1 = 100, // 3 members, 2 (66%) threshold, one per hour. Params might differ when -llmqtestparams is used
     // for devnets only
     LLMQ_DEVNET = 101, // 12 members, 6 (50%) threshold, one per hour. Params might differ when -llmqdevnetparams is used
 
@@ -106,7 +107,7 @@ struct LLMQParams {
 };
 
 
-static constexpr std::array<LLMQParams, 11> available_llmqs = {
+static constexpr std::array<LLMQParams, 12> available_llmqs = {
 
     /**
      * llmq_test
@@ -256,6 +257,32 @@ static constexpr std::array<LLMQParams, 11> available_llmqs = {
 
         .keepOldConnections = 4,
         .recoveryMembers = 4,
+    },
+
+    /**
+     * llmq_20_30
+     * This quorum is deployed on mainnet and requires
+     * 20 participants
+     *
+     */
+
+    LLMQParams{
+        .type = LLMQType::LLMQ_20_30,
+        .name = "llmq_20_30",
+        .useRotation = false,
+        .size = 20,
+        .minSize = 10,
+        .threshold = 15,
+
+        .dkgInterval = 24, // one DKG per hour
+        .dkgPhaseBlocks = 2,
+        .dkgMiningWindowStart = 10, // dkgPhaseBlocks * 5 = after finalization
+        .dkgMiningWindowEnd = 18,
+        .dkgBadVotesThreshold = 40,
+
+        .signingActiveQuorumCount = 24, // a full day worth of LLMQs
+        .keepOldConnections = 5,
+        .recoveryMembers = 15,
     },
 
     /**

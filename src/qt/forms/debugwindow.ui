@@ -377,14 +377,14 @@
         </widget>
        </item>
        <item row="14" column="0">
-        <widget class="QLabel" name="bestChainLockHashLabel">
+        <widget class="QLabel" name="bestBlockLockHashLabel">
          <property name="text">
-          <string>Latest ChainLocked block hash</string>
+          <string>Latest BlockLocked block hash</string>
          </property>
         </widget>
        </item>
        <item row="14" column="1">
-        <widget class="QLabel" name="bestChainLockHash">
+        <widget class="QLabel" name="bestBlockLockHash">
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
@@ -400,14 +400,14 @@
         </widget>
        </item>
        <item row="15" column="0">
-        <widget class="QLabel" name="bestChainLockHeightLabel">
+        <widget class="QLabel" name="bestBlockLockHeightLabel">
          <property name="text">
-          <string>Latest ChainLocked block height</string>
+          <string>Latest BlockLocked block height</string>
          </property>
         </widget>
        </item>
        <item row="15" column="1">
-        <widget class="QLabel" name="bestChainLockHeight">
+        <widget class="QLabel" name="bestBlockLockHeight">
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>

@@ -275,7 +275,7 @@ private:
 
     mutable bool fIsChainlocked{false};
     mutable bool fIsInstantSendLocked{false};
-
+    mutable bool fIsBlocklocked{false};
 public:
     /**
      * Key/value map with information about the transaction.
@@ -490,6 +490,7 @@ public:
     bool IsInMainChain(interfaces::Chain::Lock& locked_chain) const { return GetDepthInMainChain(locked_chain) > 0; }
     bool IsLockedByInstantSend() const;
     bool IsChainLocked() const;
+    bool IsBlockLocked() const;
 
     /**
      * @return number of blocks to maturity for this transaction:
@@ -1173,6 +1174,9 @@ public:
     /** ChainLock received */
     boost::signals2::signal<void (int height)> NotifyChainLockReceived;
 
+    /** BlockLock received */
+    boost::signals2::signal<void (int height)> NotifyBlockLockReceived;
+
     /** Inquire whether this wallet broadcasts transactions. */
     bool GetBroadcastTransactions() const { return fBroadcastTransactions; }
     /** Set whether this wallet broadcasts transactions. */
@@ -1232,6 +1236,7 @@ public:
 
     void NotifyTransactionLock(const CTransactionRef &tx, const std::shared_ptr<const llmq::CInstantSendLock>& islock) override;
     void NotifyChainLock(const CBlockIndex* pindexChainLock, const std::shared_ptr<const llmq::CChainLockSig>& clsig) override;
+    void NotifyBlockLock(const CBlockIndex* pindexBlockLock, const std::shared_ptr<const llmq::CBlockLockSig>& blsig) override;
 
     /** Load a CGovernanceObject into m_gobjects. */
     bool LoadGovernanceObject(const CGovernanceObject& obj);

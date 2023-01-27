@@ -121,6 +121,9 @@ public:
     /** New chainlock block has been accepted */
     ADD_SIGNALS_DECL_WRAPPER(NotifyChainLock, void, const std::string& bestChainLockHash, int bestChainLockHeight);
 
+    /** New blocklock block has been accepted */
+    ADD_SIGNALS_DECL_WRAPPER(NotifyBlockLock, void, const std::string& bestBlockLockHash, int bestBlockLockHeight);
+
     /** Best header has changed */
     ADD_SIGNALS_DECL_WRAPPER(NotifyHeaderTip, void, bool, const CBlockIndex*);
 

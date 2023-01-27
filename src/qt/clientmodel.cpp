@@ -289,12 +289,12 @@ static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, int heig
     }
 }
 
-static void NotifyChainLock(ClientModel *clientmodel, const std::string& bestChainLockHash, int bestChainLockHeight)
+static void NotifyBlockLock(ClientModel *clientmodel, const std::string& bestBlockLockHash, int bestBlockLockHeight)
 {
-    // emits signal "chainlockChanged"
-    bool invoked = QMetaObject::invokeMethod(clientmodel, "chainLockChanged", Qt::QueuedConnection,
-                              Q_ARG(QString, QString::fromStdString(bestChainLockHash)),
-                              Q_ARG(int, bestChainLockHeight));
+    // emits signal "blocklockChanged"
+    bool invoked = QMetaObject::invokeMethod(clientmodel, "blockLockChanged", Qt::QueuedConnection,
+                              Q_ARG(QString, QString::fromStdString(bestBlockLockHash)),
+                              Q_ARG(int, bestBlockLockHeight));
     assert(invoked);
 }
 
@@ -319,7 +319,7 @@ void ClientModel::subscribeToCoreSignals()
     m_handler_notify_alert_changed = m_node.handleNotifyAlertChanged(std::bind(NotifyAlertChanged, this));
     m_handler_banned_list_changed = m_node.handleBannedListChanged(std::bind(BannedListChanged, this));
     m_handler_notify_block_tip = m_node.handleNotifyBlockTip(std::bind(BlockTipChanged, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, false));
-    m_handler_notify_chainlock = m_node.handleNotifyChainLock(std::bind(NotifyChainLock, this, std::placeholders::_1, std::placeholders::_2));
+    m_handler_notify_blocklock = m_node.handleNotifyBlockLock(std::bind(NotifyBlockLock, this, std::placeholders::_1, std::placeholders::_2));
     m_handler_notify_header_tip = m_node.handleNotifyHeaderTip(std::bind(BlockTipChanged, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, true));
     m_handler_notify_masternodelist_changed = m_node.handleNotifyMasternodeListChanged(std::bind(NotifyMasternodeListChanged, this, std::placeholders::_1));
     m_handler_notify_additional_data_sync_progess_changed = m_node.handleNotifyAdditionalDataSyncProgressChanged(std::bind(NotifyAdditionalDataSyncProgressChanged, this, std::placeholders::_1));
@@ -334,7 +334,7 @@ void ClientModel::unsubscribeFromCoreSignals()
     m_handler_notify_alert_changed->disconnect();
     m_handler_banned_list_changed->disconnect();
     m_handler_notify_block_tip->disconnect();
-    m_handler_notify_chainlock->disconnect();
+    m_handler_notify_blocklock->disconnect();
     m_handler_notify_header_tip->disconnect();
     m_handler_notify_masternodelist_changed->disconnect();
     m_handler_notify_additional_data_sync_progess_changed->disconnect();

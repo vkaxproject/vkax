@@ -3171,8 +3171,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>%1 xác nhận</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>được khoá với ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>được khoá với BlockLocks</translation>
     </message>
     <message>
         <source>verified via InstantSend</source>
@@ -3369,8 +3369,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>đã được xác minh với InstantSend</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>được khoá với ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>được khoá với BlockLocks</translation>
     </message>
     <message>
         <source>Received with</source>

@@ -96,7 +96,7 @@ private:
     std::unique_ptr<interfaces::Handler> m_handler_notify_alert_changed;
     std::unique_ptr<interfaces::Handler> m_handler_banned_list_changed;
     std::unique_ptr<interfaces::Handler> m_handler_notify_block_tip;
-    std::unique_ptr<interfaces::Handler> m_handler_notify_chainlock;
+    std::unique_ptr<interfaces::Handler> m_handler_notify_blocklock;
     std::unique_ptr<interfaces::Handler> m_handler_notify_header_tip;
     std::unique_ptr<interfaces::Handler> m_handler_notify_masternodelist_changed;
     std::unique_ptr<interfaces::Handler> m_handler_notify_additional_data_sync_progess_changed;
@@ -119,7 +119,7 @@ private:
 Q_SIGNALS:
     void numConnectionsChanged(int count);
     void masternodeListChanged() const;
-    void chainLockChanged(const QString& bestChainLockHash, int bestChainLockHeight);
+    void blockLockChanged(const QString& bestBlockLockHash, int bestBlockLockHeight);
     void numBlocksChanged(int count, const QDateTime& blockDate, const QString& blockHash, double nVerificationProgress, bool header);
     void additionalDataSyncProgressChanged(double nSyncProgress);
     void mempoolSizeChanged(long count, size_t mempoolSizeInBytes);

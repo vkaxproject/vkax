@@ -3413,8 +3413,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>включена в %1 блока</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>заключена чрез  ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>заключена чрез  BlockLocks</translation>
     </message>
     <message>
         <source>verified via InstantSend</source>
@@ -3611,8 +3611,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>потвърдено чрез InstantSend</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>заключена чрез  ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>заключена чрез  BlockLocks</translation>
     </message>
     <message>
         <source>Received with</source>

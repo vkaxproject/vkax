@@ -53,6 +53,7 @@
 
 #include <llmq/instantsend.h>
 #include <llmq/chainlocks.h>
+#include <llmq/blocklocks.h>
 
 #include <statsd_client.h>
 
@@ -2008,6 +2009,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
     }
 
+    if (pindex->pprev && pindex->phashBlock && llmq::blockLocksHandler->HasConflictingBlockLock(pindex->nHeight, pindex->GetBlockHash())) {
+        return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-blocklock");
+    }
+
     // verify that the view's current state corresponds to the previous block
     uint256 hashPrevBlock = pindex->pprev == nullptr ? uint256() : pindex->pprev->GetBlockHash();
     assert(hashPrevBlock == view.GetBestBlock());
@@ -2307,11 +2312,11 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             // skip txes that have no inputs
             if (tx->vin.empty()) continue;
             while (llmq::CInstantSendLockPtr conflictLock = llmq::quorumInstantSendManager->GetConflictingLock(*tx)) {
-                if (llmq::chainLocksHandler->HasChainLock(pindex->nHeight, pindex->GetBlockHash())) {
-                    LogPrint(BCLog::ALL, "ConnectBlock(VKAX): chain-locked transaction %s overrides islock %s\n",
+                if (llmq::blockLocksHandler->HasBlockLock(pindex->nHeight, pindex->GetBlockHash())) {
+                    LogPrint(BCLog::ALL, "ConnectBlock(VKAX): block-locked transaction %s overrides islock %s\n",
                             tx->GetHash().ToString(), ::SerializeHash(*conflictLock).ToString());
                     llmq::quorumInstantSendManager->RemoveConflictingLock(::SerializeHash(*conflictLock), *conflictLock);
-                } else {
+                }  else {
                     // The node which relayed this should switch to correct chain.
                     // TODO: relay instantsend data/proof.
                     return state.DoS(10, error("ConnectBlock(VKAX): transaction %s conflicts with transaction lock %s",
@@ -2886,7 +2891,7 @@ CBlockIndex* CChainState::FindMostWorkChain() {
             // for the most work chain if we come across them; we can't switch
             // to a chain unless we have all the non-active-chain parent blocks.
             bool fFailedChain = pindexTest->nStatus & BLOCK_FAILED_MASK;
-            bool fConflictingChain = pindexTest->nStatus & BLOCK_CONFLICT_CHAINLOCK;
+            bool fConflictingChain = pindexTest->nStatus & BLOCK_CONFLICT_BLOCKLOCK;
             bool fMissingData = !(pindexTest->nStatus & BLOCK_HAVE_DATA);
             if (fFailedChain || fMissingData || fConflictingChain) {
                 // Candidate chain is not usable (either invalid or conflicting or missing data)
@@ -2899,7 +2904,7 @@ CBlockIndex* CChainState::FindMostWorkChain() {
                         pindexFailed->nStatus |= BLOCK_FAILED_CHILD;
                     } else if (fConflictingChain) {
                         // We don't need data for conflciting blocks
-                        pindexFailed->nStatus |= BLOCK_CONFLICT_CHAINLOCK;
+                        pindexFailed->nStatus |= BLOCK_CONFLICT_BLOCKLOCK;
                     } else if (fMissingData) {
                         // If we're missing data, then add back to m_blocks_unlinked,
                         // so that if the block arrives in the future we can try adding
@@ -3189,7 +3194,7 @@ bool CChainState::PreciousBlock(CValidationState& state, const CChainParams& par
             // call preciousblock 2**31-1 times on the same set of tips...
             nBlockReverseSequenceId--;
         }
-        if (pindex->IsValid(BLOCK_VALID_TRANSACTIONS) && !(pindex->nStatus & BLOCK_CONFLICT_CHAINLOCK) && pindex->HaveTxsDownloaded()) {
+        if (pindex->IsValid(BLOCK_VALID_TRANSACTIONS) && !(pindex->nStatus & BLOCK_CONFLICT_BLOCKLOCK) && pindex->HaveTxsDownloaded()) {
             setBlockIndexCandidates.insert(pindex);
             PruneBlockIndexCandidates();
         }
@@ -3335,7 +3340,7 @@ bool CChainState::InvalidateBlock(CValidationState& state, const CChainParams& c
         // to setBlockIndexCandidates.
         BlockMap::iterator it = g_blockman.m_block_index.begin();
         while (it != g_blockman.m_block_index.end()) {
-            if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && !(it->second->nStatus & BLOCK_CONFLICT_CHAINLOCK) && it->second->HaveTxsDownloaded() && !setBlockIndexCandidates.value_comp()(it->second, m_chain.Tip())) {
+            if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && !(it->second->nStatus & BLOCK_CONFLICT_BLOCKLOCK) && it->second->HaveTxsDownloaded() && !setBlockIndexCandidates.value_comp()(it->second, m_chain.Tip())) {
                 setBlockIndexCandidates.insert(it->second);
             }
             it++;
@@ -3425,13 +3430,13 @@ bool CChainState::MarkConflictingBlock(CValidationState& state, const CChainPara
     // Now mark the blocks we just disconnected as descendants conflicting
     // (note this may not be all descendants).
     while (pindex_was_in_chain && conflicting_walk_tip != pindex) {
-        conflicting_walk_tip->nStatus |= BLOCK_CONFLICT_CHAINLOCK;
+        conflicting_walk_tip->nStatus |= BLOCK_CONFLICT_BLOCKLOCK;
         setBlockIndexCandidates.erase(conflicting_walk_tip);
         conflicting_walk_tip = conflicting_walk_tip->pprev;
     }
 
     // Mark the block itself as conflicting.
-    pindex->nStatus |= BLOCK_CONFLICT_CHAINLOCK;
+    pindex->nStatus |= BLOCK_CONFLICT_BLOCKLOCK;
     setBlockIndexCandidates.erase(pindex);
 
     // DisconnectTip will add transactions to disconnectpool; try to add these
@@ -3442,7 +3447,7 @@ bool CChainState::MarkConflictingBlock(CValidationState& state, const CChainPara
     // add it again.
     BlockMap::iterator it = g_blockman.m_block_index.begin();
     while (it != g_blockman.m_block_index.end()) {
-        if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && !(it->second->nStatus & BLOCK_CONFLICT_CHAINLOCK) && it->second->HaveTxsDownloaded() && !setBlockIndexCandidates.value_comp()(it->second, m_chain.Tip())) {
+        if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && !(it->second->nStatus & BLOCK_CONFLICT_BLOCKLOCK) && it->second->HaveTxsDownloaded() && !setBlockIndexCandidates.value_comp()(it->second, m_chain.Tip())) {
             setBlockIndexCandidates.insert(it->second);
         }
         it++;
@@ -3480,7 +3485,7 @@ void CChainState::ResetBlockFailureFlags(CBlockIndex *pindex) {
         if (!it->second->IsValid() && it->second->GetAncestor(nHeight) == pindex) {
             it->second->nStatus &= ~BLOCK_FAILED_MASK;
             setDirtyBlockIndex.insert(it->second);
-            if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && !(it->second->nStatus & BLOCK_CONFLICT_CHAINLOCK) && it->second->HaveTxsDownloaded() && setBlockIndexCandidates.value_comp()(m_chain.Tip(), it->second)) {
+            if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && !(it->second->nStatus & BLOCK_CONFLICT_BLOCKLOCK) && it->second->HaveTxsDownloaded() && setBlockIndexCandidates.value_comp()(m_chain.Tip(), it->second)) {
                 setBlockIndexCandidates.insert(it->second);
             }
             if (it->second == pindexBestInvalid) {
@@ -3497,7 +3502,7 @@ void CChainState::ResetBlockFailureFlags(CBlockIndex *pindex) {
         if (pindex->nStatus & BLOCK_FAILED_MASK) {
             pindex->nStatus &= ~BLOCK_FAILED_MASK;
             setDirtyBlockIndex.insert(pindex);
-            if (pindex->IsValid(BLOCK_VALID_TRANSACTIONS) && !(pindex->nStatus & BLOCK_CONFLICT_CHAINLOCK) && pindex->HaveTxsDownloaded() && setBlockIndexCandidates.value_comp()(m_chain.Tip(), pindex)) {
+            if (pindex->IsValid(BLOCK_VALID_TRANSACTIONS) && !(pindex->nStatus & BLOCK_CONFLICT_BLOCKLOCK) && pindex->HaveTxsDownloaded() && setBlockIndexCandidates.value_comp()(m_chain.Tip(), pindex)) {
                 setBlockIndexCandidates.insert(pindex);
             }
             if (pindex == pindexBestInvalid) {
@@ -3598,7 +3603,7 @@ void CChainState::ReceivedBlockTransactions(const CBlock& block, CBlockIndex* pi
                 pindex->nSequenceId = nBlockSequenceId++;
             }
             if (m_chain.Tip() == nullptr || !setBlockIndexCandidates.value_comp()(pindex, m_chain.Tip())) {
-                if (!(pindex->nStatus & BLOCK_CONFLICT_CHAINLOCK)) {
+                if (!(pindex->nStatus & BLOCK_CONFLICT_BLOCKLOCK)) {
                     setBlockIndexCandidates.insert(pindex);
                 }
             }
@@ -3928,6 +3933,8 @@ bool BlockManager::AcceptBlockHeader(const CBlockHeader& block, CValidationState
                 return state.Invalid(error("%s: block %s is marked invalid", __func__, hash.ToString()), 0, "duplicate");
             if (pindex->nStatus & BLOCK_CONFLICT_CHAINLOCK)
                 return state.Invalid(error("%s: block %s is marked conflicting", __func__, hash.ToString()), 0, "duplicate");
+            if (pindex->nStatus & BLOCK_CONFLICT_BLOCKLOCK)
+                return state.Invalid(error("%s: block %s is marked conflicting", __func__, hash.ToString()), 0, "duplicate");
             return true;
         }
 
@@ -3945,9 +3952,9 @@ bool BlockManager::AcceptBlockHeader(const CBlockHeader& block, CValidationState
         if (pindexPrev->nStatus & BLOCK_FAILED_MASK)
             return state.DoS(100, error("%s: prev block invalid", __func__), REJECT_INVALID, "bad-prevblk");
 
-        if (pindexPrev->nStatus & BLOCK_CONFLICT_CHAINLOCK)
-            // it's ok-ish, the other node is probably missing the latest chainlock
-            return state.DoS(10, error("%s: prev block %s conflicts with chainlock", __func__, block.hashPrevBlock.ToString()), REJECT_INVALID, "bad-prevblk-chainlock");
+        if (pindexPrev->nStatus & BLOCK_CONFLICT_BLOCKLOCK)
+            // it's ok-ish, the other node is probably missing the latest blocklock
+            return state.DoS(10, error("%s: prev block %s conflicts with blocklock", __func__, block.hashPrevBlock.ToString()), REJECT_INVALID, "bad-prevblk-blocklock");
 
         if (!ContextualCheckBlockHeader(block, state, chainparams, pindexPrev, GetAdjustedTime()))
             return error("%s: Consensus::ContextualCheckBlockHeader: %s, %s", __func__, hash.ToString(), FormatStateMessage(state));
@@ -3990,11 +3997,11 @@ bool BlockManager::AcceptBlockHeader(const CBlockHeader& block, CValidationState
             }
         }
 
-        if (llmq::chainLocksHandler->HasConflictingChainLock(pindexPrev->nHeight + 1, hash)) {
+        if (llmq::blockLocksHandler->HasConflictingBlockLock(pindexPrev->nHeight + 1, hash)) {
             if (pindex == nullptr) {
-                AddToBlockIndex(block, BLOCK_CONFLICT_CHAINLOCK);
+                AddToBlockIndex(block, BLOCK_CONFLICT_BLOCKLOCK);
             }
-            return state.DoS(10, error("%s: header %s conflicts with chainlock", __func__, hash.ToString()), REJECT_INVALID, "bad-chainlock");
+            return state.DoS(10, error("%s: header %s conflicts with blocklock", __func__, hash.ToString()), REJECT_INVALID, "bad-blocklock");
         }
     }
     if (pindex == nullptr)
@@ -4191,6 +4198,10 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
     uint256 hash = block.GetHash();
     if (llmq::chainLocksHandler->HasConflictingChainLock(pindexPrev->nHeight + 1, hash)) {
         return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
+    }
+
+    if (llmq::blockLocksHandler->HasConflictingBlockLock(pindexPrev->nHeight + 1, hash)) {
+        return state.DoS(10, error("%s: conflicting with blocklock", __func__), REJECT_INVALID, "bad-blocklock");
     }
 
     CCoinsViewCache viewNew(&::ChainstateActive().CoinsTip());
@@ -5085,7 +5096,7 @@ void CChainState::CheckBlockIndex(const Consensus::Params& consensusParams)
     while (pindex != nullptr) {
         nNodes++;
         if (pindexFirstInvalid == nullptr && pindex->nStatus & BLOCK_FAILED_VALID) pindexFirstInvalid = pindex;
-        if (pindexFirstConflicing == nullptr && pindex->nStatus & BLOCK_CONFLICT_CHAINLOCK) pindexFirstConflicing = pindex;
+        if (pindexFirstConflicing == nullptr && pindex->nStatus & BLOCK_CONFLICT_BLOCKLOCK) pindexFirstConflicing = pindex;
         if (pindexFirstMissing == nullptr && !(pindex->nStatus & BLOCK_HAVE_DATA)) pindexFirstMissing = pindex;
         if (pindexFirstNeverProcessed == nullptr && pindex->nTx == 0) pindexFirstNeverProcessed = pindex;
         if (pindex->pprev != nullptr && pindexFirstNotTreeValid == nullptr && (pindex->nStatus & BLOCK_VALID_MASK) < BLOCK_VALID_TREE) pindexFirstNotTreeValid = pindex;
@@ -5128,7 +5139,7 @@ void CChainState::CheckBlockIndex(const Consensus::Params& consensusParams)
         }
         if (pindexFirstConflicing == nullptr) {
             // Checks for not-conflciting blocks.
-            assert((pindex->nStatus & BLOCK_CONFLICT_CHAINLOCK) == 0); // The conflicting mask cannot be set for blocks without conflicting parents.
+            assert((pindex->nStatus & BLOCK_CONFLICT_BLOCKLOCK) == 0); // The conflicting mask cannot be set for blocks without conflicting parents.
         }
         if (!CBlockIndexWorkComparator()(pindex, m_chain.Tip()) && pindexFirstNeverProcessed == nullptr) {
             if (pindexFirstInvalid == nullptr && pindexFirstConflicing == nullptr) {

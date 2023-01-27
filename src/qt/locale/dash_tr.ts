@@ -2639,11 +2639,11 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Son block hash'ı</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
+        <source>Latest BlockLocked block hash</source>
         <translation>En son ZincirKilitli blok hash'ı</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
+        <source>Latest BlockLocked block height</source>
         <translation>En son ZincirKilitli blok yüksekliği</translation>
     </message>
     <message>
@@ -3692,7 +3692,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>%1 doğrulama</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>ZincirKilidi ile kilitli</translation>
     </message>
     <message>
@@ -3894,7 +3894,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>AnındaGönder ile onaylandı</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>ZincirKilidi ile kilitli</translation>
     </message>
     <message>

@@ -86,6 +86,7 @@ WalletTxStatus MakeWalletTxStatus(interfaces::Chain::Lock& locked_chain, const C
     result.is_coinbase = wtx.IsCoinBase();
     result.is_in_main_chain = wtx.IsInMainChain(locked_chain);
     result.is_chainlocked = wtx.IsChainLocked();
+    result.is_blocklocked = wtx.IsBlockLocked();
     result.is_islocked = wtx.IsLockedByInstantSend();
     return result;
 }
@@ -555,6 +556,11 @@ public:
     {
         return MakeHandler(m_wallet->NotifyChainLockReceived.connect(
             [fn](int chainLockHeight) { fn(chainLockHeight); }));
+    }
+    std::unique_ptr<Handler> handleBlockLockReceived(BlockLockReceivedFn fn) override
+    {
+        return MakeHandler(m_wallet->NotifyBlockLockReceived.connect(
+            [fn](int blockLockHeight) { fn(blockLockHeight); }));
     }
     std::unique_ptr<Handler> handleWatchOnlyChanged(WatchOnlyChangedFn fn) override
     {

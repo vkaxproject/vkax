@@ -125,6 +125,7 @@ enum BlockStatus: uint32_t {
     BLOCK_FAILED_MASK        =   BLOCK_FAILED_VALID | BLOCK_FAILED_CHILD,
 
     BLOCK_CONFLICT_CHAINLOCK =   128, //!< conflicts with chainlock system
+    BLOCK_CONFLICT_BLOCKLOCK =   256, //!< conflicts with blocklock system
 };
 
 /** The block chain is a tree shaped structure starting with the

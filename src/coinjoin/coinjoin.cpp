@@ -8,6 +8,7 @@
 #include <chain.h>
 #include <chainparams.h>
 #include <consensus/validation.h>
+#include <llmq/blocklocks.h>
 #include <llmq/chainlocks.h>
 #include <llmq/instantsend.h>
 #include <masternode/node.h>
@@ -119,10 +120,10 @@ bool CCoinJoinBroadcastTx::CheckSignature(const CBLSPublicKey& blsPubKey) const
 
 bool CCoinJoinBroadcastTx::IsExpired(const CBlockIndex* pindex) const
 {
-    // expire confirmed DSTXes after ~1h since confirmation or chainlocked confirmation
+    // expire confirmed DSTXes after ~1h since confirmation or blockocked confirmation
     if (nConfirmedHeight == -1 || pindex->nHeight < nConfirmedHeight) return false; // not mined yet
     if (pindex->nHeight - nConfirmedHeight > 24) return true; // mined more than an hour ago
-    return llmq::chainLocksHandler->HasChainLock(pindex->nHeight, *pindex->phashBlock);
+    return llmq::blockLocksHandler->HasBlockLock(pindex->nHeight, *pindex->phashBlock);
 }
 
 bool CCoinJoinBroadcastTx::IsValidStructure() const
@@ -455,6 +456,13 @@ void CCoinJoin::CheckDSTXes(const CBlockIndex* pindex)
 }
 
 void CCoinJoin::UpdatedBlockTip(const CBlockIndex* pindex)
+{
+    if (pindex && masternodeSync.IsBlockchainSynced()) {
+        CheckDSTXes(pindex);
+    }
+}
+
+void CCoinJoin::NotifyBlockLock(const CBlockIndex* pindex)
 {
     if (pindex && masternodeSync.IsBlockchainSynced()) {
         CheckDSTXes(pindex);

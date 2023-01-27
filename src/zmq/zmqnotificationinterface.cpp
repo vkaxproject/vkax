@@ -34,6 +34,7 @@ CZMQNotificationInterface* CZMQNotificationInterface::Create()
     std::map<std::string, CZMQNotifierFactory> factories;
     factories["pubhashblock"] = CZMQAbstractNotifier::Create<CZMQPublishHashBlockNotifier>;
     factories["pubhashchainlock"] = CZMQAbstractNotifier::Create<CZMQPublishHashChainLockNotifier>;
+    factories["pubhashblocklock"] = CZMQAbstractNotifier::Create<CZMQPublishHashBlockLockNotifier>;
     factories["pubhashtx"] = CZMQAbstractNotifier::Create<CZMQPublishHashTransactionNotifier>;
     factories["pubhashtxlock"] = CZMQAbstractNotifier::Create<CZMQPublishHashTransactionLockNotifier>;
     factories["pubhashgovernancevote"] = CZMQAbstractNotifier::Create<CZMQPublishHashGovernanceVoteNotifier>;
@@ -42,7 +43,9 @@ CZMQNotificationInterface* CZMQNotificationInterface::Create()
     factories["pubhashrecoveredsig"] = CZMQAbstractNotifier::Create<CZMQPublishHashRecoveredSigNotifier>;
     factories["pubrawblock"] = CZMQAbstractNotifier::Create<CZMQPublishRawBlockNotifier>;
     factories["pubrawchainlock"] = CZMQAbstractNotifier::Create<CZMQPublishRawChainLockNotifier>;
+    factories["pubrawblocklock"] = CZMQAbstractNotifier::Create<CZMQPublishRawBlockLockNotifier>;
     factories["pubrawchainlocksig"] = CZMQAbstractNotifier::Create<CZMQPublishRawChainLockSigNotifier>;
+    factories["pubrawblocklocksig"] = CZMQAbstractNotifier::Create<CZMQPublishRawBlockLockSigNotifier>;
     factories["pubrawtx"] = CZMQAbstractNotifier::Create<CZMQPublishRawTransactionNotifier>;
     factories["pubrawtxlock"] = CZMQAbstractNotifier::Create<CZMQPublishRawTransactionLockNotifier>;
     factories["pubrawtxlocksig"] = CZMQAbstractNotifier::Create<CZMQPublishRawTransactionLockSigNotifier>;
@@ -156,6 +159,13 @@ void CZMQNotificationInterface::NotifyChainLock(const CBlockIndex *pindex, const
 {
     TryForEachAndRemoveFailed(notifiers, [pindex, &clsig](CZMQAbstractNotifier* notifier) {
         return notifier->NotifyChainLock(pindex, clsig);
+    });
+}
+
+void CZMQNotificationInterface::NotifyBlockLock(const CBlockIndex *pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig)
+{
+    TryForEachAndRemoveFailed(notifiers, [pindex, &blsig](CZMQAbstractNotifier* notifier) {
+        return notifier->NotifyBlockLock(pindex, blsig);
     });
 }
 

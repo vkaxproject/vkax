@@ -166,6 +166,7 @@ const CLogCategoryDesc LogCategories[] =
 
     //Start Vkax
     {BCLog::CHAINLOCKS, "chainlocks"},
+    {BCLog::BLOCKLOCKS, "blocklocks"},
     {BCLog::GOBJECT, "gobject"},
     {BCLog::INSTANTSEND, "instantsend"},
     {BCLog::LLMQ, "llmq"},

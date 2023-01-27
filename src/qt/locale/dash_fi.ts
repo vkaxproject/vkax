@@ -2639,11 +2639,11 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Viimeisin lohkon tarkiste</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
+        <source>Latest BlockLocked block hash</source>
         <translation>Viimeisin Ketjulukitun lohkon tarkiste</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
+        <source>Latest BlockLocked block height</source>
         <translation>Viimeisin Ketjulukittu lohko</translation>
     </message>
     <message>
@@ -3695,8 +3695,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>%1 vahvistusta</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>lukittu ChainLocks:illa</translation>
+        <source>locked via BlockLocks</source>
+        <translation>lukittu BlockLocks:illa</translation>
     </message>
     <message>
         <source>verified via InstantSend</source>
@@ -3897,8 +3897,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>vahvistettu InstantSend:illä</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>lukittu ChainLocks:illa</translation>
+        <source>locked via BlockLocks</source>
+        <translation>lukittu BlockLocks:illa</translation>
     </message>
     <message>
         <source>Received with</source>

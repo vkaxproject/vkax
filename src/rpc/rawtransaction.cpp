@@ -38,6 +38,7 @@
 #include <evo/specialtx.h>
 
 #include <llmq/chainlocks.h>
+#include <llmq/blocklocks.h>
 #include <llmq/instantsend.h>
 
 #include <numeric>
@@ -83,6 +84,7 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
     TxToUniv(tx, uint256(), entry, true, &txSpentInfo);
 
     bool chainLock = false;
+    bool blockLock = false;
     if (!hashBlock.IsNull()) {
         LOCK(cs_main);
 
@@ -96,6 +98,7 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
                 entry.pushKV("blocktime", pindex->GetBlockTime());
 
                 chainLock = llmq::chainLocksHandler->HasChainLock(pindex->nHeight, pindex->GetBlockHash());
+                blockLock = llmq::blockLocksHandler->HasBlockLock(pindex->nHeight, pindex->GetBlockHash());
             } else {
                 entry.pushKV("height", -1);
                 entry.pushKV("confirmations", 0);
@@ -104,9 +107,10 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
     }
 
     bool fLocked = llmq::quorumInstantSendManager->IsLocked(txid);
-    entry.pushKV("instantlock", fLocked || chainLock);
+    entry.pushKV("instantlock", fLocked || chainLock || blockLock);
     entry.pushKV("instantlock_internal", fLocked);
     entry.pushKV("chainlock", chainLock);
+    entry.pushKV("blocklock", blockLock);
 }
 
 static UniValue getrawtransaction(const JSONRPCRequest& request)
@@ -182,6 +186,7 @@ static UniValue getrawtransaction(const JSONRPCRequest& request)
             "  \"instantlock\" : true|false, (boolean) Current transaction lock state\n"
             "  \"instantlock_internal\" : true|false, (boolean) Current internal transaction lock state\n"
             "  \"chainlock\" : true|false, (boolean) The state of the corresponding block chainlock\n"
+            "  \"blocklock\" : true|false, (boolean) The state of the corresponding block blocklock\n"
             "}\n"
                     },
                 },

@@ -521,7 +521,7 @@ static bool EvalSpork(Consensus::LLMQType llmqType, int64_t spork_value)
     if (spork_value == 0) {
         return true;
     }
-    if (spork_value == 1 && llmqType != Consensus::LLMQType::LLMQ_100_67 && llmqType != Consensus::LLMQType::LLMQ_400_60 && llmqType != Consensus::LLMQType::LLMQ_400_85) {
+    if (spork_value == 1 && llmqType != Consensus::LLMQType::LLMQ_20_30 && llmqType != Consensus::LLMQType::LLMQ_100_67 && llmqType != Consensus::LLMQType::LLMQ_400_60 && llmqType != Consensus::LLMQType::LLMQ_400_85) {
         return true;
     }
     return false;
@@ -578,6 +578,7 @@ bool CLLMQUtils::IsDIP0024Active(const CBlockIndex* pindex)
 bool CLLMQUtils::IsInstantSendLLMQTypeShared()
 {
     if (Params().GetConsensus().llmqTypeInstantSend == Params().GetConsensus().llmqTypeChainLocks ||
+        Params().GetConsensus().llmqTypeInstantSend == Params().GetConsensus().llmqTypeBlockLocks ||
         Params().GetConsensus().llmqTypeInstantSend == Params().GetConsensus().llmqTypePlatform ||
         Params().GetConsensus().llmqTypeInstantSend == Params().GetConsensus().llmqTypeMnhf) {
         return true;
@@ -822,6 +823,7 @@ bool CLLMQUtils::IsQuorumTypeEnabledInternal(Consensus::LLMQType llmqType, const
     {
         case Consensus::LLMQType::LLMQ_TEST_INSTANTSEND:
         case Consensus::LLMQType::LLMQ_DEVNET:
+        case Consensus::LLMQType::LLMQ_20_30:
         case Consensus::LLMQType::LLMQ_50_60: {
             if (IsInstantSendLLMQTypeShared()) {
                 break;

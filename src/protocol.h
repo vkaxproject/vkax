@@ -293,6 +293,7 @@ extern const char *QSIGSHARE;
 extern const char* QGETDATA;
 extern const char* QDATA;
 extern const char *CLSIG;
+extern const char *BLSIG;
 extern const char *ISLOCK;
 extern const char *ISDLOCK;
 extern const char *MNAUTH;
@@ -468,6 +469,7 @@ enum GetDataMsg {
     MSG_CLSIG = 29,
     MSG_ISLOCK = 30,
     MSG_ISDLOCK = 31,
+    MSG_BLSIG = 32,
 };
 
 /** inv message data */

@@ -2639,11 +2639,11 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>直近のブロックハッシュ</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
+        <source>Latest BlockLocked block hash</source>
         <translation>最新のチェーンロックされたブロックハッシュ</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
+        <source>Latest BlockLocked block height</source>
         <translation>最新のチェーンロックされたブロックの高さ</translation>
     </message>
     <message>
@@ -3692,7 +3692,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>%1の確認</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>チェーンロックでロック中</translation>
     </message>
     <message>
@@ -3894,7 +3894,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>InstantSendで検証済み</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>チェーンロックでロック中</translation>
     </message>
     <message>

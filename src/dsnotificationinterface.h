@@ -28,6 +28,7 @@ protected:
     void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindexDisconnected) override;
     void NotifyMasternodeListChanged(bool undo, const CDeterministicMNList& oldMNList, const CDeterministicMNListDiff& diff) override;
     void NotifyChainLock(const CBlockIndex* pindex, const std::shared_ptr<const llmq::CChainLockSig>& clsig) override;
+    void NotifyBlockLock(const CBlockIndex* pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig) override;
 
 private:
     CConnman& connman;

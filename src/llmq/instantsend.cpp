@@ -5,6 +5,7 @@
 #include <llmq/instantsend.h>
 
 #include <llmq/chainlocks.h>
+#include <llmq/blocklocks.h>
 #include <llmq/quorums.h>
 #include <llmq/utils.h>
 #include <llmq/commitment.h>
@@ -506,7 +507,7 @@ void CInstantSendManager::ProcessTx(const CTransaction& tx, bool fRetroactive, c
 
     // Only sign for inlocks or islocks if mempool IS signing is enabled.
     // However, if we are processing a tx because it was included in a block we should
-    // sign even if mempool IS signing is disabled. This allows a ChainLock to happen on this
+    // sign even if mempool IS signing is disabled. This allows a ChainLock or BlockLock to happen on this
     // block after we retroactively locked all transactions.
     if (!IsInstantSendMempoolSigningEnabled() && !fRetroactive) return;
 
@@ -625,9 +626,9 @@ bool CInstantSendManager::CheckCanLock(const COutPoint& outpoint, bool printDebu
         nTxAge = ::ChainActive().Height() - pindexMined->nHeight + 1;
     }
 
-    if (nTxAge < nInstantSendConfirmationsRequired && !llmq::chainLocksHandler->HasChainLock(pindexMined->nHeight, pindexMined->GetBlockHash())) {
+    if (nTxAge < nInstantSendConfirmationsRequired && !llmq::blockLocksHandler->HasBlockLock(pindexMined->nHeight, pindexMined->GetBlockHash()) && !llmq::chainLocksHandler->HasChainLock(pindexMined->nHeight, pindexMined->GetBlockHash())) {
         if (printDebug) {
-            LogPrint(BCLog::INSTANTSEND, "CInstantSendManager::%s -- txid=%s: outpoint %s too new and not ChainLocked. nTxAge=%d, nInstantSendConfirmationsRequired=%d\n", __func__,
+            LogPrint(BCLog::INSTANTSEND, "CInstantSendManager::%s -- txid=%s: outpoint %s too new and not BlockLock or ChainLocked. nTxAge=%d, nInstantSendConfirmationsRequired=%d\n", __func__,
                      txHash.ToString(), outpoint.ToStringShort(), nTxAge, nInstantSendConfirmationsRequired);
         }
         return false;
@@ -1073,6 +1074,11 @@ void CInstantSendManager::ProcessInstantSendLock(NodeId from, const uint256& has
                      islock->txid.ToString(), hash.ToString(), hashBlock.ToString(), from);
             return;
         }
+        if (pindexMined != nullptr && llmq::blockLocksHandler->HasBlockLock(pindexMined->nHeight, pindexMined->GetBlockHash())) {
+            LogPrint(BCLog::INSTANTSEND, "CInstantSendManager::%s -- txlock=%s, islock=%s: dropping islock as it already got a BlockLock in block %s, peer=%d\n", __func__,
+                     islock->txid.ToString(), hash.ToString(), hashBlock.ToString(), from);
+            return;
+        }
     }
 
     const auto sameTxIsLock = db.GetInstantSendLockByTxid(islock->txid);
@@ -1217,6 +1223,10 @@ void CInstantSendManager::BlockConnected(const std::shared_ptr<const CBlock>& pb
                 ProcessTx(*tx, true, Params().GetConsensus());
                 // TX is not locked, so make sure it is tracked
                 AddNonLockedTx(tx, pindex);
+            } else if (!IsLocked(tx->GetHash()) && !blockLocksHandler->HasBlockLock(pindex->nHeight, pindex->GetBlockHash())) {
+                ProcessTx(*tx, true, Params().GetConsensus());
+                // TX is not locked, so make sure it is tracked
+                AddNonLockedTx(tx, pindex);
             } else {
                 // TX is locked, so make sure we don't track it anymore
                 LOCK(cs);
@@ -1329,6 +1339,11 @@ void CInstantSendManager::NotifyChainLock(const CBlockIndex* pindexChainLock)
     HandleFullyConfirmedBlock(pindexChainLock);
 }
 
+void CInstantSendManager::NotifyBlockLock(const CBlockIndex* pindexBlockLock)
+{
+    HandleFullyConfirmedBlock(pindexBlockLock);
+}
+
 void CInstantSendManager::UpdatedBlockTip(const CBlockIndex* pindexNew)
 {
     if (!fUpgradedDB) {
@@ -1345,6 +1360,11 @@ void CInstantSendManager::UpdatedBlockTip(const CBlockIndex* pindexNew)
         return;
     }
 
+   bool BlockLockActive = pindexNew->pprev && pindexNew->pprev->nHeight >= Params().GetConsensus().nBLHeight;
+    if (AreBlockLocksEnabled() && BlockLockActive) {
+        // Nothing to do here. We should keep all islocks and let blocklocks handle them.
+        return;
+    }
     int nConfirmedHeight = pindexNew->nHeight - Params().GetConsensus().nInstantSendKeepLock;
     const CBlockIndex* pindex = pindexNew->GetAncestor(nConfirmedHeight);
 
@@ -1379,7 +1399,7 @@ void CInstantSendManager::HandleFullyConfirmedBlock(const CBlockIndex* pindex)
 
     db.RemoveArchivedInstantSendLocks(pindex->nHeight - 100);
 
-    // Find all previously unlocked TXs that got locked by this fully confirmed (ChainLock) block and remove them
+    // Find all previously unlocked TXs that got locked by this fully confirmed (ChainLock) and blockLock block and remove them
     // from the nonLockedTxs map. Also collect all children of these TXs and mark them for retrying of IS locking.
     std::vector<uint256> toRemove;
     for (const auto& p : nonLockedTxs) {
@@ -1469,12 +1489,28 @@ void CInstantSendManager::ResolveBlockConflicts(const uint256& islockHash, const
         }
     }
 
+    bool hasBlockLockedConflict = false;
+    for (const auto& p : conflicts) {
+        auto pindex = p.first;
+        if (blockLocksHandler->HasBlockLock(pindex->nHeight, pindex->GetBlockHash())) {
+            hasBlockLockedConflict = true;
+            break;
+        }
+    }
+
     // If a conflict was mined into a ChainLocked block, then we have no other choice and must prune the ISLOCK and all
     // chained ISLOCKs that build on top of this one. The probability of this is practically zero and can only happen
     // when large parts of the masternode network are controlled by an attacker. In this case we must still find consensus
     // and its better to sacrifice individual ISLOCKs then to sacrifice whole ChainLocks.
     if (hasChainLockedConflict) {
         LogPrintf("CInstantSendManager::%s -- txid=%s, islock=%s: at least one conflicted TX already got a ChainLock\n", __func__,
+                  islock.txid.ToString(), islockHash.ToString());
+        RemoveConflictingLock(islockHash, islock);
+        return;
+    }
+
+    if (hasBlockLockedConflict) {
+        LogPrintf("CInstantSendManager::%s -- txid=%s, islock=%s: at least one conflicted TX already got a BlockLock\n", __func__,
                   islock.txid.ToString(), islockHash.ToString());
         RemoveConflictingLock(islockHash, islock);
         return;
@@ -1515,7 +1551,7 @@ void CInstantSendManager::ResolveBlockConflicts(const uint256& islockHash, const
     if (activateBestChain) {
         CValidationState state;
         if (!ActivateBestChain(state, Params())) {
-            LogPrintf("CChainLocksHandler::%s -- ActivateBestChain failed: %s\n", __func__, FormatStateMessage(state));
+            LogPrintf("CBlockLocksHandler::%s -- ActivateBestChain failed: %s\n", __func__, FormatStateMessage(state));
             // This should not have happened and we are in a state were it's not safe to continue anymore
             assert(false);
         }

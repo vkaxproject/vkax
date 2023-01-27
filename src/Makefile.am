@@ -211,8 +211,10 @@ BITCOIN_CORE_H = \
   limitedmap.h \
   llmq/quorums.h \
   llmq/blockprocessor.h \
+  llmq/blocklocks.h \
   llmq/commitment.h \
   llmq/chainlocks.h \
+  llmq/blsig.h \
   llmq/clsig.h \
   llmq/debug.h \
   llmq/dkgsessionhandler.h \
@@ -398,8 +400,10 @@ libdash_server_a_SOURCES = \
   governance/votedb.cpp \
   llmq/quorums.cpp \
   llmq/blockprocessor.cpp \
+  llmq/blocklocks.cpp \
   llmq/commitment.cpp \
   llmq/chainlocks.cpp \
+  llmq/blsig.cpp \
   llmq/clsig.cpp \
   llmq/debug.cpp \
   llmq/dkgsessionhandler.cpp \

@@ -30,6 +30,7 @@ class CTxMemPool;
 enum class MemPoolRemovalReason;
 
 namespace llmq {
+    class CBlockLockSig;
     class CChainLockSig;
     struct CInstantSendLock;
     class CRecoveredSig;
@@ -133,6 +134,7 @@ protected:
      */
     virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindexDisconnected) {}
     virtual void NotifyTransactionLock(const CTransactionRef &tx, const std::shared_ptr<const llmq::CInstantSendLock>& islock) {}
+    virtual void NotifyBlockLock(const CBlockIndex* pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig) {}
     virtual void NotifyChainLock(const CBlockIndex* pindex, const std::shared_ptr<const llmq::CChainLockSig>& clsig) {}
     virtual void NotifyGovernanceVote(const std::shared_ptr<const CGovernanceVote>& vote) {}
     virtual void NotifyGovernanceObject(const std::shared_ptr<const CGovernanceObject>& object) {}
@@ -209,6 +211,7 @@ public:
     void BlockDisconnected(const std::shared_ptr<const CBlock> &, const CBlockIndex* pindexDisconnected);
     void NotifyTransactionLock(const CTransactionRef &tx, const std::shared_ptr<const llmq::CInstantSendLock>& islock);
     void NotifyChainLock(const CBlockIndex* pindex, const std::shared_ptr<const llmq::CChainLockSig>& clsig);
+    void NotifyBlockLock(const CBlockIndex* pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig);
     void NotifyGovernanceVote(const std::shared_ptr<const CGovernanceVote>& vote);
     void NotifyGovernanceObject(const std::shared_ptr<const CGovernanceObject>& object);
     void NotifyInstantSendDoubleSpendAttempt(const CTransactionRef &currentTx, const CTransactionRef &previousTx);

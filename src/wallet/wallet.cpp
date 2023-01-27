@@ -47,6 +47,7 @@
 
 #include <llmq/instantsend.h>
 #include <llmq/chainlocks.h>
+#include <llmq/blocklocks.h>
 
 #include <assert.h>
 
@@ -5625,6 +5626,11 @@ void CWallet::NotifyChainLock(const CBlockIndex* pindexChainLock, const std::sha
     NotifyChainLockReceived(pindexChainLock->nHeight);
 }
 
+void CWallet::NotifyBlockLock(const CBlockIndex* pindexBlockLock, const std::shared_ptr<const llmq::CBlockLockSig>& blsig)
+{
+    NotifyBlockLockReceived(pindexBlockLock->nHeight);
+}
+
 bool CWallet::LoadGovernanceObject(const CGovernanceObject& obj)
 {
     AssertLockHeld(cs_wallet);
@@ -5685,6 +5691,8 @@ bool CWalletTx::IsLockedByInstantSend() const
         fIsInstantSendLocked = false;
     } else if (!fIsInstantSendLocked) {
         fIsInstantSendLocked = llmq::quorumInstantSendManager->IsLocked(GetHash());
+    } else if (fIsBlocklocked) {
+        fIsInstantSendLocked = false;
     }
     return fIsInstantSendLocked;
 }
@@ -5700,6 +5708,19 @@ bool CWalletTx::IsChainLocked() const
     }
     return fIsChainlocked;
 }
+
+bool CWalletTx::IsBlockLocked() const
+{
+    if (!fIsBlocklocked) {
+        AssertLockHeld(cs_main);
+        CBlockIndex* pIndex = LookupBlockIndex(hashBlock);
+        if (pIndex != nullptr) {
+            fIsBlocklocked = llmq::blockLocksHandler->HasBlockLock(pIndex->nHeight, hashBlock);
+        }
+    }
+    return fIsBlocklocked;
+}
+
 
 int CWalletTx::GetBlocksToMaturity(interfaces::Chain::Lock& locked_chain) const
 {

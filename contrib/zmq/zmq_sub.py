@@ -42,6 +42,7 @@ class ZMQHandler():
 
         self.zmqSubSocket = self.zmqContext.socket(zmq.SUB)
         self.zmqSubSocket.setsockopt(zmq.RCVHWM, 0)
+        self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "hashblocklock")
         self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "hashblock")
         self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "hashchainlock")
         self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "hashtx")
@@ -50,6 +51,8 @@ class ZMQHandler():
         self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "hashgovernanceobject")
         self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "hashinstantsenddoublespend")
         self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "rawblock")
+        self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "rawblocklock")
+        self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "rawblocklocksig")
         self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "rawchainlock")
         self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "rawchainlocksig")
         self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, "rawtx")
@@ -76,6 +79,9 @@ class ZMQHandler():
         elif topic == b"hashchainlock":
             print('- HASH CHAINLOCK ('+sequence+') -')
             print(body.hex())
+        elif topic == b"hashblocklock":
+            print('- HASH BLOCKLOCK ('+sequence+') -')
+            print(body.hex())
         elif topic == b"hashtx":
             print ('- HASH TX ('+sequence+') -')
             print(body.hex())
@@ -99,6 +105,12 @@ class ZMQHandler():
             print(body[:80].hex())
         elif topic == b"rawchainlocksig":
             print('- RAW CHAINLOCK SIG ('+sequence+') -')
+            print(body[:80].hex())
+        elif topic == b"rawblocklock":
+            print('- RAW BLOCKLOCK ('+sequence+') -')
+            print(body[:80].hex())
+        elif topic == b"rawblocklocksig":
+            print('- RAW BLOCKLOCK SIG ('+sequence+') -')
             print(body[:80].hex())
         elif topic == b"rawtx":
             print('- RAW TX ('+sequence+') -')

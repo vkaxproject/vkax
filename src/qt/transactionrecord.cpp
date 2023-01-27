@@ -253,7 +253,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(interfaces::Wal
     return parts;
 }
 
-void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int numBlocks, int chainLockHeight, int64_t block_time)
+void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int numBlocks, int blockLockHeight, int64_t block_time)
 {
     // Determine transaction status
 
@@ -266,8 +266,8 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int 
     status.countsForBalance = wtx.is_trusted && !(wtx.blocks_to_maturity > 0);
     status.depth = wtx.depth_in_main_chain;
     status.cur_num_blocks = numBlocks;
-    status.cachedChainLockHeight = chainLockHeight;
-    status.lockedByChainLocks = wtx.is_chainlocked;
+    status.cachedBlockLockHeight = blockLockHeight;
+    status.lockedByBlockLocks = wtx.is_blocklocked;
     status.lockedByInstantSend = wtx.is_islocked;
 
     const bool up_to_date = ((int64_t)QDateTime::currentMSecsSinceEpoch() / 1000 - block_time < MAX_BLOCK_TIME_GAP);
@@ -315,7 +315,7 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int 
             if (wtx.is_abandoned)
                 status.status = TransactionStatus::Abandoned;
         }
-        else if (status.depth < RecommendedNumConfirmations && !status.lockedByChainLocks)
+        else if (status.depth < RecommendedNumConfirmations && !status.lockedByBlockLocks)
         {
             status.status = TransactionStatus::Confirming;
         }
@@ -327,10 +327,10 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int 
     status.needsUpdate = false;
 }
 
-bool TransactionRecord::statusUpdateNeeded(int numBlocks, int chainLockHeight) const
+bool TransactionRecord::statusUpdateNeeded(int numBlocks, int blockLockHeight) const
 {
     return status.cur_num_blocks != numBlocks || status.needsUpdate
-        || (!status.lockedByChainLocks && status.cachedChainLockHeight != chainLockHeight);
+        || (!status.lockedByBlockLocks && status.cachedBlockLockHeight != blockLockHeight);
 }
 
 void TransactionRecord::updateLabel(interfaces::Wallet& wallet)

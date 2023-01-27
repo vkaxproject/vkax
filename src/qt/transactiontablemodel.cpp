@@ -197,8 +197,8 @@ public:
             // Otherwise, simply re-use the cached status.
             interfaces::WalletTxStatus wtx;
             int64_t block_time;
-            if (rec->statusUpdateNeeded(numBlocks, parent->getChainLockHeight()) && wallet.tryGetTxStatus(rec->hash, wtx, block_time)) {
-                rec->updateStatus(wtx, numBlocks,  parent->getChainLockHeight(), block_time);
+            if (rec->statusUpdateNeeded(numBlocks, parent->getBlockLockHeight()) && wallet.tryGetTxStatus(rec->hash, wtx, block_time)) {
+                rec->updateStatus(wtx, numBlocks,  parent->getBlockLockHeight(), block_time);
             }
             return rec;
         }
@@ -226,7 +226,7 @@ TransactionTableModel::TransactionTableModel(WalletModel *parent):
         walletModel(parent),
         priv(new TransactionTablePriv(this)),
         fProcessingQueuedTransactions(false),
-        cachedChainLockHeight(-1)
+        cachedBlockLockHeight(-1)
 {
     columns << QString() << QString() << tr("Date") << tr("Type") << tr("Address / Label") << BitcoinUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
     priv->refreshWallet(walletModel->wallet());
@@ -273,14 +273,14 @@ void TransactionTableModel::updateConfirmations()
 }
 
 
-void TransactionTableModel::updateChainLockHeight(int chainLockHeight)
+void TransactionTableModel::updateBlockLockHeight(int blockLockHeight)
 {
-    cachedChainLockHeight = chainLockHeight;
+    cachedBlockLockHeight = blockLockHeight;
 }
 
-int TransactionTableModel::getChainLockHeight() const
+int TransactionTableModel::getBlockLockHeight() const
 {
-    return cachedChainLockHeight;
+    return cachedBlockLockHeight;
 }
 
 int TransactionTableModel::rowCount(const QModelIndex &parent) const
@@ -337,8 +337,8 @@ QString TransactionTableModel::formatTxStatus(const TransactionRecord *wtx) cons
     if (wtx->status.lockedByInstantSend) {
         status += ", " + tr("verified via InstantSend");
     }
-    if (wtx->status.lockedByChainLocks) {
-        status += ", " + tr("locked via ChainLocks");
+    if (wtx->status.lockedByBlockLocks) {
+        status += ", " + tr("locked via BlockLocks");
     }
 
     return status;

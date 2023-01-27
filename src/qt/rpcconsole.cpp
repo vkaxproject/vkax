@@ -603,7 +603,7 @@ void RPCConsole::setClientModel(ClientModel *model)
         setNumBlocks(node.getNumBlocks(), QDateTime::fromTime_t(node.getLastBlockTime()), QString::fromStdString(node.getLastBlockHash()), node.getVerificationProgress(), false);
         connect(model, &ClientModel::numBlocksChanged, this, &RPCConsole::setNumBlocks);
 
-        connect(model, &ClientModel::chainLockChanged, this, &RPCConsole::setChainLock);
+        connect(model, &ClientModel::blockLockChanged, this, &RPCConsole::setBlockLock);
 
         updateNetworkState();
         connect(model, &ClientModel::networkActiveChanged, this, &RPCConsole::setNetworkActive);
@@ -967,10 +967,10 @@ void RPCConsole::setNumBlocks(int count, const QDateTime& blockDate, const QStri
     }
 }
 
-void RPCConsole::setChainLock(const QString& bestChainLockHash, int bestChainLockHeight)
+void RPCConsole::setBlockLock(const QString& bestBlockLockHash, int bestBlockLockHeight)
 {
-    ui->bestChainLockHash->setText(bestChainLockHash);
-    ui->bestChainLockHeight->setText(QString::number(bestChainLockHeight));
+    ui->bestBlockLockHash->setText(bestBlockLockHash);
+    ui->bestBlockLockHeight->setText(QString::number(bestBlockLockHeight));
 }
 
 void RPCConsole::updateMasternodeCount()

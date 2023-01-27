@@ -22,6 +22,7 @@
 
 namespace llmq {
 extern const std::string CLSIG_REQUESTID_PREFIX;
+extern const std::string BLSIG_REQUESTID_PREFIX;
 }
 
 static void quorum_list_help(const JSONRPCRequest& request)
@@ -770,6 +771,20 @@ static void verifychainlock_help(const JSONRPCRequest& request)
     }.Check(request);
 }
 
+static void verifyblocklock_help(const JSONRPCRequest& request)
+{
+    RPCHelpMan{"verifyblocklock",
+        "Test if a quorum signature is valid for a BlockLock.\n",
+        {
+            {"blockHash", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "The block hash of the BlockLock."},
+            {"signature", RPCArg::Type::STR, RPCArg::Optional::NO, "The signature of the BlockLock."},
+            {"blockHeight", RPCArg::Type::NUM, /* default */ "", "The height of the BlockLock. There will be an internal lookup of \"blockHash\" if this is not provided."},
+        },
+        RPCResults{},
+        RPCExamples{""},
+    }.Check(request);
+}
+
 static UniValue verifychainlock(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3) {
@@ -797,6 +812,35 @@ static UniValue verifychainlock(const JSONRPCRequest& request)
     const auto llmqType = Params().GetConsensus().llmqTypeChainLocks;
     const uint256 nRequestId = ::SerializeHash(std::make_pair(llmq::CLSIG_REQUESTID_PREFIX, nBlockHeight));
     return llmq::CSigningManager::VerifyRecoveredSig(llmqType, nBlockHeight, nRequestId, nBlockHash, chainLockSig);
+}
+
+static UniValue verifyblocklock(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 3) {
+        verifyblocklock_help(request);
+    }
+
+    const uint256 nBlockHash = ParseHashV(request.params[0], "blockHash");
+
+    CBLSSignature blockLockSig;
+    if (!blockLockSig.SetHexStr(request.params[1].get_str())) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "invalid signature format");
+    }
+
+    int nBlockHeight;
+    if (request.params[2].isNull()) {
+        const CBlockIndex* pIndex = WITH_LOCK(cs_main, return LookupBlockIndex(nBlockHash));
+        if (pIndex == nullptr) {
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "blockHash not found");
+        }
+        nBlockHeight = pIndex->nHeight;
+    } else {
+        nBlockHeight = ParseInt32V(request.params[2], "blockHeight");
+    }
+
+    const auto llmqType = Params().GetConsensus().llmqTypeChainLocks;
+    const uint256 nRequestId = ::SerializeHash(std::make_pair(llmq::BLSIG_REQUESTID_PREFIX, nBlockHeight));
+    return llmq::CSigningManager::VerifyRecoveredSig(llmqType, nBlockHeight, nRequestId, nBlockHash, blockLockSig);
 }
 
 static void verifyislock_help(const JSONRPCRequest& request)
@@ -875,6 +919,7 @@ static const CRPCCommand commands[] =
   //  --------------------- ------------------------  -----------------------
     { "evo",                "quorum",                 &_quorum,                 {}  },
     { "evo",                "verifychainlock",        &verifychainlock,        {"blockHash", "signature", "blockHeight"} },
+    { "evo",                "verifyblocklock",        &verifyblocklock,        {"blockHash", "signature", "blockHeight"} },
     { "evo",                "verifyislock",           &verifyislock,           {"id", "txid", "signature", "maxHeight"}  },
 };
 // clang-format on

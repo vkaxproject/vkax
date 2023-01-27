@@ -2639,11 +2639,11 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>最后区块的哈希值</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
+        <source>Latest BlockLocked block hash</source>
         <translation>最新链锁区块的哈希值</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
+        <source>Latest BlockLocked block height</source>
         <translation>最新链锁区块的高度</translation>
     </message>
     <message>
@@ -3692,7 +3692,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>确认%1次</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>经链锁锁定</translation>
     </message>
     <message>
@@ -3894,7 +3894,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>经即时支付验证</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>经链锁锁定</translation>
     </message>
     <message>

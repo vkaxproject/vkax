@@ -110,6 +110,7 @@ struct Params {
     int nPowKGWHeight;
     int nPowDGWHeight;
     int nPowFVK;
+    int nBLHeight;
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
@@ -121,6 +122,7 @@ struct Params {
 
     std::vector<LLMQParams> llmqs;
     LLMQType llmqTypeChainLocks;
+    LLMQType llmqTypeBlockLocks;
     LLMQType llmqTypeInstantSend{LLMQType::LLMQ_NONE};
     LLMQType llmqTypeDIP0024InstantSend{LLMQType::LLMQ_NONE};
     LLMQType llmqTypePlatform{LLMQType::LLMQ_NONE};

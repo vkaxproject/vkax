@@ -237,7 +237,7 @@ private:
     std::unique_ptr<interfaces::Handler> m_handler_address_book_changed;
     std::unique_ptr<interfaces::Handler> m_handler_transaction_changed;
     std::unique_ptr<interfaces::Handler> m_handler_islock_received;
-    std::unique_ptr<interfaces::Handler> m_handler_chainlock_received;
+    std::unique_ptr<interfaces::Handler> m_handler_blocklock_received;
     std::unique_ptr<interfaces::Handler> m_handler_show_progress;
     std::unique_ptr<interfaces::Handler> m_handler_watch_only_changed;
     std::unique_ptr<interfaces::Handler> m_handler_can_get_addrs_changed;
@@ -305,8 +305,8 @@ public Q_SLOTS:
     void updateTransaction();
     /* IS-Lock received */
     void updateNumISLocks();
-    /* ChainLock received */
-    void updateChainLockHeight(int chainLockHeight);
+    /* BlockLock received */
+    void updateBlockLockHeight(int blockLockHeight);
     /* New, updated or removed address book entry */
     void updateAddressBook(const QString &address, const QString &label, bool isMine, const QString &purpose, int status);
     /* Watch-only added */

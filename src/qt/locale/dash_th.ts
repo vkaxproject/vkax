@@ -2639,12 +2639,20 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>hash บล็อกล่าสุด</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
-        <translation>แฮชบล็อก ChainLocked ล่าสุด</translation>
+        <source>Latest BlockLocked block hash</source>
+        <translation>แฮชบล็อก BlockLocked ล่าสุด</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
-        <translation>ความสูงของบล็อก ChainLocked ล่าสุด</translation>
+        <source>Latest BlockLocked block height</source>
+        <translation>ความสูงของบล็อก BlockLocked ล่าสุด</translation>
+    </message>
+    <message>
+        <source>Latest BlockLocked block hash</source>
+        <translation>แฮชบล็อก BlockLocked ล่าสุด</translation>
+    </message>
+    <message>
+        <source>Latest BlockLocked block height</source>
+        <translation>ความสูงของบล็อก Blocklocked ล่าสุด</translation>
     </message>
     <message>
         <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
@@ -3692,7 +3700,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>%1 ยืนยัน</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>ล็อกผ่าน Chainlocks</translation>
     </message>
     <message>
@@ -3894,7 +3902,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>ยืนยันผ่าน InstantSend</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>ล็อกผ่าน Chainlocks</translation>
     </message>
     <message>

@@ -40,16 +40,16 @@ QString TransactionDesc::FormatTxStatus(const interfaces::WalletTx& wtx, const i
         if (nDepth < 0) return tr("conflicted");
 
         QString strTxStatus;
-        bool fChainLocked = status.is_chainlocked;
+        bool fBlockLocked = status.is_blocklocked;
 
         if (nDepth == 0) {
             strTxStatus = tr("0/unconfirmed, %1").arg((inMempool ? tr("in memory pool") : tr("not in memory pool"))) + (status.is_abandoned ? ", "+tr("abandoned") : "");
-        } else if (!fChainLocked && nDepth < 6) {
+        } else if (!fBlockLocked && nDepth < 6) {
             strTxStatus = tr("%1/unconfirmed").arg(nDepth);
         } else {
             strTxStatus = tr("%1 confirmations").arg(nDepth);
-            if (fChainLocked) {
-                strTxStatus += ", " + tr("locked via ChainLocks");
+            if (fBlockLocked) {
+                strTxStatus += ", " + tr("locked via BlockLocks");
                 return strTxStatus;
             }
         }

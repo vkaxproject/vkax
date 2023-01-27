@@ -83,8 +83,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const override;
     bool processingQueuedTransactions() const { return fProcessingQueuedTransactions; }
-    void updateChainLockHeight(int chainLockHeight);
-    int getChainLockHeight() const;
+    void updateBlockLockHeight(int blockLockHeight);
+    int getBlockLockHeight() const;
 
 private:
     WalletModel *walletModel;
@@ -94,7 +94,7 @@ private:
     QStringList columns;
     TransactionTablePriv *priv;
     bool fProcessingQueuedTransactions;
-    int cachedChainLockHeight;
+    int cachedBlockLockHeight;
 
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();

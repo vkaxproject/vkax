@@ -29,6 +29,7 @@ struct FeeCalculation;
 enum class MemPoolRemovalReason;
 
 namespace llmq {
+class CBlockLockSig;
 class CChainLockSig;
 struct CInstantSendLock;
 } // namespace llmq
@@ -236,6 +237,7 @@ public:
         virtual void BlockDisconnected(const CBlock& block) {}
         virtual void UpdatedBlockTip() {}
         virtual void ChainStateFlushed(const CBlockLocator& locator) {}
+        virtual void NotifyBlockLock(const CBlockIndex* pindexBlockLock, const std::shared_ptr<const llmq::CBlockLockSig>& blsig) {}
         virtual void NotifyChainLock(const CBlockIndex* pindexChainLock, const std::shared_ptr<const llmq::CChainLockSig>& clsig) {}
         virtual void NotifyTransactionLock(const CTransactionRef &tx, const std::shared_ptr<const llmq::CInstantSendLock>& islock) {}
     };

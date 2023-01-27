@@ -83,6 +83,7 @@ MAKE_MSG(QSIGSHARE, "qsigshare");
 MAKE_MSG(QGETDATA, "qgetdata");
 MAKE_MSG(QDATA, "qdata");
 MAKE_MSG(CLSIG, "clsig");
+MAKE_MSG(BLSIG, "blsig");
 MAKE_MSG(ISLOCK, "islock");
 MAKE_MSG(ISDLOCK, "isdlock");
 MAKE_MSG(MNAUTH, "mnauth");
@@ -166,6 +167,7 @@ const static std::string allNetMessageTypes[] = {
     NetMsgType::QGETDATA,
     NetMsgType::QDATA,
     NetMsgType::CLSIG,
+    NetMsgType::BLSIG,
     NetMsgType::ISLOCK,
     NetMsgType::ISDLOCK,
     NetMsgType::MNAUTH,
@@ -306,6 +308,7 @@ const char* CInv::GetCommandInternal() const
         case MSG_QUORUM_PREMATURE_COMMITMENT:   return NetMsgType::QPCOMMITMENT;
         case MSG_QUORUM_RECOVERED_SIG:          return NetMsgType::QSIGREC;
         case MSG_CLSIG:                         return NetMsgType::CLSIG;
+        case MSG_BLSIG:                         return NetMsgType::BLSIG;
         case MSG_ISLOCK:                        return NetMsgType::ISLOCK;
         case MSG_ISDLOCK:                       return NetMsgType::ISDLOCK;
         default:

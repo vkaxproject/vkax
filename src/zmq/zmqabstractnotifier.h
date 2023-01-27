@@ -19,6 +19,7 @@ class CZMQAbstractNotifier;
 typedef std::shared_ptr<const CTransaction> CTransactionRef;
 
 namespace llmq {
+    class CBlockLockSig;
     class CChainLockSig;
     struct CInstantSendLock;
     class CRecoveredSig;
@@ -55,6 +56,7 @@ public:
     virtual void Shutdown() = 0;
 
     virtual bool NotifyBlock(const CBlockIndex *pindex);
+    virtual bool NotifyBlockLock(const CBlockIndex *pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig);
     virtual bool NotifyChainLock(const CBlockIndex *pindex, const std::shared_ptr<const llmq::CChainLockSig>& clsig);
     virtual bool NotifyTransaction(const CTransaction &transaction);
     virtual bool NotifyTransactionLock(const CTransactionRef& transaction, const std::shared_ptr<const llmq::CInstantSendLock>& islock);

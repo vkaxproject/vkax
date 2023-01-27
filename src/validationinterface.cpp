@@ -29,6 +29,7 @@ struct ValidationInterfaceConnections {
     boost::signals2::scoped_connection NotifyHeaderTip;
     boost::signals2::scoped_connection NotifyTransactionLock;
     boost::signals2::scoped_connection NotifyChainLock;
+    boost::signals2::scoped_connection NotifyBlockLock;
     boost::signals2::scoped_connection NotifyGovernanceVote;
     boost::signals2::scoped_connection NotifyGovernanceObject;
     boost::signals2::scoped_connection NotifyInstantSendDoubleSpendAttempt;
@@ -51,6 +52,7 @@ struct MainSignalsInstance {
     boost::signals2::signal<void (const CBlockIndex *)>AcceptedBlockHeader;
     boost::signals2::signal<void (const CBlockIndex *, bool)>NotifyHeaderTip;
     boost::signals2::signal<void (const CTransactionRef& tx, const std::shared_ptr<const llmq::CInstantSendLock>& islock)>NotifyTransactionLock;
+    boost::signals2::signal<void (const CBlockIndex* pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig)>NotifyBlockLock;
     boost::signals2::signal<void (const CBlockIndex* pindex, const std::shared_ptr<const llmq::CChainLockSig>& clsig)>NotifyChainLock;
     boost::signals2::signal<void (const std::shared_ptr<const CGovernanceVote>& vote)>NotifyGovernanceVote;
     boost::signals2::signal<void (const std::shared_ptr<const CGovernanceObject>& object)>NotifyGovernanceObject;
@@ -121,6 +123,7 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn) {
     conns.BlockDisconnected = g_signals.m_internals->BlockDisconnected.connect(std::bind(&CValidationInterface::BlockDisconnected, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.NotifyTransactionLock = g_signals.m_internals->NotifyTransactionLock.connect(std::bind(&CValidationInterface::NotifyTransactionLock, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.NotifyChainLock = g_signals.m_internals->NotifyChainLock.connect(std::bind(&CValidationInterface::NotifyChainLock, pwalletIn, std::placeholders::_1, std::placeholders::_2));
+    conns.NotifyBlockLock = g_signals.m_internals->NotifyBlockLock.connect(std::bind(&CValidationInterface::NotifyBlockLock, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.TransactionRemovedFromMempool = g_signals.m_internals->TransactionRemovedFromMempool.connect(std::bind(&CValidationInterface::TransactionRemovedFromMempool, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.ChainStateFlushed = g_signals.m_internals->ChainStateFlushed.connect(std::bind(&CValidationInterface::ChainStateFlushed, pwalletIn, std::placeholders::_1));
     conns.BlockChecked = g_signals.m_internals->BlockChecked.connect(std::bind(&CValidationInterface::BlockChecked, pwalletIn, std::placeholders::_1, std::placeholders::_2));
@@ -234,6 +237,12 @@ void CMainSignals::NotifyTransactionLock(const CTransactionRef &tx, const std::s
 void CMainSignals::NotifyChainLock(const CBlockIndex* pindex, const std::shared_ptr<const llmq::CChainLockSig>& clsig) {
     m_internals->m_schedulerClient.AddToProcessQueue([pindex, clsig, this] {
         m_internals->NotifyChainLock(pindex, clsig);
+    });
+}
+
+void CMainSignals::NotifyBlockLock(const CBlockIndex* pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig) {
+    m_internals->m_schedulerClient.AddToProcessQueue([pindex, blsig, this] {
+        m_internals->NotifyBlockLock(pindex, blsig);
     });
 }
 

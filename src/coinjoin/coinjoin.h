@@ -481,6 +481,7 @@ public:
 
     static void UpdatedBlockTip(const CBlockIndex* pindex);
     static void NotifyChainLock(const CBlockIndex* pindex);
+    static void NotifyBlockLock(const CBlockIndex* pindex);
 
     static void UpdateDSTXConfirmedHeight(const CTransactionRef& tx, int nHeight);
     static void TransactionAddedToMempool(const CTransactionRef& tx);

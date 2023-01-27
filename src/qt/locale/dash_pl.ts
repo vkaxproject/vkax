@@ -2639,12 +2639,12 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Hash ostatniego bloku</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
-        <translation>Najnowszy hash bloku zabezpieczonego przez ChainLock</translation>
+        <source>Latest BlockLocked block hash</source>
+        <translation>Najnowszy hash bloku zabezpieczonego przez BlockLock</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
-        <translation>Najnowsza wysokość bloku zabezpieczonego przez ChainLock</translation>
+        <source>Latest BlockLocked block height</source>
+        <translation>Najnowsza wysokość bloku zabezpieczonego przez BlockLock</translation>
     </message>
     <message>
         <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
@@ -3692,7 +3692,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>%1 potwierdzeń</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>zablokowane przez ChainLocs</translation>
     </message>
     <message>
@@ -3894,7 +3894,7 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>zweryfikowane przez InstantSend</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
+        <source>locked via BlockLocks</source>
         <translation>zablokowane przez ChainLocs</translation>
     </message>
     <message>

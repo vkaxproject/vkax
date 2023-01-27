@@ -38,6 +38,7 @@
 #include <evo/cbtx.h>
 
 #include <llmq/chainlocks.h>
+#include <llmq/blocklocks.h>
 #include <llmq/instantsend.h>
 
 #include <stdint.h>
@@ -121,6 +122,7 @@ UniValue blockheaderToJSON(const CBlockIndex* tip, const CBlockIndex* blockindex
         result.pushKV("nextblockhash", pnext->GetBlockHash().GetHex());
 
     result.pushKV("chainlock", llmq::chainLocksHandler->HasChainLock(blockindex->nHeight, blockindex->GetBlockHash()));
+    result.pushKV("blocklock", llmq::blockLocksHandler->HasBlockLock(blockindex->nHeight, blockindex->GetBlockHash()));
 
     return result;
 }
@@ -138,6 +140,7 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIn
     result.pushKV("versionHex", strprintf("%08x", block.nVersion));
     result.pushKV("merkleroot", block.hashMerkleRoot.GetHex());
     bool chainLock = llmq::chainLocksHandler->HasChainLock(blockindex->nHeight, blockindex->GetBlockHash());
+    bool blockLock = llmq::blockLocksHandler->HasBlockLock(blockindex->nHeight, blockindex->GetBlockHash());
     UniValue txs(UniValue::VARR);
     for(const auto& tx : block.vtx)
     {
@@ -146,7 +149,7 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIn
             UniValue objTx(UniValue::VOBJ);
             TxToUniv(*tx, uint256(), objTx, true);
             bool fLocked = llmq::quorumInstantSendManager->IsLocked(tx->GetHash());
-            objTx.pushKV("instantlock", fLocked || chainLock);
+            objTx.pushKV("instantlock", fLocked || chainLock || blockLock);
             objTx.pushKV("instantlock_internal", fLocked);
             txs.push_back(objTx);
         }
@@ -176,6 +179,7 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIn
         result.pushKV("nextblockhash", pnext->GetBlockHash().GetHex());
 
     result.pushKV("chainlock", chainLock);
+    result.pushKV("blocklock", blockLock);
     if(powHash)
         result.pushKV("powhash", block.GetPOWHash().GetHex());
     return result;
@@ -252,6 +256,41 @@ static UniValue getbestchainlock(const JSONRPCRequest& request)
 
     LOCK(cs_main);
     result.pushKV("known_block", ::BlockIndex().count(clsig.blockHash) > 0);
+    return result;
+}
+
+static UniValue getbestblocklock(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 0)
+        throw std::runtime_error(
+            RPCHelpMan{"getbestblocklock",
+                "\nReturns information about the best blocklock. Throws an error if there is no known blocklock yet.",
+                {},
+                RPCResult{
+                    "{\n"
+                    "  \"blockhash\" : \"hash\",      (string) The block hash hex-encoded\n"
+                    "  \"height\" : n,              (numeric) The block height or index\n"
+                    "  \"signature\" : \"hash\",    (string) The blocklock's BLS signature.\n"
+                    "  \"known_block\" : true|false (boolean) True if the block is known by our node\n"
+                    "}\n"
+                },
+                RPCExamples{
+                    HelpExampleCli("getbestblocklock", "")
+                    + HelpExampleRpc("getbestblocklock", "")
+                },
+            }.ToString());
+    UniValue result(UniValue::VOBJ);
+
+    llmq::CBlockLockSig blsig = llmq::blockLocksHandler->GetBestBlockLock();
+    if (blsig.IsNull()) {
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "Unable to find any blocklock");
+    }
+    result.pushKV("blockhash", blsig.blockHash.GetHex());
+    result.pushKV("height", blsig.nHeight);
+    result.pushKV("signature", blsig.sig.ToString());
+
+    LOCK(cs_main);
+    result.pushKV("known_block", ::BlockIndex().count(blsig.blockHash) > 0);
     return result;
 }
 
@@ -1706,6 +1745,9 @@ static UniValue getchaintips(const JSONRPCRequest& request)
         } else if (block->nStatus & BLOCK_CONFLICT_CHAINLOCK) {
             // This block or one of its ancestors is conflicting with ChainLocks.
             status = "conflicting";
+        } else if (block->nStatus & BLOCK_CONFLICT_BLOCKLOCK) {
+            // This block or one of its ancestors is conflicting with BlockLocks.
+            status = "conflicting";
         } else if (!block->HaveTxsDownloaded()) {
             // This block cannot be connected because full block data for it or one of its parents is missing.
             status = "headers-only";
@@ -2740,6 +2782,7 @@ static const CRPCCommand commands[] =
     { "blockchain",         "getblockstats",          &getblockstats,          {"hash_or_height", "stats"} },
     { "blockchain",         "getbestblockhash",       &getbestblockhash,       {} },
     { "blockchain",         "getbestchainlock",       &getbestchainlock,       {} },
+    { "blockchain",         "getbestblocklock",       &getbestblocklock,       {} },
     { "blockchain",         "getblockcount",          &getblockcount,          {} },
     { "blockchain",         "getblock",               &getblock,               {"blockhash","verbosity|verbose"} },
     { "blockchain",         "getblockhashes",         &getblockhashes,         {"high","low"} },

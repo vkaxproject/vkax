@@ -23,6 +23,11 @@ bool CZMQAbstractNotifier::NotifyChainLock(const CBlockIndex * /*CBlockIndex*/, 
     return true;
 }
 
+bool CZMQAbstractNotifier::NotifyBlockLock(const CBlockIndex * /*CBlockIndex*/, const std::shared_ptr<const llmq::CBlockLockSig> & /*clsig*/)
+{
+    return true;
+}
+
 bool CZMQAbstractNotifier::NotifyTransaction(const CTransaction &/*transaction*/)
 {
     return true;

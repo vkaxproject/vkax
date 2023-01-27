@@ -2639,12 +2639,12 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>Hash posledný bloku</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
-        <translation>Najnovší blokový hash ChainLocked</translation>
+        <source>Latest BlockLocked block hash</source>
+        <translation>Najnovší blokový hash BlockLocked</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
-        <translation>Najnovšia výška bloku ChainLocked</translation>
+        <source>Latest BlockLocked block height</source>
+        <translation>Najnovšia výška bloku BlockLocked</translation>
     </message>
     <message>
         <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
@@ -3692,8 +3692,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>%1 potvrdení</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>zamknuté pomocou ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>zamknuté pomocou BlockLocks</translation>
     </message>
     <message>
         <source>verified via InstantSend</source>
@@ -3894,8 +3894,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>overené cez InstantSend</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>zamknuté pomocou ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>zamknuté pomocou BlockLocks</translation>
     </message>
     <message>
         <source>Received with</source>

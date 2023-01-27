@@ -5,6 +5,7 @@
 #include <llmq/init.h>
 
 #include <llmq/quorums.h>
+#include <llmq/blocklocks.h>
 #include <llmq/blockprocessor.h>
 #include <llmq/commitment.h>
 #include <llmq/chainlocks.h>
@@ -34,6 +35,7 @@ void InitLLMQSystem(CEvoDB& evoDb, bool unitTests, bool fWipe)
     quorumSigSharesManager = new CSigSharesManager();
     quorumSigningManager = new CSigningManager(unitTests, fWipe);
     chainLocksHandler = new CChainLocksHandler();
+    blockLocksHandler = new CBlockLocksHandler();
     quorumInstantSendManager = new CInstantSendManager(unitTests, fWipe);
 
     // NOTE: we use this only to wipe the old db, do NOT use it for anything else
@@ -45,7 +47,9 @@ void DestroyLLMQSystem()
 {
     delete quorumInstantSendManager;
     quorumInstantSendManager = nullptr;
+    delete blockLocksHandler;
     delete chainLocksHandler;
+    blockLocksHandler = nullptr;
     chainLocksHandler = nullptr;
     delete quorumSigningManager;
     quorumSigningManager = nullptr;
@@ -83,6 +87,9 @@ void StartLLMQSystem()
     if (chainLocksHandler) {
         chainLocksHandler->Start();
     }
+    if (blockLocksHandler) {
+        blockLocksHandler->Start();
+    }
     if (quorumInstantSendManager) {
         quorumInstantSendManager->Start();
     }
@@ -95,6 +102,9 @@ void StopLLMQSystem()
     }
     if (chainLocksHandler) {
         chainLocksHandler->Stop();
+    }
+    if (blockLocksHandler) {
+        blockLocksHandler->Stop();
     }
     if (quorumSigSharesManager) {
         quorumSigSharesManager->StopWorkerThread();

@@ -74,7 +74,7 @@ private:
     void RemoveInstantSendLockMined(CDBBatch& batch, const uint256& hash, int nHeight) EXCLUSIVE_LOCKS_REQUIRED(cs_db);
 
     /**
-     * This method removes a InstantSend Lock from the database and is called when a tx with an IS lock is confirmed and Chainlocked
+     * This method removes a InstantSend Lock from the database and is called when a tx with an IS lock is confirmed, blocklock and Chainlocked
      * @param batch Object used to batch many calls together
      * @param hash The hash of the InstantSend Lock
      * @param islock The InstantSend Lock object itself
@@ -159,10 +159,10 @@ public:
      */
     CInstantSendLockPtr GetInstantSendLockByInput(const COutPoint& outpoint) const;
     /**
-     * Called when a ChainLock invalidated a IS Lock, removes any chained/children IS Locks and the invalidated IS Lock
+     * Called when a ChainLock or a BlockLock invalidated a IS Lock, removes any chained/children IS Locks and the invalidated IS Lock
      * @param islockHash IS Lock hash which has been invalidated
      * @param txid Transaction id associated with the islockHash
-     * @param nHeight height of the block which received a chainlock and invalidated the IS Lock
+     * @param nHeight height of the block which received a chainlock, blocklock and invalidated the IS Lock
      * @return A vector of IS Lock hashes of all IS Locks removed
      */
     std::vector<uint256> RemoveChainedInstantSendLocks(const uint256& islockHash, const uint256& txid, int nHeight);
@@ -201,7 +201,7 @@ private:
     // Tried to verify but there is no tx yet
     std::unordered_map<uint256, std::pair<NodeId, CInstantSendLockPtr>, StaticSaltedHasher> pendingNoTxInstantSendLocks GUARDED_BY(cs);
 
-    // TXs which are neither IS locked nor ChainLocked. We use this to determine for which TXs we need to retry IS locking
+    // TXs which are neither IS locked, BlockLock nor ChainLocked. We use this to determine for which TXs we need to retry IS locking
     // of child TXs
     struct NonLockedTxInfo {
         const CBlockIndex* pindexMined;
@@ -275,6 +275,7 @@ public:
     bool GetInstantSendLockHashByTxid(const uint256& txid, uint256& ret) const;
 
     void NotifyChainLock(const CBlockIndex* pindexChainLock);
+    void NotifyBlockLock(const CBlockIndex* pindexBlockLock);
     void UpdatedBlockTip(const CBlockIndex* pindexNew);
 
     void RemoveConflictingLock(const uint256& islockHash, const CInstantSendLock& islock) LOCKS_EXCLUDED(cs);
@@ -288,7 +289,7 @@ bool IsInstantSendEnabled();
 /**
  * If true, MN should sign all transactions, if false, MN should not sign
  * transactions in mempool, but should sign txes included in a block. This
- * allows ChainLocks to continue even while this spork is disabled.
+ * allows ChainLocks and blocklock to continue even while this spork is disabled.
  */
 bool IsInstantSendMempoolSigningEnabled();
 bool RejectConflictingBlocks();

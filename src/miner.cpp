@@ -28,6 +28,7 @@
 #include <evo/cbtx.h>
 #include <evo/simplifiedmns.h>
 #include <llmq/blockprocessor.h>
+#include <llmq/blocklocks.h>
 #include <llmq/chainlocks.h>
 #include <llmq/utils.h>
 #include <masternode/payments.h>
@@ -272,6 +273,9 @@ bool BlockAssembler::TestPackageTransactions(const CTxMemPool::setEntries& packa
         if (!IsFinalTx(it->GetTx(), nHeight, nLockTimeCutoff))
             return false;
         if (!llmq::chainLocksHandler->IsTxSafeForMining(it->GetTx().GetHash())) {
+            return false;
+        }
+        if (!llmq::blockLocksHandler->IsTxSafeForMining(it->GetTx().GetHash())) {
             return false;
         }
     }

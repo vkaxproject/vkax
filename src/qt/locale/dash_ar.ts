@@ -2639,12 +2639,12 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>آخر تجزئة كتلة</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
-        <translation>أحدث تجزئة كتلة ChainLocked</translation>
+        <source>Latest BlockLocked block hash</source>
+        <translation>أحدث تجزئة كتلة BlockLocked</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
-        <translation>أحدث ارتفاع كتلة ChainLocked</translation>
+        <source>Latest BlockLocked block height</source>
+        <translation>أحدث ارتفاع كتلة BlockLocked</translation>
     </message>
     <message>
         <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
@@ -3692,8 +3692,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>تأكيد %1</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>مغلق عبر ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>مغلق عبر BlockLocks</translation>
     </message>
     <message>
         <source>verified via InstantSend</source>
@@ -3894,8 +3894,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
         <translation>محقق من فبل الإرسال الفوري</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>مغلق عبر ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>مغلق عبر BlockLocks</translation>
     </message>
     <message>
         <source>Received with</source>

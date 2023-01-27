@@ -3406,13 +3406,13 @@ https://www.transifex.com/projects/p/vkax/</translation>
     </message>
     <message>
         <location line="+23"/>
-        <source>Latest ChainLocked block hash</source>
-        <translation>Latest ChainLocked block hash</translation>
+        <source>Latest BlockLocked block hash</source>
+        <translation>Latest BlockLocked block hash</translation>
     </message>
     <message>
         <location line="+23"/>
-        <source>Latest ChainLocked block height</source>
-        <translation>Latest ChainLocked block height</translation>
+        <source>Latest BlockLocked block height</source>
+        <translation>Latest BlockLocked block height</translation>
     </message>
     <message>
         <location line="+101"/>
@@ -4757,8 +4757,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>locked via ChainLocks</source>
-        <translation>locked via ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>locked via BlockLocks</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -5028,8 +5028,8 @@ https://www.transifex.com/projects/p/vkax/</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>locked via ChainLocks</source>
-        <translation>locked via ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>locked via BlockLocks</translation>
     </message>
     <message>
         <location line="+37"/>

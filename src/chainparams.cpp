@@ -175,6 +175,7 @@ public:
         consensus.DIP0003EnforcementHash = uint256S("a8cbec020744ef33ad355e9e0c246a93a49734b9d813c8bc38f47d59067c3184");
         consensus.DIP0008Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
         consensus.BRRHeight = 1374912; // not needed
+        consensus.nBLHeight = 118532;
         consensus.MinBIP9WarningHeight = 1090656; // dip8 activation height + miner confirmation window
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
         consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // Vkax: 1 day
@@ -291,14 +292,9 @@ public:
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
         vSeeds.emplace_back("dnsseed.vkax.xyz");
-        vSeeds.emplace_back("no.mining4people.com");
-        vSeeds.emplace_back("fr.mining4people.com");
-        vSeeds.emplace_back("gb.mining4people.com");
-        vSeeds.emplace_back("us.mining4people.com");
-        vSeeds.emplace_back("in.mining4people.com");
-        vSeeds.emplace_back("br.mining4people.com");
-        vSeeds.emplace_back("au.mining4people.com");
-        vSeeds.emplace_back("sg.mining4people.com");
+        vSeeds.emplace_back("dnsseed2.vkax.xyz");
+        vSeeds.emplace_back("dnsseed3.vkax.xyz");
+        vSeeds.emplace_back("dnsseed4.vkax.xyz");
         vSeeds.emplace_back("147.182.144.51");
         vSeeds.emplace_back("174.138.27.60");
         vSeeds.emplace_back("dnsseed-02.vkax.xyz");
@@ -320,12 +316,14 @@ public:
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
         // long living quorum params
+        AddLLMQ(Consensus::LLMQType::LLMQ_20_30);
         AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
         AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_85);
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
         consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_400_60;
+        consensus.llmqTypeBlockLocks = Consensus::LLMQType::LLMQ_20_30;
         consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_50_60;
         consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
         consensus.llmqTypePlatform = Consensus::LLMQType::LLMQ_100_67;
@@ -526,11 +524,13 @@ public:
         nExtCoinType = 1;
 
         // long living quorum params
+        AddLLMQ(Consensus::LLMQType::LLMQ_20_30);
         AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
         AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_85);
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
+        consensus.llmqTypeBlockLocks = Consensus::LLMQType::LLMQ_20_30;
         consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_50_60;
         consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_50_60;
         consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
@@ -725,6 +725,7 @@ public:
         nExtCoinType = 1;
 
         // long living quorum params
+        AddLLMQ(Consensus::LLMQType::LLMQ_20_30);
         AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
         AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
@@ -732,12 +733,14 @@ public:
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
         AddLLMQ(Consensus::LLMQType::LLMQ_DEVNET);
         AddLLMQ(Consensus::LLMQType::LLMQ_DEVNET_DIP0024);
+        consensus.llmqTypeBlockLocks = Consensus::LLMQType::LLMQ_20_30;
         consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_50_60;
         consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_50_60;
         consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
         consensus.llmqTypePlatform = Consensus::LLMQType::LLMQ_100_67;
         consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_50_60;
 
+        UpdateDevnetLLMQBlockLocksFromArgs(args);
         UpdateDevnetLLMQChainLocksFromArgs(args);
         UpdateDevnetLLMQInstantSendFromArgs(args);
         UpdateDevnetLLMQInstantSendDIP0024FromArgs(args);
@@ -794,6 +797,15 @@ public:
         consensus.llmqTypeChainLocks = llmqType;
     }
     void UpdateDevnetLLMQChainLocksFromArgs(const ArgsManager& args);
+
+    /**
+     * Allows modifying the LLMQ type for BlockLocks.
+     */
+    void UpdateDevnetLLMQBlockLocks(Consensus::LLMQType llmqType)
+    {
+        consensus.llmqTypeBlockLocks = llmqType;
+    }
+    void UpdateDevnetLLMQBlockLocksFromArgs(const ArgsManager& args);
 
     /**
      * Allows modifying the LLMQ type for InstantSend.
@@ -1003,10 +1015,12 @@ public:
         nExtCoinType = 1;
 
         // long living quorum params
+        AddLLMQ(Consensus::LLMQType::LLMQ_TEST1);
         AddLLMQ(Consensus::LLMQType::LLMQ_TEST);
         AddLLMQ(Consensus::LLMQType::LLMQ_TEST_INSTANTSEND);
         AddLLMQ(Consensus::LLMQType::LLMQ_TEST_V17);
         AddLLMQ(Consensus::LLMQType::LLMQ_TEST_DIP0024);
+        consensus.llmqTypeBlockLocks = Consensus::LLMQType::LLMQ_TEST1;
         consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_TEST;
         consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_TEST_INSTANTSEND;
         consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_TEST_DIP0024;
@@ -1259,6 +1273,28 @@ void CDevNetParams::UpdateDevnetLLMQChainLocksFromArgs(const ArgsManager& args)
     }
     LogPrintf("Setting llmqchainlocks to size=%ld\n", static_cast<uint8_t>(llmqType));
     UpdateDevnetLLMQChainLocks(llmqType);
+}
+
+void CDevNetParams::UpdateDevnetLLMQBlockLocksFromArgs(const ArgsManager& args)
+{
+    if (!args.IsArgSet("-llmqblocklocks")) return;
+
+    std::string strLLMQType = gArgs.GetArg("-llmqblocklocks", std::string(GetLLMQ(consensus.llmqTypeBlockLocks).name));
+
+    Consensus::LLMQType llmqType = Consensus::LLMQType::LLMQ_NONE;
+    for (const auto& params : consensus.llmqs) {
+        if (params.name == strLLMQType) {
+            if (params.useRotation) {
+                throw std::runtime_error("LLMQ type specified for -llmqblocklocks must NOT use rotation");
+            }
+            llmqType = params.type;
+        }
+    }
+    if (llmqType == Consensus::LLMQType::LLMQ_NONE) {
+        throw std::runtime_error("Invalid LLMQ type specified for -llmqblocklocks.");
+    }
+    LogPrintf("Setting llmqblocklocks to size=%ld\n", static_cast<uint8_t>(llmqType));
+    UpdateDevnetLLMQBlockLocks(llmqType);
 }
 
 void CDevNetParams::UpdateDevnetLLMQInstantSendFromArgs(const ArgsManager& args)

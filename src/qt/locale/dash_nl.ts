@@ -2640,12 +2640,12 @@ Om te mixen moeten andere gebruikers exact dezelfde denominaties inbrengen.</tra
         <translation>Laatste block hash</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block hash</source>
-        <translation>Nieuwste ChainLocked block hash</translation>
+        <source>Latest BlockLocked block hash</source>
+        <translation>Nieuwste BlockLocked block hash</translation>
     </message>
     <message>
-        <source>Latest ChainLocked block height</source>
-        <translation>Nieuwste ChainLocked block hoogte</translation>
+        <source>Latest BlockLocked block height</source>
+        <translation>Nieuwste BlockLocked block hoogte</translation>
     </message>
     <message>
         <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
@@ -3694,8 +3694,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Vkax netwer
         <translation>%1 bevestigingen</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>op slot via ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>op slot via BlockLocks</translation>
     </message>
     <message>
         <source>verified via InstantSend</source>
@@ -3896,8 +3896,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het Vkax netwer
         <translation>geverifieerd via InstantSend</translation>
     </message>
     <message>
-        <source>locked via ChainLocks</source>
-        <translation>op slot via ChainLocks</translation>
+        <source>locked via BlockLocks</source>
+        <translation>op slot via BlockLocks</translation>
     </message>
     <message>
         <source>Received with</source>

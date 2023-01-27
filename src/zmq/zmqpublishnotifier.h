@@ -36,6 +36,12 @@ public:
     bool NotifyBlock(const CBlockIndex *pindex) override;
 };
 
+class CZMQPublishHashBlockLockNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyBlockLock(const CBlockIndex *pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig) override;
+};
+
 class CZMQPublishHashChainLockNotifier : public CZMQAbstractPublishNotifier
 {
 public:
@@ -90,10 +96,22 @@ public:
     bool NotifyChainLock(const CBlockIndex *pindex, const std::shared_ptr<const llmq::CChainLockSig>& clsig) override;
 };
 
+class CZMQPublishRawBlockLockNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyBlockLock(const CBlockIndex *pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig) override;
+};
+
 class CZMQPublishRawChainLockSigNotifier : public CZMQAbstractPublishNotifier
 {
 public:
     bool NotifyChainLock(const CBlockIndex *pindex, const std::shared_ptr<const llmq::CChainLockSig>& clsig) override;
+};
+
+class CZMQPublishRawBlockLockSigNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyBlockLock(const CBlockIndex *pindex, const std::shared_ptr<const llmq::CBlockLockSig>& blsig) override;
 };
 
 class CZMQPublishRawTransactionNotifier : public CZMQAbstractPublishNotifier

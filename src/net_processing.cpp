@@ -47,6 +47,7 @@
 #include <evo/mnauth.h>
 #include <evo/simplifiedmns.h>
 #include <llmq/blockprocessor.h>
+#include <llmq/blocklocks.h>
 #include <llmq/chainlocks.h>
 #include <llmq/commitment.h>
 #include <llmq/dkgsessionmgr.h>
@@ -1439,6 +1440,8 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
         return llmq::quorumSigningManager->AlreadyHave(inv);
     case MSG_CLSIG:
         return llmq::chainLocksHandler->AlreadyHave(inv);
+    case MSG_BLSIG:
+        return llmq::blockLocksHandler->AlreadyHave(inv);
     case MSG_ISLOCK:
     case MSG_ISDLOCK:
         return llmq::quorumInstantSendManager->AlreadyHave(inv);
@@ -1776,9 +1779,9 @@ void static ProcessGetData(CNode* pfrom, const CChainParams& chainparams, CConnm
                 }
             }
 
-            if (!push && (inv.type == MSG_CLSIG)) {
-                llmq::CChainLockSig o;
-                if (llmq::chainLocksHandler->GetChainLockByHash(inv.hash, o)) {
+            if (!push && (inv.type == MSG_BLSIG)) {
+                llmq::CBlockLockSig o;
+                if (llmq::blockLocksHandler->GetBlockLockByHash(inv.hash, o)) {
                     connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::CLSIG, o));
                     push = true;
                 }
@@ -4029,6 +4032,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& msg_type, CDataStrea
         llmq::quorumSigSharesManager->ProcessMessage(pfrom, msg_type, vRecv);
         llmq::quorumSigningManager->ProcessMessage(pfrom, msg_type, vRecv);
         llmq::chainLocksHandler->ProcessMessage(pfrom, msg_type, vRecv);
+        llmq::blockLocksHandler->ProcessMessage(pfrom, msg_type, vRecv);
         llmq::quorumInstantSendManager->ProcessMessage(pfrom, msg_type, vRecv);
         return true;
     }
@@ -4706,6 +4710,12 @@ bool PeerLogicValidation::SendMessages(CNode* pto)
                 if (!clsig.IsNull()) {
                     uint256 chainlockHash = ::SerializeHash(clsig);
                     queueAndMaybePushInv(CInv(MSG_CLSIG, chainlockHash));
+                }
+
+               const auto& blsig = llmq::blockLocksHandler->GetBestBlockLock();
+                if (!blsig.IsNull()) {
+                    uint256 blocklockHash = ::SerializeHash(blsig);
+                    queueAndMaybePushInv(CInv(MSG_BLSIG, blocklockHash));
                 }
 
                 pto->timeLastMempoolReq = GetTime();
