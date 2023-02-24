@@ -29,4 +29,7 @@ inline bool MoneyRange(const CAmount& nValue) { return (nValue >= 0 && nValue <=
 
 static const CAmount MASTERNODE_CAMOUNT = 10000000 * COIN;
 
+static const CAmount MASTERNODE_CAMOUNT_2 = 100000 * COIN;
+
+
 #endif //  BITCOIN_AMOUNT_H

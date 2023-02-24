@@ -468,8 +468,8 @@ static UniValue protx_register(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("invalid collaterall address: %s", request.params[paramIdx].get_str()));
         }
         CScript collateralScript = GetScriptForDestination(collateralDest);
-
-        CTxOut collateralTxOut(MASTERNODE_CAMOUNT, collateralScript);
+        int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
+        CTxOut collateralTxOut(masternodeReduce, collateralScript);
         tx.vout.emplace_back(collateralTxOut);
 
         paramIdx++;
@@ -541,9 +541,11 @@ static UniValue protx_register(const JSONRPCRequest& request)
     }
 
     if (isFundRegister) {
+
+        int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
         uint32_t collateralIndex = (uint32_t) -1;
         for (uint32_t i = 0; i < tx.vout.size(); i++) {
-            if (tx.vout[i].nValue == MASTERNODE_CAMOUNT) {
+            if (tx.vout[i].nValue == masternodeReduce) {
                 collateralIndex = i;
                 break;
             }

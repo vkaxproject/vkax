@@ -6,6 +6,7 @@
 #ifndef BITCOIN_CONSENSUS_PARAMS_H
 #define BITCOIN_CONSENSUS_PARAMS_H
 
+#include <amount.h>
 #include <uint256.h>
 #include <llmq/params.h>
 
@@ -125,6 +126,15 @@ struct Params {
     LLMQType llmqTypeDIP0024InstantSend{LLMQType::LLMQ_NONE};
     LLMQType llmqTypePlatform{LLMQType::LLMQ_NONE};
     LLMQType llmqTypeMnhf{LLMQType::LLMQ_NONE};
+
+
+    /* We had to change the Masternode collateral to boost more Masternodes number and the boost the Network for VKax*/
+
+    int nMNActualHeight;
+    int MasternodeReduceAmount(int height) const
+    {
+        return height < nMNActualHeight ? MASTERNODE_CAMOUNT : MASTERNODE_CAMOUNT_2;
+    }
 };
 } // namespace Consensus
 

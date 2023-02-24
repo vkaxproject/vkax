@@ -184,6 +184,7 @@ public:
         consensus.nPowKGWHeight = 40;
         consensus.nPowDGWHeight = 80;
         consensus.nPowFVK = 4050;
+        consensus.nMNActualHeight = 130155;
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -409,6 +410,7 @@ public:
         consensus.nPowKGWHeight = 40; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 80; // TODO: make sure to drop all spork6 related code on next testnet reset
         consensus.nPowFVK = 500;
+        consensus.nMNActualHeight = 1301;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -608,6 +610,7 @@ public:
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
         consensus.nPowDGWHeight = 4001;
         consensus.nPowFVK = 4050;
+        consensus.nMNActualHeight = 500;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -879,6 +882,7 @@ public:
         consensus.nPowKGWHeight = 40; // same as mainnet
         consensus.nPowDGWHeight = 80; // same as mainnet
         consensus.nPowFVK = 1050;
+        consensus.nMNActualHeight = 530;
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
         consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
