@@ -468,8 +468,7 @@ static UniValue protx_register(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("invalid collaterall address: %s", request.params[paramIdx].get_str()));
         }
         CScript collateralScript = GetScriptForDestination(collateralDest);
-        int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
-        CTxOut collateralTxOut(masternodeReduce, collateralScript);
+        CTxOut collateralTxOut(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight ? MASTERNODE_CAMOUNT_2 : MASTERNODE_CAMOUNT, collateralScript);
         tx.vout.emplace_back(collateralTxOut);
 
         paramIdx++;
@@ -541,14 +540,19 @@ static UniValue protx_register(const JSONRPCRequest& request)
     }
 
     if (isFundRegister) {
-
-        int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
         uint32_t collateralIndex = (uint32_t) -1;
         for (uint32_t i = 0; i < tx.vout.size(); i++) {
-            if (tx.vout[i].nValue == masternodeReduce) {
+    if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+            if (tx.vout[i].nValue == MASTERNODE_CAMOUNT_2) {
                 collateralIndex = i;
                 break;
             }
+	} else {
+            if (tx.vout[i].nValue == MASTERNODE_CAMOUNT) {
+                collateralIndex = i;
+                break;
+            }
+	}
         }
         CHECK_NONFATAL(collateralIndex != (uint32_t) -1);
         ptx.collateralOutpoint.n = collateralIndex;

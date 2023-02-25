@@ -2519,13 +2519,6 @@ bool static ProcessMessage(CNode* pfrom, const std::string& msg_type, CDataStrea
             return false;
         }
 
-        if (pindex->nHeight >= nMNActualHeight && nVersion < MIN_PEER_PROTO_2_VERSION) {
-            // disconnect from peers older than this proto version
-            LogPrint(BCLog::NET, "peer=%d Please Upgrade the vkax wallet, you are using an old wallet\n", pfrom->GetId(), nVersion);
-            pfrom->fDisconnect = true;
-            return false;
-        }
-
         if (!vRecv.empty())
             vRecv >> addrFrom >> nNonce;
         if (!vRecv.empty()) {

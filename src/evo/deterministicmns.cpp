@@ -702,12 +702,20 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
             }
 
             Coin coin;
-            int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
-            if (!proTx.collateralOutpoint.hash.IsNull() && (!view.GetCoin(dmn->collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != masternodeReduce)) {
+           if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+            if (!proTx.collateralOutpoint.hash.IsNull() && (!view.GetCoin(dmn->collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != MASTERNODE_CAMOUNT_2)) {
                 // should actually never get to this point as CheckProRegTx should have handled this case.
                 // We do this additional check nevertheless to be 100% sure
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-collateral");
             }
+		}else{
+            if (!proTx.collateralOutpoint.hash.IsNull() && (!view.GetCoin(dmn->collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != MASTERNODE_CAMOUNT)) {
+                // should actually never get to this point as CheckProRegTx should have handled this case.
+                // We do this additional check nevertheless to be 100% sure
+                return _state.DoS(100, false, REJECT_INVALID, "bad-protx-collateral");
+            }
+               }
+
 
             auto replacedDmn = newList.GetMNByCollateral(dmn->collateralOutpoint);
             if (replacedDmn != nullptr) {
@@ -1010,7 +1018,8 @@ bool CDeterministicMNManager::IsProTxWithCollateral(const CTransactionRef& tx, u
     if (proTx.collateralOutpoint.n >= tx->vout.size() || proTx.collateralOutpoint.n != n) {
         return false;
     }
-    if (tx->vout[n].nValue != masternodeReduce) {
+
+    if (tx->vout[n].nValue != ::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight ? MASTERNODE_CAMOUNT_2 : MASTERNODE_CAMOUNT) {
         return false;
     }
     return true;
@@ -1270,9 +1279,15 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
 
     if (!ptx.collateralOutpoint.hash.IsNull()) {
         Coin coin;
-        if (!view.GetCoin(ptx.collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != masternodeReduce) {
+       if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+        if (!view.GetCoin(ptx.collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != MASTERNODE_CAMOUNT_2) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
         }
+          } else {
+        if (!view.GetCoin(ptx.collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != MASTERNODE_CAMOUNT) {
+            return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
+        }
+	}
 
         if (!ExtractDestination(coin.out.scriptPubKey, collateralTxDest)) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-dest");
@@ -1290,9 +1305,17 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
         if (ptx.collateralOutpoint.n >= tx.vout.size()) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-index");
         }
-        if (tx.vout[ptx.collateralOutpoint.n].nValue != masternodeReduce) {
+
+
+        if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+        if (tx.vout[ptx.collateralOutpoint.n].nValue != MASTERNODE_CAMOUNT_2) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
-        }
+         }
+	} else{
+        if (tx.vout[ptx.collateralOutpoint.n].nValue != MASTERNODE_CAMOUNT) {
+            return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
+          }
+	}
 
         if (!ExtractDestination(tx.vout[ptx.collateralOutpoint.n].scriptPubKey, collateralTxDest)) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-dest");
@@ -1436,6 +1459,7 @@ bool CheckProUpRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVal
         }
 
         Coin coin;
+
         if (!view.GetCoin(dmn->collateralOutpoint, coin) || coin.IsSpent()) {
             // this should never happen (there would be no dmn otherwise)
             return state.DoS(100, false, REJECT_INVALID, "bad-protx-collateral");

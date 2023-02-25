@@ -110,9 +110,11 @@ static CMutableTransaction CreateProRegTx(SimpleUTXOMap& utxos, int port, const 
     CMutableTransaction tx;
     tx.nVersion = 3;
     tx.nType = TRANSACTION_PROVIDER_REGISTER;
-
-    int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
-    FundTransaction(tx, utxos, scriptPayout, masternodeReduce, coinbaseKey);
+    if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+    FundTransaction(tx, utxos, scriptPayout, MASTERNODE_CAMOUNT_2, coinbaseKey);
+    } else {
+    FundTransaction(tx, utxos, scriptPayout, MASTERNODE_CAMOUNT, coinbaseKey);
+    }
     proTx.inputsHash = CalcTxInputsHash(CTransaction(tx));
     SetTxPayload(tx, proTx);
     SignTransaction(tx, coinbaseKey);
@@ -365,9 +367,12 @@ BOOST_FIXTURE_TEST_CASE(dip3_protx, TestChainDIP3Setup)
     deterministicMNManager->UpdatedBlockTip(::ChainActive().Tip());
     BOOST_CHECK_EQUAL(::ChainActive().Height(), nHeight + 1);
     nHeight++;
-    int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
     auto dmn = deterministicMNManager->GetListAtChainTip().GetMN(dmnHashes[0]);
-    BOOST_ASSERT(dmn != nullptr && dmn->pdmnState->addr.GetPort() == masternodeReduce);
+    if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+    BOOST_ASSERT(dmn != nullptr && dmn->pdmnState->addr.GetPort() == MASTERNODE_CAMOUNT);
+    } else {
+    BOOST_ASSERT(dmn != nullptr && dmn->pdmnState->addr.GetPort() == MASTERNODE_CAMOUNT);
+    }
 
     // test ProUpRevTx
     tx = CreateProUpRevTx(utxos, dmnHashes[0], operatorKeys[dmnHashes[0]], coinbaseKey);
@@ -469,8 +474,12 @@ BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_reorg, TestChainDIP3Setup)
 
     // Create a MN with an external collateral
     CMutableTransaction tx_collateral;
-    int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
-    FundTransaction(tx_collateral, utxos, scriptCollateral, masternodeReduce, coinbaseKey);
+
+    if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+    FundTransaction(tx_collateral, utxos, scriptCollateral, MASTERNODE_CAMOUNT_2, coinbaseKey);
+    } else {
+    FundTransaction(tx_collateral, utxos, scriptCollateral, MASTERNODE_CAMOUNT, coinbaseKey);
+    }
     SignTransaction(tx_collateral, coinbaseKey);
 
     auto block = std::make_shared<CBlock>(CreateBlock({tx_collateral}, coinbaseKey));
@@ -485,18 +494,28 @@ BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_reorg, TestChainDIP3Setup)
     payload.pubKeyOperator = operatorKey.GetPublicKey();
     payload.keyIDVoting = ownerKey.GetPubKey().GetID();
     payload.scriptPayout = scriptPayout;
-    int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
     for (size_t i = 0; i < tx_collateral.vout.size(); ++i) {
-        if (tx_collateral.vout[i].nValue == masternodeReduce) {
+      if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+        if (tx_collateral.vout[i].nValue == MASTERNODE_CAMOUNT_2) {
             payload.collateralOutpoint = COutPoint(tx_collateral.GetHash(), i);
             break;
         }
+     }else {
+        if (tx_collateral.vout[i].nValue == MASTERNODE_CAMOUNT) {
+            payload.collateralOutpoint = COutPoint(tx_collateral.GetHash(), i);
+            break;
+        }
+	}
     }
 
     CMutableTransaction tx_reg;
     tx_reg.nVersion = 3;
     tx_reg.nType = TRANSACTION_PROVIDER_REGISTER;
-    FundTransaction(tx_reg, utxos, scriptPayout, masternodeReduce, coinbaseKey);
+       if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+    FundTransaction(tx_reg, utxos, scriptPayout, MASTERNODE_CAMOUNT_2, coinbaseKey);
+      } else {
+    FundTransaction(tx_reg, utxos, scriptPayout, MASTERNODE_CAMOUNT, coinbaseKey);
+	}
     payload.inputsHash = CalcTxInputsHash(CTransaction(tx_reg));
     CMessageSigner::SignMessage(payload.MakeSignString(), payload.vchSig, collateralKey);
     SetTxPayload(tx_reg, payload);
@@ -554,20 +573,28 @@ BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_dual_proregtx, TestChainDIP3Setup)
     payload.pubKeyOperator = operatorKey.GetPublicKey();
     payload.keyIDVoting = ownerKey.GetPubKey().GetID();
     payload.scriptPayout = scriptPayout;
-
-    int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
     for (size_t i = 0; i < tx_reg1.vout.size(); ++i) {
-        if (tx_reg1.vout[i].nValue == masternodeReduce) {
+       if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+        if (tx_reg1.vout[i].nValue == MASTERNODE_CAMOUNT_2) {
             payload.collateralOutpoint = COutPoint(tx_reg1.GetHash(), i);
             break;
         }
+     } else {
+        if (tx_reg1.vout[i].nValue == MASTERNODE_CAMOUNT) {
+            payload.collateralOutpoint = COutPoint(tx_reg1.GetHash(), i);
+            break;
+        }
+	}
     }
 
     CMutableTransaction tx_reg2;
     tx_reg2.nVersion = 3;
     tx_reg2.nType = TRANSACTION_PROVIDER_REGISTER;
-    int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
-    FundTransaction(tx_reg2, utxos, scriptPayout, masternodeReduce, coinbaseKey);
+      if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+    FundTransaction(tx_reg2, utxos, scriptPayout, MASTERNODE_CAMOUNT_2, coinbaseKey);
+     } else {
+    FundTransaction(tx_reg2, utxos, scriptPayout, MASTERNODE_CAMOUNT, coinbaseKey);
+	}
     payload.inputsHash = CalcTxInputsHash(CTransaction(tx_reg2));
     CMessageSigner::SignMessage(payload.MakeSignString(), payload.vchSig, collateralKey);
     SetTxPayload(tx_reg2, payload);
@@ -602,8 +629,11 @@ BOOST_FIXTURE_TEST_CASE(dip3_verify_db, TestChainDIP3Setup)
 
     // Create a MN with an external collateral
     CMutableTransaction tx_collateral;
-    int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
-    FundTransaction(tx_collateral, utxos, scriptCollateral, masternodeReduce, coinbaseKey);
+      if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+    FundTransaction(tx_collateral, utxos, scriptCollateral, MASTERNODE_CAMOUNT_2, coinbaseKey);
+     }else { 
+    FundTransaction(tx_collateral, utxos, scriptCollateral, MASTERNODE_CAMOUNT, coinbaseKey);
+	}
     SignTransaction(tx_collateral, coinbaseKey);
 
     auto block = std::make_shared<CBlock>(CreateBlock({tx_collateral}, coinbaseKey));
@@ -619,18 +649,27 @@ BOOST_FIXTURE_TEST_CASE(dip3_verify_db, TestChainDIP3Setup)
     payload.keyIDVoting = ownerKey.GetPubKey().GetID();
     payload.scriptPayout = scriptPayout;
 
-    int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
     for (size_t i = 0; i < tx_collateral.vout.size(); ++i) {
-        if (tx_collateral.vout[i].nValue == masternodeReduce) {
+     if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+        if (tx_collateral.vout[i].nValue == MASTERNODE_CAMOUNT_2) {
             payload.collateralOutpoint = COutPoint(tx_collateral.GetHash(), i);
             break;
         }
+	} else{
+        if (tx_collateral.vout[i].nValue == MASTERNODE_CAMOUNT) {
+            payload.collateralOutpoint = COutPoint(tx_collateral.GetHash(), i);
+            break;
+        }
+	}
     }
-
     CMutableTransaction tx_reg;
     tx_reg.nVersion = 3;
     tx_reg.nType = TRANSACTION_PROVIDER_REGISTER;
-    FundTransaction(tx_reg, utxos, scriptPayout, masternodeReduce, coinbaseKey);
+     if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+    FundTransaction(tx_reg, utxos, scriptPayout, MASTERNODE_CAMOUNT_2, coinbaseKey);
+     } else { 
+    FundTransaction(tx_reg, utxos, scriptPayout, MASTERNODE_CAMOUNT, coinbaseKey);
+	}
     payload.inputsHash = CalcTxInputsHash(CTransaction(tx_reg));
     CMessageSigner::SignMessage(payload.MakeSignString(), payload.vchSig, collateralKey);
     SetTxPayload(tx_reg, payload);
@@ -647,9 +686,11 @@ BOOST_FIXTURE_TEST_CASE(dip3_verify_db, TestChainDIP3Setup)
 
     // Now spend the collateral while updating the same MN
     SimpleUTXOMap collateral_utxos;
-
-    int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
-    collateral_utxos.emplace(payload.collateralOutpoint, std::make_pair(1, masternodeReduce));
+    if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+    collateral_utxos.emplace(payload.collateralOutpoint, std::make_pair(1, MASTERNODE_CAMOUNT_2));
+    } else {
+    collateral_utxos.emplace(payload.collateralOutpoint, std::make_pair(1, MASTERNODE_CAMOUNT));
+    }
     auto proUpRevTx = CreateProUpRevTx(collateral_utxos, tx_reg_hash, operatorKey, collateralKey);
 
     block = std::make_shared<CBlock>(CreateBlock({proUpRevTx}, coinbaseKey));

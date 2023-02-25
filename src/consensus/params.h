@@ -131,10 +131,6 @@ struct Params {
     /* We had to change the Masternode collateral to boost more Masternodes number and the boost the Network for VKax*/
 
     int nMNActualHeight;
-    int MasternodeReduceAmount(int height) const
-    {
-        return height < nMNActualHeight ? MASTERNODE_CAMOUNT : MASTERNODE_CAMOUNT_2;
-    }
 };
 } // namespace Consensus
 

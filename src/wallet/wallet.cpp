@@ -3066,8 +3066,11 @@ void CWallet::AvailableCoins(interfaces::Chain::Lock& locked_chain, std::vector<
                 if (CCoinJoin::IsCollateralAmount(pcoin->tx->vout[i].nValue)) continue; // do not use collateral amounts
                 found = !CCoinJoin::IsDenominatedAmount(pcoin->tx->vout[i].nValue);
             } else if(nCoinType == CoinType::ONLY_MASTERNODE_COLLATERAL) {
-            int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
-                found = pcoin->tx->vout[i].nValue == masternodeReduce;
+            if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+                found = pcoin->tx->vout[i].nValue == MASTERNODE_CAMOUNT_2;
+		} else {
+	          found = pcoin->tx->vout[i].nValue == MASTERNODE_CAMOUNT;
+		}
             } else if(nCoinType == CoinType::ONLY_COINJOIN_COLLATERAL) {
                 found = CCoinJoin::IsCollateralAmount(pcoin->tx->vout[i].nValue);
             } else {
@@ -3568,8 +3571,11 @@ std::vector<CompactTallyItem> CWallet::SelectCoinsGroupedByAddresses(bool fSkipD
             if(fAnonymizable) {
                 // ignore collaterals
                 if(CCoinJoin::IsCollateralAmount(wtx.tx->vout[i].nValue)) continue;
-            int masternodeReduce = Params().GetConsensus().MasternodeReduceAmount(nHeight);
-                if(fMasternodeMode && wtx.tx->vout[i].nValue == masternodeReduce) continue;
+                if(::ChainActive().Height() >= Params().GetConsensus().nMNActualHeight) {
+                if(fMasternodeMode && wtx.tx->vout[i].nValue == MASTERNODE_CAMOUNT_2) continue;
+		} else {
+                if(fMasternodeMode && wtx.tx->vout[i].nValue == MASTERNODE_CAMOUNT) continue;
+		}
                 // ignore outputs that are 10 times smaller then the smallest denomination
                 // otherwise they will just lead to higher fee / lower priority
                 if(wtx.tx->vout[i].nValue <= nSmallestDenom/10) continue;
