@@ -5,7 +5,9 @@ Vkax Core staging tree 18.0
 |-|-|-|
 |Gitlab|[![Build Status](https://gitlab.com/dashpay/dash/badges/master/pipeline.svg)](https://gitlab.com/dashpay/dash/-/tree/master)|[![Build Status](https://gitlab.com/dashpay/dash/badges/develop/pipeline.svg)](https://gitlab.com/dashpay/dash/-/tree/develop)|
 
-https://www.vkax.xyz
+Website: https://www.vkax.xyz
+
+Explorer: https://insight.vkax.xyz/insight
 
 
 What is Vkax?
