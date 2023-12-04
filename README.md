@@ -5,9 +5,9 @@ Vkax Core staging tree 18.0
 |-|-|-|
 |Gitlab|[![Build Status](https://gitlab.com/dashpay/dash/badges/master/pipeline.svg)](https://gitlab.com/dashpay/dash/-/tree/master)|[![Build Status](https://gitlab.com/dashpay/dash/badges/develop/pipeline.svg)](https://gitlab.com/dashpay/dash/-/tree/develop)|
 
-Website: https://www.vkax.xyz
+Website: https://www.vkax.org
 
-Explorer: https://insight.vkax.xyz/insight
+Explorer: https://insight.vkax.org/insight
 
 
 What is Vkax?
@@ -23,7 +23,7 @@ Pre-Built Binary
 ----------------
 
 For more information, as well as an immediately usable, binary version of
-the Vkax Core software, see https://www.vkax.xyz/downloads/.
+the Vkax Core software, see https://www.vkax.org/downloads/.
 
 License
 -------
