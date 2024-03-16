@@ -1,13 +1,13 @@
-Vkax Core staging tree 18.0
+Vkax Core staging tree 100.0
 ===========================
 
 |CI|master|develop|
 |-|-|-|
 |Gitlab|[![Build Status](https://gitlab.com/dashpay/dash/badges/master/pipeline.svg)](https://gitlab.com/dashpay/dash/-/tree/master)|[![Build Status](https://gitlab.com/dashpay/dash/badges/develop/pipeline.svg)](https://gitlab.com/dashpay/dash/-/tree/develop)|
 
-Website: https://www.vkax.org
+Website: TBA
 
-Explorer: https://insight.vkax.org/insight
+Explorer: https://x.butkoin.com/vkax
 
 
 What is Vkax?
@@ -19,12 +19,6 @@ to operate with no central authority: managing transactions and issuing money
 are carried out collectively by the network. Vkax Core is the name of the open
 source software which enables the use of this currency.
 
-Pre-Built Binary
-----------------
-
-For more information, as well as an immediately usable, binary version of
-the Vkax Core software, see https://www.vkax.org/downloads/.
-
 License
 -------
 
@@ -34,12 +28,12 @@ information or see https://opensource.org/licenses/MIT.
 Development Process
 -------------------
 
-The `master` branch is meant to be stable. Development is normally done in separate branches.
-[Tags](https://github.com/vkaxproject/vkax/tags) are created to indicate new official,
-stable release versions of Vkax Core.
+This fork proposes to become the new `master` branch. Development is ongoing and caution is advised before proceeding to interact with this coin, for those who do not know what they are doing. 
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
-and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
+Development
+------------
+
+If you believe you have an idea or change you would like to make, please use the 'issues' tab to create a discussion!
 
 Testing
 -------
@@ -69,16 +63,3 @@ code. This is especially important for large or high-risk changes. It is useful
 to add a test plan to the pull request description if testing the changes is
 not straightforward.
 
-Translations
-------------
-
-Changes to translations as well as new translations can be submitted to
-[Vkax Core's Transifex page](https://www.transifex.com/projects/p/vkax/).
-
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
-
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
-
-Translators should also follow the [forum](https://www.dash.org/forum/topic/dash-worldwide-collaboration.88/).
