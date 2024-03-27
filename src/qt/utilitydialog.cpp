@@ -144,7 +144,7 @@ For more information, see the <a style=\"%2\" href=\"%3\">%1 documentation</a>."
         )
         .arg(strCoinJoinName)
         .arg(GUIUtil::getThemedStyleQString(GUIUtil::ThemedStyle::TS_COMMAND))
-        .arg("https://docs.vkax.xyz/en/stable/wallets/vkaxcore/coinjoin-instantsend.html")
+        .arg("https://docs.vkax.org/en/stable/wallets/vkaxcore/coinjoin-instantsend.html")
         );
         ui->aboutMessage->setWordWrap(true);
         ui->helpMessage->setVisible(false);

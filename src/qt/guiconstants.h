@@ -38,7 +38,7 @@ static const int TOOLTIP_WRAP_THRESHOLD = 80;
 #define SPINNER_FRAMES 90
 
 #define QAPP_ORG_NAME "Vkax"
-#define QAPP_ORG_DOMAIN "vkax.xyz"
+#define QAPP_ORG_DOMAIN "vkax.org"
 #define QAPP_APP_NAME_DEFAULT "Vkax-Qt"
 #define QAPP_APP_NAME_TESTNET "Vkax-Qt-testnet"
 #define QAPP_APP_NAME_DEVNET "Vkax-Qt-%s"

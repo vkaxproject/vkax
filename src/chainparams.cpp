@@ -502,7 +502,7 @@ public:
 
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testnetseed.vkax.xyz"); // Just a static list of stable node(s), only supports x9
+        vSeeds.emplace_back("testnetseed.vkax.org"); // Just a static list of stable node(s), only supports x9
 
         // Testnet Vkax addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
@@ -701,7 +701,7 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        //vSeeds.push_back(CDNSSeedData("evo.vkax.xyz",  "devnet-seed.vkax.xyz"));
+        //vSeeds.push_back(CDNSSeedData("evo.vkax.org",  "devnet-seed.vkax.org"));
 
         // Testnet Vkax addresses start with 'y'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
