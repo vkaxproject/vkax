@@ -167,10 +167,10 @@ public:
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = uint256S("0x776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8");
-        consensus.BIP65Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
-        consensus.BIP66Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
-        consensus.DIP0001Height = 1;
-        consensus.DIP0003Height = 1;
+        consensus.BIP65Height = 1;   // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
+        consensus.BIP66Height = 1;   // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
+        consensus.DIP0001Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
+        consensus.DIP0003Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
         consensus.DIP0003EnforcementHeight = 2;
         consensus.DIP0003EnforcementHash = uint256S("a8cbec020744ef33ad355e9e0c246a93a49734b9d813c8bc38f47d59067c3184");
         consensus.DIP0008Height = 1; // 776b6dbc4ecc4383cdfcaac2a267312bf32efb6fc8ff1bdd8a55903823f21bc8
@@ -181,8 +181,8 @@ public:
         consensus.nPowTargetSpacing = 2.5 * 60; // Vkax: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
-        consensus.nPowKGWHeight = 40;
-        consensus.nPowDGWHeight = 80;
+        consensus.nPowKGWHeight = 40;   // 24eb69e25bff033964fac3416f40aa014f0f543109ae3e7ddd8939693d71955b
+        consensus.nPowDGWHeight = 80;   // bad2061d2a2b1d7af71c619c76b9eba182ffaebdfeccce7f20046e9fb4327778
         consensus.nPowFVK = 4050;
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
