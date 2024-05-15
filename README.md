@@ -9,6 +9,8 @@ Website: https://www.vkax.org
 
 Explorer: https://insight.vkax.org/insight
 
+Web wallet: https://web-wallet.vkax.org
+
 
 What is Vkax?
 -------------
