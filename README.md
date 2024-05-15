@@ -11,6 +11,8 @@ Explorer: https://insight.vkax.org/insight
 
 Web wallet: https://web-wallet.vkax.org
 
+Android Wallet: https://github.com/vkaxproject/vkax/releases/download/v18.0.3/vkax-android-wallet.apk
+
 
 What is Vkax?
 -------------
