@@ -1,3 +1,6 @@
+The new vkax development can now take place from the new source code https://github.com/vkaxcore/VKAX
+==============================================================================================
+
 Vkax Core staging tree 18.0
 ===========================
 
